@@ -1,18 +1,16 @@
 #!/bin/bash
-
-# This file is public domain in the USA and all free countries.
-# Elsewhere, consider it to be WTFPLv2. (wtfpl.net/txt/copying)
-
-echo "Why hello there.
-Would you like some tea (y/n)?"
+echo "Hi everybody
+Would you like this bot (y/n)?"
 read answer
-[[ $answer =~ ^([yY][eE][sS]|[yY])$ ]] && echo "OK then, here you go: http://www.rivertea.com/blog/wp-content/uploads/2013/12/Green-Tea.jpg" || echo "OK then."
+[[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]
+echo "OK :) here you have http://github.com/iicc1/TgBash"
+echo "OK then."
 until [ "$SUCCESS" = "y" ] ;do
-	echo 'Do you like Music? mykeyboardstartshere "Yass!" "No"'
+	echo 'Do you like the backgrounds? mykeyboardstartshere "Yes" "No"'
 	read answer
 	case $answer in
-		'Yass!') echo "Goody!";SUCCESS=y;;
-		'No') echo "Well that's weird.";SUCCESS=y;;
+		'Yes') echo "Oh yeah, me also, here you have http://www.solofondosdepantalla.net/fondos-de-pantalla/Abstractos/Fondo-de-pantalla-Abstracto-210.jpg ";SUCCESS=y;;
+		'No') echo "Oh, you are weird";SUCCESS=y;;
 		*) SUCCESS=n;;
 	esac
 done
