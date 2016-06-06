@@ -42,8 +42,8 @@ else
 			if [[ $iQUERY_MSG == gif ]]; then
 				answer_inline_query "$iQUERY_ID" "cached_gif" "BQADBAADIwYAAmwsDAABlIia56QGP0YC"
 			fi
-			if [[ $iQUERY_MSG == web ]]; then
-				answer_inline_query "$iQUERY_ID" "article" "GitHub" "http://github.com/topkecleon/telegram-bot-bash"
+			if [[ $iQUERY_MSG == github ]]; then
+				answer_inline_query "$iQUERY_ID" "article" "GitHub" "https://github.com/iicc1/TgBash"
 			fi
 		fi
 	fi
@@ -76,8 +76,9 @@ It currently can send, recieve and forward messages, custom keyboards, photos, a
 *• /cancel*: _Cancel any currently running interactive chats_.
 *• /kickme*: _You will be autokicked from the chat_.
 *• /leavechat*: _The bot will leave the group with this command _.
-Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
-Get the code in my [GitHub](http://github.com/topkecleon/telegram-bot-bash)
+*• /broadcast* <text>: _The bot will leave the group with this command _.
+*Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)
+Repository of this bot [HERE](https://github.com/iicc1/TgBash)
 "
 			;;
 			
