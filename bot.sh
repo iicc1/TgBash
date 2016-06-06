@@ -111,11 +111,11 @@ send_text() {
 }
 
 send_markdown_message() {
-	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true")
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3)
 }
 
 send_html_message() {
-	res=$(curl -s "$MSG_URL" -F "chat_id=$1" -F "text=$2" -F "parse_mode=html")
+	res=$(curl -s "$MSG_URL" -F "chat_id=$1" -F "text=$2" -F "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
 kick_chat_member() {
@@ -303,6 +303,7 @@ process_client() {
 	# Message
 	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
 	MESSAGE=$(printf "$MESSAGE")
+	REPLY=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
 	
 	# Bot
 	BOT_USERNAME=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
