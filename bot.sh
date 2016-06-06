@@ -111,7 +111,7 @@ send_text() {
 }
 
 send_markdown_message() {
-	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3)
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
 send_html_message() {
