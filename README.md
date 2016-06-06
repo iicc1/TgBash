@@ -223,13 +223,13 @@ To use the functions provided in this script in other scripts simply source bash
 ## User count
 To count the total number of users that ever used the bot run the following command:
 ```
-bash bot.sh count
+./bot.sh count
 ```
 
 
 ## Sending broadcasts to all users
 To send a broadcast to all of users that ever used the bot run the following command:
 ```
-bash bot.sh broadcast "Hey! I just wanted to let you know that the bot's been updated!"
+./bot.sh broadcast "Hey everybody! This is a *broadcast*."
 ```
 
