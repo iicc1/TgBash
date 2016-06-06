@@ -228,7 +228,7 @@ To count the total number of users that ever used the bot run the following comm
 
 
 ## Sending broadcasts to all users
-To send a broadcast to all of users that ever used the bot run the following command:
+You can send a broadcast with markdown in your bash console using the next command:
 ```
 ./bot.sh broadcast "Hey everybody! This is a *broadcast*."
 ```
