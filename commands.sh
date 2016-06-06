@@ -113,5 +113,8 @@ Repository of this bot [HERE](https://github.com/iicc1/TgBash)
 		'/cancel')
 			if tmux ls | grep -q $copname; then killproc && send_message "${CHAT[ID]}" "Command canceled.";else send_message "${USER[ID]}" "No command is currently running.";fi
 			;;
+		*)
+			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${USER[ID]}" "" "safe";fi
+			;;
 	esac
 fi
