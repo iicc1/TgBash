@@ -64,27 +64,39 @@ group. This step is up to you actually.
 
 13. @botfather replies with `Success! The new status is: DISABLED. /help`
 
-### Install bashbot
+### Install TgBash
 Clone the repository:
 ```
 git clone https://github.com/iicc1/TgBash.git
 ```
 
-Create a file called token and paste the token in there.
-Then start editing the commands.
+Run ./bot.sh start and paste the token then.
+
+### Available commands
+```
+/start # Start bot and get principal message
+/info # Show the info of the bot
+/question # Show a interactive keyboard
+/cancel # Cancel the interactive keyboard
+/kickme # If a user write this, then the user will be autokicked (if the bot is admin)
+/leavechat # The bot will leave some group with this command
+/broadcast <text> # The bot will send a broadcast (markdown compatible)
+/echo <text> # The bot will send a echo message (markdown compatible)
+/myinfo # The bot will send the info of some user if write that
+```
 
 ### Receive data
 You can read incoming data using the following variables:
 
 * ```$MESSAGE```: Incoming messages
 * ```$CAPTION```: Captions
-* * ```$BOT```: This array contains the name, username and user of the bot.
+*  ```$BOT```: This array contains the name, username and user of the bot.
  * ```${BOT_NAME}```: Bot name
  * ```${BOT_USER}```: Bot user
  * ```${BOT_ID}```: Bot ID
-* * ```$CHAT```: This array contains only the ID chat.
+*  ```$CHAT```: This array contains only the ID chat.
  * ```${CHAT]ID]}```: Bot name
-* * ```$GROUP```: This array contains only the title of the group.
+*  ```$GROUP```: This array contains only the title of the group.
  * ```${GROUP[TITLE]}```: group title
 * ```$USER```: This array contains the First name, last name, username and user id of the sender of the current message.
  * ```${USER[ID]}```: User id
