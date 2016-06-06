@@ -47,6 +47,16 @@ else
 			fi
 		fi
 	fi
+	
+	echo $MESSAGE | grep "^/broadcast"
+        if [ $? == 0 ]; then
+		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+		send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*."
+  	  shift
+		for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
+    	fi
+
+
 	case $MESSAGE in
 		'/question')
 			startproc "./question"
