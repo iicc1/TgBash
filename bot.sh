@@ -115,7 +115,7 @@ send_markdown_message() {
 }
 
 send_html_message() {
-	res=$(curl -s "$MSG_URL" -F "chat_id=$1" -F "text=$2" -F "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
 kick_chat_member() {
