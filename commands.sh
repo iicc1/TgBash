@@ -75,6 +75,7 @@ else
 			send_markdown_message "${CHAT[ID]}" "Hi ${USER[FIRST_NAME]} 
 This is a *bot* written in *shell*
 Here you have the commands.
+
 *Available commands*:
  /start _Start bot and get this message_.
  /info _Get shorter info message about this bot_.
