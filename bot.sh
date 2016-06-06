@@ -301,8 +301,9 @@ inproc() {
 
 process_client() {
 	# Message
-	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
-	MESSAGE=$(printf "$MESSAGE")
+##	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
+##	MESSAGE=$(printf "$MESSAGE")
+	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2)
 	REPLY=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
 	
 	# Bot
