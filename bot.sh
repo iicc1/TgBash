@@ -381,7 +381,7 @@ case "$1" in
 		echo "Sending the broadcast $* to $(wc -l count | sed 's/count//g')users."
 		[ $(wc -l count | sed 's/ count//g') -gt 300 ] && sleep="sleep 0.5"
 		shift
-		for f in $(cat count);do send_message ${f//COUNT} "$*"; $sleep;done
+		for f in $(cat count);do send_markdown_message ${f//COUNT} "$*"; $sleep;done
 		;;
 	"start")
 		clear
