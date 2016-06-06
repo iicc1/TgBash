@@ -1,6 +1,7 @@
 Tg BASH
 -
 This is repository in test to create a Tg Bot in bash based in [Telegram-Bot-Bash](https://github.com/topkecleon/telegram-bot-bash) by [Topkecleon](https://github.com/topkecleon)
+The dependences are [Json](https://github.com/dominictarr/JSON.sh) and [Tmux](http://github.com/tmux/tmux)
 
 ## Instructions
 ### Create your first bot
@@ -212,8 +213,8 @@ answer_inline_query "$iQUERY_ID" "cached_sticker" "identifier for the sticker"
 To modify the responses to commands edit the commands.sh file (this should ease upgrades of the bot core).
 
 Once you're done editing start the bot with ```./bashbot.sh start```. If you want to do some more changes make them and then rerun the same command.
-To stop the bot run ```./bashbot.sh kill```.
-If some thing doesn't work as it should, debug with ```bash -x bashbot.sh```.
+To stop the bot run ```./bot.sh kill```.
+If some thing doesn't work as it should, debug with ```bash -x bot.sh```.
 
 To use the functions provided in this script in other scripts simply source bashbot: ```source bashbot.sh```
 
@@ -221,13 +222,13 @@ To use the functions provided in this script in other scripts simply source bash
 ## User count
 To count the total number of users that ever used the bot run the following command:
 ```
-bash bashbot.sh count
+bash bot.sh count
 ```
 
 
 ## Sending broadcasts to all users
 To send a broadcast to all of users that ever used the bot run the following command:
 ```
-bash bashbot.sh broadcast "Hey! I just wanted to let you know that the bot's been updated!"
+bash bot.sh broadcast "Hey! I just wanted to let you know that the bot's been updated!"
 ```
 
