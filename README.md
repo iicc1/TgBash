@@ -78,6 +78,14 @@ You can read incoming data using the following variables:
 
 * ```$MESSAGE```: Incoming messages
 * ```$CAPTION```: Captions
+* * ```$BOT```: This array contains the name, username and user of the bot.
+ * ```${BOT_NAME}```: Bot name
+ * ```${BOT_USER}```: Bot user
+ * ```${BOT_ID}```: Bot ID
+* * ```$CHAT```: This array contains only the ID chat.
+ * ```${CHAT]ID]}```: Bot name
+* * ```$GROUP```: This array contains only the title of the group.
+ * ```${GROUP[TITLE]}```: group title
 * ```$USER```: This array contains the First name, last name, username and user id of the sender of the current message.
  * ```${USER[ID]}```: User id
  * ```${USER[FIRST_NAME]}```: User's first name
