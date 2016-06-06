@@ -124,7 +124,7 @@ To send messages use the ```send_message``` function:
 ```
 send_message "${CHAT[ID]}" "lol"
 ```
-To send html or markdown put the following strings before the text, depending on the parsing mode you want to enable:
+To send markdown put the following strings before the text, depending on the parsing mode you want to enable:
 ```
 send_markdown_message "${CHAT[ID]}" "*This is a text in bold*"
 ```
@@ -133,6 +133,21 @@ send_markdown_message "${CHAT[ID]}" "_This is a text in italic_"
 ```
 ```
 send_markdown_message "${CHAT[ID]}" "[This is a link](https://github.com/iicc1/TgBash)"
+```
+HTML Format:
+```
+send_html_message "${CHAT[ID]}" "<b>bold</b>, <strong>bold</strong>"
+```
+```
+send_html_message "${CHAT[ID]}" "<i>italic</i>, <em>italic</em>"
+```
+```
+send_html_message "${CHAT[ID]}" "<a href="URL">inline URL</a>"
+```
+Also, you can indicate if It's a reply, only use:
+```
+// It's a example, you can use reply with send message or markdown and html //
+send_markdown_message "${CHAT[ID]}" "*Replying*" "$REPLY"
 ```
 This function also allows a third parameter that disables additional function parsing (for safety use this when reprinting user input):
 ```
