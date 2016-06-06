@@ -50,11 +50,17 @@ else
 	
 	echo $MESSAGE | grep "^/broadcast"
         if [ $? == 0 ]; then
-		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 		send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*."
-  	  shift
+  	 shift
 		for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
     	fi
+    	
+    	echo $MESSAGE | grep "^/echo"
+        if [ $? == 0 ]; then
+	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
+	fi
 
 
 	case $MESSAGE in
@@ -66,17 +72,21 @@ else
 			;;
 		'/start')
 			send_action "${CHAT[ID]}" "typing"
-			send_markdown_message "${CHAT[ID]}" "This is bashbot, the Telegram bot written entirely in bash.
-It features background tasks and interactive chats, and can serve as an interface for CLI programs.
-It currently can send, recieve and forward messages, custom keyboards, photos, audio, voice, documents, locations and video files.
+			send_markdown_message "${CHAT[ID]}" "Hi ${USER[FIRST_NAME]} 
+This is a *bot* written in *shell*
+This bot have *actions* and *interactive chats*, and can serve as an interface for CLI programs.
+It currently can _send_, _receive_ and _forward messages_, _custom keyboards_, _photos_, _audio_, _voice_, _documents_, _locations_ and _video files_.
+
 *Available commands*:
-*• /start*: _Start bot and get this message_.
-*• /info*: _Get shorter info message about this bot_.
-*• /question*: _Start interactive chat_.
-*• /cancel*: _Cancel any currently running interactive chats_.
-*• /kickme*: _You will be autokicked from the chat_.
-*• /leavechat*: _The bot will leave the group with this command _.
-*• /broadcast* <text>: _The bot will leave the group with this command _.
+ /start _Start bot and get this message_.
+ /info _Get shorter info message about this bot_.
+ /question _Start interactive chat_.
+ /cancel _Cancel any currently running interactive chats_.
+ /kickme _You will be autokicked from the chat_.
+ /leavechat _The bot will leave the group with this command_.
+ /broadcast <text> _The bot will send a broadcast (markdown compatible)_.
+ /echo <text> _The bot will send a echo message (markdown compatible)_.
+ 
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)
 Repository of this bot [HERE](https://github.com/iicc1/TgBash)
 "
