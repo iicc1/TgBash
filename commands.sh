@@ -74,9 +74,7 @@ else
 			send_action "${CHAT[ID]}" "typing"
 			send_markdown_message "${CHAT[ID]}" "Hi ${USER[FIRST_NAME]} 
 This is a *bot* written in *shell*
-This bot have *actions* and *interactive chats*, and can serve as an interface for CLI programs.
-It currently can _send_, _receive_ and _forward messages_, _custom keyboards_, _photos_, _audio_, _voice_, _documents_, _locations_ and _video files_.
-
+Here you have the commands.
 *Available commands*:
  /start _Start bot and get this message_.
  /info _Get shorter info message about this bot_.
