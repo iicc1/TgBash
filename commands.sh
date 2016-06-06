@@ -86,6 +86,7 @@ It currently can _send_, _receive_ and _forward messages_, _custom keyboards_, _
  /leavechat _The bot will leave the group with this command_.
  /broadcast <text> _The bot will send a broadcast (markdown compatible)_.
  /echo <text> _The bot will send a echo message (markdown compatible)_.
+ /myinfo _The bot will send your info user_.
  
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)
 Repository of this bot [HERE](https://github.com/iicc1/TgBash)
@@ -101,6 +102,13 @@ Repository of this bot [HERE](https://github.com/iicc1/TgBash)
      			kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
      			unban_chat_member "${CHAT[ID]}" "${USER[ID]}"
      			;;
+     		'/myinfo')
+			send_markdown_message "${CHAT[ID]}" "*ID* ${USER[ID]}
+*User* @${USER[USERNAME]}
+*Name* ${USER[FIRST_NAME]}
+*Last name* ${USER[LAST_NAME]}"
+			;;
+
      			
 		'/cancel')
 			if tmux ls | grep -q $copname; then killproc && send_message "${CHAT[ID]}" "Command canceled.";else send_message "${USER[ID]}" "No command is currently running.";fi
