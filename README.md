@@ -1,6 +1,6 @@
 Tg BASH
 -
-This is repository in test to create a Tg Bot in bash based in [Telegram-Bot-Bash](https://github.com/topkecleon/telegram-bot-bash) by [Topkecleon](https://github.com/topkecleon)
+This is a testing repo of [Telegram-Bot-Bash](https://github.com/topkecleon/telegram-bot-bash)
 
 Using dependences [Json](https://github.com/dominictarr/JSON.sh) and [Tmux](http://github.com/tmux/tmux)
 
