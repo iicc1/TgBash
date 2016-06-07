@@ -51,7 +51,7 @@ else
 	echo $MESSAGE | grep "^/broadcast"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-		send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*."
+		send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
   	 shift
 		for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
     	fi
@@ -68,13 +68,14 @@ else
 			startproc "./question"
 			;;
 		'/info')
-			send_markdown_message "${CHAT[ID]}" "This is bashbot, the *Telegram* bot written entirely in *bash*."
+			send_markdown_message "${CHAT[ID]}" "This is bashbot, the *Telegram* bot written entirely in *bash*.
+More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
 		'/start')
 			send_action "${CHAT[ID]}" "typing"
-			send_markdown_message "${CHAT[ID]}" "Hi ${USER[FIRST_NAME]} 
-This is a *bot* written in *shell*
-Here you have the commands.
+			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
+This is a *bot* written in code *shell*
+More functions made by @iicc1 and @Jarriz.
 
 *Available commands*:
  /start _Start bot and get this message_.
@@ -88,7 +89,6 @@ Here you have the commands.
  /myinfo _The bot will send your info user_.
  
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)
-Repository of this bot [HERE](https://github.com/iicc1/TgBash)
 "
 			;;
 			
