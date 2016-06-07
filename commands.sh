@@ -68,7 +68,7 @@ else
 			startproc "./question"
 			;;
 		'/info')
-			send_markdown_message "${CHAT[ID]}" "This is bashbot, the *Telegram* bot written entirely in *bash*.
+			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
 		'/start')
