@@ -24,6 +24,13 @@ if [ ! -f "token" ]; then
 	echo "$token" >> token
 fi
 
+if [ ! -f "/usr/bin/uni2ascii" ]; then
+	clear
+	echo -e '\e[0;31mERROR. Dependence uni2ascii not found.\e[0m'
+	read -n1 -r -p 'Press enter to install dependences...'
+	sudo apt-get install uni2ascii
+fi
+
 source commands.sh source
 URL='https://api.telegram.org/bot'$TOKEN
 
@@ -312,9 +319,8 @@ inproc() {
 
 process_client() {
 	# Message
-#	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
-#	MESSAGE=$(printf "$MESSAGE")
-	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2)
+	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
+	MESSAGE=$(printf "$MESSAGE")
 	reply=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
 	
 	# Bot
