@@ -126,28 +126,26 @@ send_message "${CHAT[ID]}" "lol"
 ```
 To send markdown put the following strings before the text, depending on the parsing mode you want to enable:
 ```
-send_markdown_message "${CHAT[ID]}" "*This is a text in bold*"
+send_markdown_message "${CHAT[ID]}" "*This is a text in bold in markdown*"
 ```
 ```
-send_markdown_message "${CHAT[ID]}" "_This is a text in italic_"
+send_markdown_message "${CHAT[ID]}" "_This is a text in italic in markdown_"
 ```
-```
-send_markdown_message "${CHAT[ID]}" "[This is a link](https://github.com/iicc1/TgBash)"
-```
+- More information about morkdown messages [here](https://core.telegram.org/bots/api#markdown-style)
+
 HTML Format:
 ```
-send_html_message "${CHAT[ID]}" "<b>bold</b>, <strong>bold</strong>"
+send_html_message "${CHAT[ID]}" "<b>This is a text in bold in html</b>"
 ```
 ```
-send_html_message "${CHAT[ID]}" "<i>italic</i>, <em>italic</em>"
+send_html_message "${CHAT[ID]}" "<i>This is a text in italic in html</i>"
 ```
-```
-send_html_message "${CHAT[ID]}" "<a href="URL">inline URL</a>"
-```
-Also, you can indicate if It's a reply, only use:
-```
-// It's a example, you can use reply with send message or markdown and html //
-send_markdown_message "${CHAT[ID]}" "*Replying*" "$REPLY"
+- More information about html messages [here](https://core.telegram.org/bots/api#html-style)
+
+Also, you can indicate if the message It's a reply
+``` bash
+# It's a example, you can use reply with send message or markdown and html
+send_markdown_message "${CHAT[ID]}" "*Replying*" "$reply"
 ```
 This function also allows a third parameter that disables additional function parsing (for safety use this when reprinting user input):
 ```
