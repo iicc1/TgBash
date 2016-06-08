@@ -330,9 +330,9 @@ process_client() {
 
 	# Get user data by reply
 	REPLY_ID=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","id"\]' | cut -f 2)
-	REPLY_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","first_name"\]' | cut -f 2)
-	REPLY_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","last_name"\]' | cut -f 2)
-	REPLY_USERNAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","username"\]' | cut -f 2)
+	REPLY_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	REPLY_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	REPLY_USERNAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Chat
 	CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","chat","id"\]' | cut -f 2)
