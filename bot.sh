@@ -328,6 +328,12 @@ process_client() {
 	BOT_NAME=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	BOT_ID=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","id"\]' | cut -f 2 | cut -d '"' -f 2)
 
+	# Get user data by reply
+	REPLY_ID=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","id"\]' | cut -f 2)
+	REPLY_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","first_name"\]' | cut -f 2)
+	REPLY_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","last_name"\]' | cut -f 2)
+	REPLY_USERNAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","username"\]' | cut -f 2)
+	
 	# Chat
 	CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","chat","id"\]' | cut -f 2)
 	GROUP[TITLE]=$(echo "$res" | egrep '\["result",0,"message","chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
