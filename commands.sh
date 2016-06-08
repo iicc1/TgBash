@@ -77,8 +77,9 @@ else
 		'/unban')
 			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
 			;;
-		'/getid')
-			send_markdown_message "${CHAT[ID]}" "${REPLY_ID}" "$reply"
+		'/getinfo')
+			send_markdown_message "${CHAT[ID]}" "*User* @${REPLY_USERNAME}
+*ID* ${REPLY_ID}" "$reply"
 			;;
 		'/info')
 			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
