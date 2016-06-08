@@ -67,10 +67,24 @@ else
 		'/question')
 			startproc "./question"
 			;;
+		'/kick')
+			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			;;
+		'/ban')
+			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			;;
+		'/unban')
+			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			;;
+		'/getid')
+			send_markdown_message "${CHAT[ID]}" "${REPLY_ID}" "$reply"
+			;;
 		'/info')
 			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
+			
 		'/start')
 			send_action "${CHAT[ID]}" "typing"
 			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
@@ -88,8 +102,7 @@ More functions made by @iicc1 and @Jarriz.
  /echo <text> _The bot will send a echo message (markdown compatible)_.
  /myinfo _The bot will send your info user_.
  
-*Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)
-"
+*Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
 			;;
 			
 		'/leavechat')
@@ -101,6 +114,7 @@ More functions made by @iicc1 and @Jarriz.
      			kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
      			unban_chat_member "${CHAT[ID]}" "${USER[ID]}"
      			;;
+     			
      		'/myinfo')
 			send_markdown_message "${CHAT[ID]}" "*ID* ${USER[ID]}
 *User* @${USER[USERNAME]}
@@ -108,10 +122,10 @@ More functions made by @iicc1 and @Jarriz.
 *Last name* ${USER[LAST_NAME]}"
 			;;
 
-     			
 		'/cancel')
 			if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT[ID]}" "*Command canceled*.";else send_markdown_message "${CHAT[ID]}" "*No command is currently running*.";fi
 			;;
+			
 		*)
 			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
 			;;
