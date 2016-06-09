@@ -48,39 +48,23 @@ else
 		fi
 	fi
 	
-	echo $MESSAGE | grep "^/broadcast"
-        if [ $? == 0 ]; then
-	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-		send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
-  	 shift
-		for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
-    	fi
-    	
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
 	fi
 
-
+	# User commands
 	case $MESSAGE in
 		'/question')
 			startproc "./question"
 			;;
-		'/kick')
-			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
-			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
-			;;
-		'/ban')
-			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
-			;;
-		'/unban')
-			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
-			;;
+		
 		'/getinfo')
 			send_markdown_message "${CHAT[ID]}" "*User* @${REPLY_USERNAME}
 *ID* ${REPLY_ID}" "$reply"
 			;;
+			
 		'/info')
 			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
@@ -105,11 +89,6 @@ More functions made by @iicc1 and @Jarriz.
  
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
 			;;
-			
-		'/leavechat')
-			send_markdown_message "${CHAT[ID]}" "*CHAT LEAVED*"
-   			leave_chat "${CHAT[ID]}"
-     			;;
      			
      		'/kickme')
      			kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
@@ -131,4 +110,37 @@ More functions made by @iicc1 and @Jarriz.
 			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
 			;;
 	esac
+	
+	
+	# Admin commands
+	if [ $ADMIN == 1 ]; then
+	
+	  echo $MESSAGE | grep "^/broadcast"
+        	if [ $? == 0 ]; then
+	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+			send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
+  	 	shift
+			for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
+    		fi
+    	
+	case $MESSAGE in
+	 	'/leavechat')
+			send_markdown_message "${CHAT[ID]}" "*CHAT LEAVED*"
+   			leave_chat "${CHAT[ID]}"
+     			;;
+     			
+     		'/kick')
+			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			;;
+			
+		'/ban')
+			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			;;
+			
+		'/unban')
+			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			;;
+	esac
+    fi
 fi
