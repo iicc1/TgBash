@@ -12,6 +12,7 @@
 
 # (Optional) Write here the "id" of the people you want to be Admin of the bot.
 # If the id matches, $ADMIN variable will be set to "1". Otherwise will remain "0"
+
 # This can be usefull to create special admin commands.
 ADMINS='000000,000000'
 
@@ -349,12 +350,8 @@ process_client() {
 	USER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	USER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
-	echo $ADMINS | grep ${USER[ID]}
-	if [ $? == 0 ]; then
-		ADMIN=1
-	else
-		ADMIN=0
-	fi
+	# Get members info
+	MEMBERS_COUNT=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$CHAT[ID]" | cut -d ":" -f3 | cut -d "}" -f1)
 
 	# Audio
 	URLS[AUDIO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
@@ -385,7 +382,15 @@ process_client() {
 
 	# Tmux
 	copname="$ME"_"${CHAT[ID]}"
-
+	
+	# Read admins bot
+	echo $ADMINS | grep ${USER[ID]}
+	if [ $? == 0 ]; then
+		ADMIN=1
+	else
+		ADMIN=0
+	fi
+	
 	source commands.sh
 
 	tmpcount="COUNT${CHAT[ID]}"
@@ -432,12 +437,12 @@ case "$1" in
 		tmux kill-session -t $ME&>/dev/null
 		tmux new-session -d -s $ME "bash $SCRIPT startbot" && echo -e '\e[0;32mBot started successfully.\e[0m'
 		echo "Tmux session name $ME" || echo -e '\e[0;31mAn error occurred while starting the bot. \e[0m'
-		send_markdown_message "${CHAT[ID]}" "*Bot started*"
+		send_markdown_message "$ADMINS" "*Bot started*"
 		;;
 	"kill")
 		clear
 		tmux kill-session -t $ME &>/dev/null
-		send_markdown_message "${CHAT[ID]}" "*Bot stopped*"
+		send_markdown_message "$ADMINS" "*Bot stopped*"
 		echo -e '\e[0;32mOK. Bot stopped successfully.\e[0m'
 		;;
 	"help")
