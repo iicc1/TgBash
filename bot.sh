@@ -10,8 +10,10 @@
 # This file is public domain in the USA and all free countries.
 # Elsewhere, consider it to be WTFPLv2. (wtfpl.net/txt/copying)
 
-# (Optional) Write here the "ids" of the people you want to be Admin of the bot.
+# (Optional) Write here the "id" of the people you want to be Admin of the bot.
 # If the id matches, $ADMIN variable will be set to "1". Otherwise will remain "0"
+# This can be usefull to create special admin commands.
+ADMINS='000000,000000'
 
 if [ ! -f "JSON.sh/JSON.sh" ]; then
 	echo "You did not clone recursively! Downloading JSON.sh..."
@@ -347,6 +349,12 @@ process_client() {
 	USER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	USER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
+	echo $ADMINS | grep ${USER[ID]}
+	if [ $? == 0 ]; then
+		ADMIN=1
+	else
+		ADMIN=0
+	fi
 
 	# Audio
 	URLS[AUDIO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
