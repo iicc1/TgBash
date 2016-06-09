@@ -1,18 +1,10 @@
 #!/bin/bash
-
-# bashbot, the Telegram bot written in bash.
 # Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
-# Also contributed: JuanPotato, BigNerd95, TiagoDanin, iicc1.
-# https://github.com/topkecleon/telegram-bot-bash
+# More functions by @iicc1 and @jarriz
 
-# Depends on JSON.sh (http://github.com/dominictarr/JSON.sh) (MIT/Apache),
-# and on tmux (http://github.com/tmux/tmux) (BSD).
-# This file is public domain in the USA and all free countries.
-# Elsewhere, consider it to be WTFPLv2. (wtfpl.net/txt/copying)
-
-# It's important, you need change "000000" to your admin ID, the field two "000000" is optional.
-# This can be usefull to create special admin commands.
-ADMINS='000000,000000'
+# Get token and admin list
+TOKEN=$(cat settings/token)
+ADMINS=$(cat settings/admins)
 
 if [ ! -f "JSON.sh/JSON.sh" ]; then
 	echo "You did not clone recursively! Downloading JSON.sh..."
@@ -20,12 +12,18 @@ if [ ! -f "JSON.sh/JSON.sh" ]; then
 	echo "JSON.sh has been downloaded. Proceeding."
 fi
 
-if [ ! -f "token" ]; then
+if [ ! -f "settings/token" ]; then
 	clear
 	echo -e '\e[0;31mTOKEN MISSING.\e[0m'
 	echo "PLEASE WRITE YOUR TOKEN HERE"
 	read token
-	echo "$token" >> token
+	echo "$token" >> settings/token
+fi
+
+if [ ! -f "settings/admins" ]; then
+    echo "PLEASE WRITE YOUR ID HERE"
+    read adminID
+    echo "$adminID," >> settings/admins
 fi
 
 if [ ! -f "/usr/bin/uni2ascii" ]; then

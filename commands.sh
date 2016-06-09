@@ -1,16 +1,9 @@
 #!/bin/bash
 # Edit your commands in this file.
-
-# This file is public domain in the USA and all free countries.
-# Elsewhere, consider it to be WTFPLv2. (wtfpl.net/txt/copying)
-
 if [ "$1" = "source" ];then
-	# Place the token in the token file
-	TOKEN=$(cat token)
 	# Set INLINE to 1 in order to receive inline queries.
 	# To enable this option in your bot, send the /setinline command to @BotFather.
 	INLINE=0
-	# Enabling root privileges to send files in any location
 	FILE_REGEX='/'
 else
 	if ! tmux ls | grep -v send | grep -q $copname; then
