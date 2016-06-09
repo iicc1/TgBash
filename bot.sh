@@ -29,9 +29,6 @@ if [ ! -f "token" ]; then
 fi
 
 if [ ! -f "/usr/bin/uni2ascii" ]; then
-	clear
-	echo -e '\e[0;31mERROR. Dependence uni2ascii not found.\e[0m'
-	read -n1 -r -p 'Press enter to install dependences...'
 	sudo apt-get install uni2ascii
 fi
 
