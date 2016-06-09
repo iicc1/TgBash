@@ -66,7 +66,7 @@ More functions made by @iicc1 and @Jarriz.
  *Users*:
   /start _Start bot and get this message_.
   /info _Get shorter info message about this bot_.
-  /getinfo <by reply> _Get info user by reply.
+  /getinfo <by reply> _Get info user by reply_.
   /question _Start interactive chat_.
   /cancel _Cancel any currently running interactive chats_.
   /echo <text> _The bot will send a echo message (markdown compatible)_.
