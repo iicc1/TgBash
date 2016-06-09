@@ -430,12 +430,12 @@ case "$1" in
 		tmux kill-session -t $ME&>/dev/null
 		tmux new-session -d -s $ME "bash $SCRIPT startbot" && echo -e '\e[0;32mBot started successfully.\e[0m'
 		echo "Tmux session name $ME" || echo -e '\e[0;31mAn error occurred while starting the bot. \e[0m'
-		send_markdown_message "$ADMINS" "*Bot started*"
+		send_markdown_message "${ADMINS}" "*Bot started*"
 		;;
 	"kill")
 		clear
 		tmux kill-session -t $ME &>/dev/null
-		send_markdown_message "$ADMINS" "*Bot stopped*"
+		send_markdown_message "${ADMINS}" "*Bot stopped*"
 		echo -e '\e[0;32mOK. Bot stopped successfully.\e[0m'
 		;;
 	"help")
