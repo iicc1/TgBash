@@ -151,9 +151,9 @@ More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
 			
 		'/infobot')
-			send_markdown_message "${CHAT_ID}" "*Name* @${BOT_NAME}
+			send_markdown_message "${CHAT_ID}" "*Name* ${BOT_NAME}
 *Username* @${BOT_USERNAME}
-*ID* @${BOT_ID}" "$reply"
+*ID* ${BOT_ID}" "$reply"
 			;;
 	esac
     fi
