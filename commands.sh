@@ -56,6 +56,34 @@ else
 
 	# User commands
 	case $MESSAGE in
+		'/start')
+			send_action "${CHAT[ID]}" "typing"
+			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
+This is a *bot* written in code *shell*
+More functions made by @iicc1 and @Jarriz.
+
+*Commands*
+ *Users*:
+  /start _Start bot and get this message_.
+  /info _Get shorter info message about this bot_.
+  /getinfo <by reply> _Get info user by reply.
+  /question _Start interactive chat_.
+  /cancel _Cancel any currently running interactive chats_.
+  /echo <text> _The bot will send a echo message (markdown compatible)_.
+  /myinfo _The bot will send your info user_.
+  /kickme _You will be autokicked from the chat_.
+  
+ *Admin*:
+  /leavechat _The bot will leave the group with this command_.
+  /broadcast <text> _The bot will send a broadcast (markdown compatible)_.
+  /kick <by reply> _The bot will kick the user by reply (the user can back again)_.
+  /ban <by reply> _The bot will ban the user by reply (the user cant back again)_.
+  /unban <by reply> _The bot will unban the user by reply if is banned_.
+  /infobot _The bot will reply the information of the bot_.
+  
+*Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
+			;;
+			
 		'/question')
 			startproc "./question"
 			;;
@@ -68,26 +96,6 @@ else
 		'/info')
 			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
-			;;
-			
-		'/start')
-			send_action "${CHAT[ID]}" "typing"
-			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
-This is a *bot* written in code *shell*
-More functions made by @iicc1 and @Jarriz.
-
-*Available commands*:
- /start _Start bot and get this message_.
- /info _Get shorter info message about this bot_.
- /question _Start interactive chat_.
- /cancel _Cancel any currently running interactive chats_.
- /kickme _You will be autokicked from the chat_.
- /leavechat _The bot will leave the group with this command_.
- /broadcast <text> _The bot will send a broadcast (markdown compatible)_.
- /echo <text> _The bot will send a echo message (markdown compatible)_.
- /myinfo _The bot will send your info user_.
- 
-*Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
 			;;
      			
      		'/kickme')
@@ -145,7 +153,7 @@ More functions made by @iicc1 and @Jarriz.
 		'/infobot')
 			send_markdown_message "${CHAT[ID]}" "*Name* @${BOT_NAME}
 *Username* @${BOT_USERNAME}
-*ID* @${BOT_ID}"
+*ID* @${BOT_ID}" "$reply"
 			;;
 	esac
     fi
