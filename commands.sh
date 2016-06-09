@@ -16,10 +16,10 @@ else
 	if ! tmux ls | grep -v send | grep -q $copname; then
 		[ ! -z ${URLS[*]} ] && {
 		curl -s ${URLS[*]} -o $NAME
-			send_file "${CHAT[ID]}" "$NAME" "$CAPTION"
+			send_file "${CHAT_ID}" "$NAME" "$CAPTION"
 			rm "$NAME"
 		}
-		[ ! -z ${LOCATION[*]} ] && send_location "${CHAT[ID]}" "${LOCATION[LATITUDE]}" "${LOCATION[LONGITUDE]}"
+		[ ! -z ${LOCATION[*]} ] && send_location "${CHAT_ID}" "${LOCATION[LATITUDE]}" "${LOCATION[LONGITUDE]}"
 
 		# Inline
 		if [ $INLINE == 1 ]; then
@@ -51,14 +51,14 @@ else
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
+		send_markdown_message "${CHAT_ID}" "$MESSAGE"
 	fi
 
 	# User commands
 	case $MESSAGE in
 		'/start')
-			send_action "${CHAT[ID]}" "typing"
-			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
+			send_action "${CHAT_ID}" "typing"
+			start_inline_keyboard "${CHAT_ID}" "Hi everybody! 
 This is a *bot* written in code *shell*
 More functions made by @iicc1 and @Jarriz.
 
@@ -89,33 +89,33 @@ More functions made by @iicc1 and @Jarriz.
 			;;
 		
 		'/getinfo')
-			send_markdown_message "${CHAT[ID]}" "*User* @${REPLY_USERNAME}
+			send_markdown_message "${CHAT_ID}" "*User* @${REPLY_USERNAME}
 *ID* ${REPLY_ID}" "$reply"
 			;;
 			
 		'/info')
-			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
+			send_markdown_message "${CHAT_ID}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
      			
      		'/kickme')
-     			kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
-     			unban_chat_member "${CHAT[ID]}" "${USER[ID]}"
+     			kick_chat_member "${CHAT_ID}" "${USER_ID}"
+     			unban_chat_member "${CHAT_ID}" "${USER_ID}"
      			;;
      			
      		'/myinfo')
-			send_markdown_message "${CHAT[ID]}" "*ID* ${USER[ID]}
-*User* @${USER[USERNAME]}
-*Name* ${USER[FIRST_NAME]}
-*Last name* ${USER[LAST_NAME]}"
+			send_markdown_message "${CHAT_ID}" "*ID* ${USER_ID}
+*User* @${USER_USERNAME}
+*Name* ${USER_FIRST_NAME}
+*Last name* ${USER_LAST_NAME}"
 			;;
 
 		'/cancel')
-			if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT[ID]}" "*Command canceled*.";else send_markdown_message "${CHAT[ID]}" "*No command is currently running*.";fi
+			if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT_ID}" "*Command canceled*.";else send_markdown_message "${CHAT_ID}" "*No command is currently running*.";fi
 			;;
 			
 		*)
-			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
+			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT_ID}" "" "safe";fi
 			;;
 	esac
 	
@@ -126,32 +126,32 @@ More info [here](https://github.com/iicc1/TgBash)" "$reply"
 	  echo $MESSAGE | grep "^/broadcast"
         	if [ $? == 0 ]; then
 	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-			send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
+			send_markdown_message "${CHAT_ID}" "*Broadcast delivered*" "$reply"
   	 	shift
 			for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
     		fi
     	
 	case $MESSAGE in
 	 	'/leavechat')
-			send_markdown_message "${CHAT[ID]}" "*CHAT LEAVED*"
-   			leave_chat "${CHAT[ID]}"
+			send_markdown_message "${CHAT_ID}" "*CHAT LEAVED*"
+   			leave_chat "${CHAT_ID}"
      			;;
      			
      		'/kick')
-			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
-			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			kick_chat_member "${CHAT_ID}" "${REPLY_ID}"
+			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
 			;;
 			
 		'/ban')
-			kick_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			kick_chat_member "${CHAT_ID}" "${REPLY_ID}"
 			;;
 			
 		'/unban')
-			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
+			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
 			;;
 			
 		'/infobot')
-			send_markdown_message "${CHAT[ID]}" "*Name* @${BOT_NAME}
+			send_markdown_message "${CHAT_ID}" "*Name* @${BOT_NAME}
 *Username* @${BOT_USERNAME}
 *ID* @${BOT_ID}" "$reply"
 			;;
