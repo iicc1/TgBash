@@ -141,6 +141,12 @@ More functions made by @iicc1 and @Jarriz.
 		'/unban')
 			unban_chat_member "${CHAT[ID]}" "${REPLY_ID}"
 			;;
+			
+		'/infobot')
+			send_markdown_message "${CHAT[ID]}" "*Name* @${BOT_NAME}
+*Username* @${BOT_USERNAME}
+*ID* @${BOT_ID}"
+			;;
 	esac
     fi
 fi
