@@ -10,9 +10,7 @@
 # This file is public domain in the USA and all free countries.
 # Elsewhere, consider it to be WTFPLv2. (wtfpl.net/txt/copying)
 
-# (Optional) Write here the "id" of the people you want to be Admin of the bot.
-# If the id matches, $ADMIN variable will be set to "1". Otherwise will remain "0"
-
+# It's important, you need change "000000" to your admin ID, the field two "000000" is optional.
 # This can be usefull to create special admin commands.
 ADMINS='000000,000000'
 
@@ -311,7 +309,7 @@ startproc() {
 	killproc
 	mkfifo /tmp/$copname
 	TMUX= tmux new-session -d -s $copname "$* &>/tmp/$copname; echo imprettydarnsuredatdisisdaendofdacmd>/tmp/$copname"
-	TMUX= tmux new-session -d -s sendprocess_$copname "bash $SCRIPT outproc ${CHAT[ID]} $copname"
+	TMUX= tmux new-session -d -s sendprocess_$copname "bash $SCRIPT outproc ${CHAT_ID} $copname"
 }
 
 killproc() {
@@ -341,17 +339,17 @@ process_client() {
 	REPLY_USERNAME=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Chat
-	CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","chat","id"\]' | cut -f 2)
-	GROUP[TITLE]=$(echo "$res" | egrep '\["result",0,"message","chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
+	CHAT_ID=$(echo "$res" | egrep '\["result",0,"message","chat","id"\]' | cut -f 2)
+	CHAT_TITLE=$(echo "$res" | egrep '\["result",0,"message","chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# User
-	USER[ID]=$(echo "$res" | egrep '\["result",0,"message","from","id"\]' | cut -f 2)
-	USER[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	USER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	USER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	USER_ID=$(echo "$res" | egrep '\["result",0,"message","from","id"\]' | cut -f 2)
+	USER_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	USER_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	USER_USERNAME=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Get members info
-	MEMBERS_COUNT=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$CHAT[ID]" | cut -d ":" -f3 | cut -d "}" -f1)
+	MEMBERS_COUNT=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$CHAT_ID" | cut -d ":" -f3 | cut -d "}" -f1)
 
 	# Audio
 	URLS[AUDIO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
@@ -381,10 +379,10 @@ process_client() {
 	NAME="$(echo ${URLS[*]} | sed 's/.*\///g')"
 
 	# Tmux
-	copname="$ME"_"${CHAT[ID]}"
+	copname="$ME"_"${CHAT_ID}"
 	
 	# Read admins bot
-	echo $ADMINS | grep ${USER[ID]}
+	echo $ADMINS | grep ${USER_ID}
 	if [ $? == 0 ]; then
 		ADMIN=1
 	else
@@ -393,7 +391,7 @@ process_client() {
 	
 	source commands.sh
 
-	tmpcount="COUNT${CHAT[ID]}"
+	tmpcount="COUNT${CHAT_ID}"
 	cat count | grep -q "$tmpcount" || echo "$tmpcount">>count
 	# To get user count execute bash bashbot.sh count
 }
@@ -457,4 +455,3 @@ case "$1" in
 		echo -e '\e[0;31mAvailable arguments: outproc, count, broadcast, start, kill, help, attach\e[0m'
 		;;
 esac
-
