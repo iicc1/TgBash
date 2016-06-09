@@ -10,6 +10,9 @@
 # This file is public domain in the USA and all free countries.
 # Elsewhere, consider it to be WTFPLv2. (wtfpl.net/txt/copying)
 
+# (Optional) Write here the "ids" of the people you want to be Admin of the bot.
+# If the id matches, $ADMIN variable will be set to "1". Otherwise will remain "0"
+
 if [ ! -f "JSON.sh/JSON.sh" ]; then
 	echo "You did not clone recursively! Downloading JSON.sh..."
 	git clone http://github.com/dominictarr/JSON.sh
@@ -343,6 +346,7 @@ process_client() {
 	USER[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	USER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	USER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	
 
 	# Audio
 	URLS[AUDIO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
