@@ -130,7 +130,7 @@ More info [here](https://github.com/iicc1/TgBash)" "$reply"
    			leave_chat "${CHAT_ID}"
      			;;
 
-   	'/newadmin')
+	 	'/newadmin')
    			echo "${REPLY_ID}," >> settings/admins
    			send_markdown_message "${CHAT_ID}" "ID ${REPLY_ID} promoted to *admin*" "$reply"
      			;;
