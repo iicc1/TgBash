@@ -129,7 +129,12 @@ More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			send_markdown_message "${CHAT_ID}" "*CHAT LEAVED*"
    			leave_chat "${CHAT_ID}"
      			;;
-     			
+
+   	'/newadmin')
+   			echo "${REPLY_ID}," >> settings/admins
+   			send_markdown_message "${CHAT_ID}" "ID ${REPLY_ID} promoted to *admin*" "$reply"
+     			;;
+
      		'/kick')
 			kick_chat_member "${CHAT_ID}" "${REPLY_ID}"
 			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
