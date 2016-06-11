@@ -127,6 +127,10 @@ send_markdown_message() {
 	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
+send_silently_message() {
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "disable_notification=true" -d "reply_to_message_id=$3")
+}
+
 send_html_message() {
 	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
@@ -463,12 +467,12 @@ case "$1" in
 		tmux kill-session -t $ME&>/dev/null
 		tmux new-session -d -s $ME "bash $SCRIPT startbot" && echo -e '\e[0;32mBot started successfully.\e[0m'
 		echo "Tmux session name $ME" || echo -e '\e[0;31mAn error occurred while starting the bot. \e[0m'
-		send_markdown_message "${ADMINS}" "*Bot started*"
+		send_silently_message "${ADMINS}" "*Bot started*"
 		;;
 	"kill")
 		clear
 		tmux kill-session -t $ME &>/dev/null
-		send_markdown_message "${ADMINS}" "*Bot stopped*"
+		send_silently_message "${ADMINS}" "*Bot stopped*"
 		echo -e '\e[0;32mOK. Bot stopped successfully.\e[0m'
 		;;
 	"help")
