@@ -356,6 +356,18 @@ process_client() {
 	iQUERY_ID=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -1)
 	iQUERY_MSG=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -6 | head -1)
 	
+	# New members added/joined
+	NEW_MEMBER=$(echo "$res" | egrep '\["result",0,"message","new_chat_member"\]' | cut -f 2)
+	NEW_MEMBER_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	NEW_MEMBER_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	NEW_MEMBER_USERNAME=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	
+	# Members kicked/out
+	OUT_MEMBER=$(echo "$res" | egrep '\["result",0,"message","left_chat_member"\]' | cut -f 2)
+	OUT_MEMBER_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	OUT_MEMBER_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	OUT_MEMBER_USERNAME=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	
 	# Audio
 	URLS_AUDIO=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
 	# Document
