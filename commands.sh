@@ -162,6 +162,11 @@ ${MEMBERS_COUNT}"
 			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
 			;;
 			
+#		'/gban'
+#			echo "${REPLY_ID}," >> settings/gbans
+#			send_markdown_message "${CHAT_ID}" "ID ${REPLY_ID} *globally banned*"
+#			;;
+			
 		'/infobot')
 			send_markdown_message "${CHAT_ID}" "*Name* ${BOT_NAME}
 *Username* @${BOT_USERNAME}
