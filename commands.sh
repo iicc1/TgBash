@@ -31,13 +31,20 @@ else
 		fi
 	fi
 	
+	# User commands
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 		send_markdown_message "${CHAT_ID}" "$MESSAGE"
 	fi
+	
+	echo $MESSAGE | grep "^/calc"
+        if [ $? == 0 ]; then
+	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	 EXPR=$(expr $MESSAGE | bc)
+		send_markdown_message "${CHAT_ID}" "*${EXPR}*" "$reply"
+    	fi
 
-	# User commands
 	case $MESSAGE in
 		'/start')
 			send_action "${CHAT_ID}" "typing"
@@ -55,6 +62,7 @@ More functions made by @iicc1 and @Jarriz.
   /echo <text> _The bot will send a echo message (markdown compatible)_.
   /myinfo _The bot will send your info user_.
   /getmembers _The bot will you send the count of members in the chat_.
+  /calc <expr> _The bot will calculate the expression_.
   /kickme _You will be autokicked from the chat_.
   
  *Admin*:
