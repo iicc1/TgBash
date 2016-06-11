@@ -346,7 +346,7 @@ process_client() {
 	
 	# Chat
 	CHAT_ID=$(echo "$res" | egrep '\["result",0,"message","chat","id"\]' | cut -f 2)
-	CHAT_TITLE=$(echo "$res" | egrep '\["result",0,"message","chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
+	CHAT_TITLE=$(echo "$res" | egrep '\["result",0,"message","chat","title"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
 	
 	# User
 	USER_ID=$(echo "$res" | egrep '\["result",0,"message","from","id"\]' | cut -f 2)
