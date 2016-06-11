@@ -153,7 +153,7 @@ inline_keyboard='{"inline_keyboard":[[{"text":"🔜 GitHub","url":"'https://git
 answer_inline_query() {
 	case $2 in
 		"article")
-			InlineQueryResult='[{"type":"'$2'","id":"'$RANDOM'","title":"'$3'","message_text":"'$4'"}]'
+			InlineQueryResult='[{"type":"'$2'","id":"'$RANDOM'","title":"'$3'","message_text":"'$4'","parse_mode":"markdown"}]'
 		;;
 		"photo")
 			InlineQueryResult='[{"type":"'$2'","id":"'$RANDOM'","photo_url":"'$3'","thumb_url":"'$4'"}]'
