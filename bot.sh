@@ -2,9 +2,12 @@
 # Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
 # More functions by @iicc1 and @jarriz
 
+# Set INLINE to 1 in order to receive inline queries.
+# To enable this option in your bot, send the /setinline command to @BotFather.
 # Get token and admin list
 TOKEN=$(cat settings/token)
 ADMINS=$(cat settings/admins)
+INLINE=1
 
 if [ ! -f "JSON.sh/JSON.sh" ]; then
 	echo "You did not clone recursively! Downloading JSON.sh..."
@@ -346,6 +349,13 @@ process_client() {
 	# Get members info
 	MEMBERS_COUNT=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$CHAT_ID" | cut -d ":" -f3 | cut -d "}" -f1)
 
+	# Inline data
+	iUSER[FIRST_NAME]=$(echo "$res" | sed 's/^.*\(first_name.*\)/\1/g' | cut -d '"' -f3 | tail -1)
+	iUSER[LAST_NAME]=$(echo "$res" | sed 's/^.*\(last_name.*\)/\1/g' | cut -d '"' -f3)
+	iUSER[USERNAME]=$(echo "$res" | sed 's/^.*\(username.*\)/\1/g' | cut -d '"' -f3 | tail -1)
+	iQUERY_ID=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -1)
+	iQUERY_MSG=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -6 | head -1)
+	
 	# Audio
 	URLS_AUDIO=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
 	# Document
