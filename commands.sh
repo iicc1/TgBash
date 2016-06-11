@@ -12,7 +12,7 @@ else
 			send_file "${CHAT_ID}" "$NAME" "$CAPTION"
 			rm "$NAME"
 		}
-		[ ! -z ${LOCATION[*]} ] && send_location "${CHAT_ID}" "${LOCATION[LATITUDE]}" "${LOCATION[LONGITUDE]}"
+		[ ! -z ${LOCATION_[*]} ] && send_location "${CHAT_ID}" "${LOCATION_LATITUDE}" "${LOCATION_LONGITUDE}"
 
 		# Inline
 		if [ $INLINE == 1 ]; then
