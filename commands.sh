@@ -64,6 +64,7 @@ More functions made by @iicc1 and @Jarriz.
   /cancel _Cancel any currently running interactive chats_.
   /echo <text> _The bot will send a echo message (markdown compatible)_.
   /myinfo _The bot will send your info user_.
+  /getmembers _The bot will you send the count of members in the chat_.
   /kickme _You will be autokicked from the chat_.
   
  *Admin*:
@@ -101,6 +102,11 @@ More info [here](https://github.com/iicc1/TgBash)" "$reply"
 *User* @${USER_USERNAME}
 *Name* ${USER_FIRST_NAME}
 *Last name* ${USER_LAST_NAME}"
+			;;
+			
+		'/getmembers')
+			send_markdown_message "${CHAT_ID}" "*Members in ${CHAT_TITLE}*
+${MEMBERS_COUNT}"
 			;;
 
 		'/cancel')
