@@ -31,6 +31,16 @@ else
 		fi
 	fi
 	
+  	# Services
+  	  # If is new member then
+	if [ ${NEW_MEMBER} ]; then
+		send_markdown_message "${CHAT_ID}" "Welcome @${NEW_MEMBER_USERNAME} to *${CHAT_TITLE}*"
+	fi
+	  # If is kicked then
+	if [ ${OUT_MEMBER} ]; then
+		send_markdown_message "${CHAT_ID}" "Bye @${OUT_MEMBER_USERNAME}... I see you later."
+	fi
+	
 	# User commands
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
