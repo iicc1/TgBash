@@ -7,8 +7,8 @@ if [ "$1" = "source" ];then
 	FILE_REGEX='/'
 else
 	if ! tmux ls | grep -v send | grep -q $copname; then
-		[ ! -z ${URLS_*} ] && {
-		curl -s ${URLS_*} -o $NAME
+		[ ! -z ${URLS_[*]} ] && {
+		curl -s ${URLS_[*]} -o $NAME
 			send_file "${CHAT_ID}" "$NAME" "$CAPTION"
 			rm "$NAME"
 		}
