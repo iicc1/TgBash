@@ -312,7 +312,7 @@ killproc() {
 }
 
 inproc() {
-	tmux send-keys -t $copname "$MESSAGE ${URLS_*}
+	tmux send-keys -t $copname "$MESSAGE ${URLS_[*]}
 "
 }
 
@@ -371,7 +371,7 @@ process_client() {
 	# Location
 	LOCATION_LONGITUDE=$(echo "$res" | egrep '\["result",0,"message","location","longitude"\]' | cut -f 2 | cut -d '"' -f 2)
 	LOCATION_LATITUDE=$(echo "$res" | egrep '\["result",0,"message","location","latitude"\]' | cut -f 2 | cut -d '"' -f 2)
-	NAME="$(echo ${URLS_*} | sed 's/.*\///g')"
+	NAME="$(echo ${URLS_[*]} | sed 's/.*\///g')"
 
 	# Tmux
 	copname="$ME"_"${CHAT_ID}"
