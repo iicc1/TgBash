@@ -162,7 +162,11 @@ ${MEMBERS_COUNT}"
 			send_markdown_message "${CHAT_ID}" "*Sudo users*
 ${ADMINS}"
 			;;
-			
+		
+		'/ip')	
+			IP=$(curl -s http://api.ipify.org)
+			send_markdown_message "${CHAT_ID}" "La IP del servidor del bot es: *$IP*"
+		;;
 	esac
     fi
 fi
