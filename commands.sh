@@ -159,6 +159,12 @@ ${MEMBERS_COUNT}"
 *Username* @${BOT_USERNAME}
 *ID* ${BOT_ID}" "$reply"
 			;;
+		
+		'/sudos')
+			send_markdown_message "${CHAT_ID}" "*Sudo users*
+${ADMINS}"
+			;;
+			
 	esac
     fi
 fi
