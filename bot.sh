@@ -10,6 +10,9 @@ ADMINS=$(cat settings/admins)
 #GBAN=$(cat settings/gbans)
 INLINE=1
 
+# Removing .folder file
+sudo rm settings/.folder &>/dev/null
+
 if [ ! -f "JSON.sh/JSON.sh" ]; then
 	echo "You did not clone recursively! Downloading JSON.sh..."
 	git clone http://github.com/dominictarr/JSON.sh
