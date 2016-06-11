@@ -26,7 +26,7 @@ else
 				answer_inline_query "$iQUERY_ID" "gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif"
 			fi
 			if [[ $iQUERY_MSG == github ]]; then
-				answer_inline_query "$iQUERY_ID" "article" "GitHub" "https://github.com/iicc1/TgBash"
+				answer_inline_query "$iQUERY_ID" "article" "GitHub" "This is a bot bash. Get code [here](https://github.com/iicc1/TgBash)"
 			fi
 		fi
 	fi
