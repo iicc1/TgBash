@@ -7,6 +7,7 @@
 # Get token and admin list
 TOKEN=$(cat settings/token)
 ADMINS=$(cat settings/admins)
+#GBAN=$(cat settings/gbans)
 INLINE=1
 
 if [ ! -f "JSON.sh/JSON.sh" ]; then
@@ -358,12 +359,14 @@ process_client() {
 	
 	# New members added/joined
 	NEW_MEMBER=$(echo "$res" | egrep '\["result",0,"message","new_chat_member"\]' | cut -f 2)
+	NEW_MEMBER_ID=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","id"\]' | cut -f 2 | cut -d '"' -f 2)
 	NEW_MEMBER_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	NEW_MEMBER_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	NEW_MEMBER_USERNAME=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Members kicked/out
 	OUT_MEMBER=$(echo "$res" | egrep '\["result",0,"message","left_chat_member"\]' | cut -f 2)
+	OUT_MEMBER_ID=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","id"\]' | cut -f 2 | cut -d '"' -f 2)
 	OUT_MEMBER_FIRST_NAME=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	OUT_MEMBER_LAST_NAME=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	OUT_MEMBER_USERNAME=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","username"\]' | cut -f 2 | cut -d '"' -f 2)
@@ -405,6 +408,14 @@ process_client() {
 	else
 		ADMIN=0
 	fi
+	
+	# Read list of gbans
+#	echo $GBAN | grep ${USER_ID} | grep ${NEW_MEMBER_ID}
+#	if [ $? == 0 ]; then
+#		GBAN=1
+#	else
+#		GBAN=0
+#	fi
 	
 	source commands.sh
 
