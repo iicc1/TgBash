@@ -1,9 +1,6 @@
 #!/bin/bash
 # Edit your commands in this file.
 if [ "$1" = "source" ];then
-	# Set INLINE to 1 in order to receive inline queries.
-	# To enable this option in your bot, send the /setinline command to @BotFather.
-	INLINE=0
 	FILE_REGEX='/'
 else
 	if ! tmux ls | grep -v send | grep -q $copname; then
@@ -16,13 +13,6 @@ else
 
 		# Inline
 		if [ $INLINE == 1 ]; then
-			# inline query data
-			iUSER[FIRST_NAME]=$(echo "$res" | sed 's/^.*\(first_name.*\)/\1/g' | cut -d '"' -f3 | tail -1)
-			iUSER[LAST_NAME]=$(echo "$res" | sed 's/^.*\(last_name.*\)/\1/g' | cut -d '"' -f3)
-			iUSER[USERNAME]=$(echo "$res" | sed 's/^.*\(username.*\)/\1/g' | cut -d '"' -f3 | tail -1)
-			iQUERY_ID=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -1)
-			iQUERY_MSG=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -6 | head -1)
-
 			# Inline examples
 			if [[ $iQUERY_MSG == photo ]]; then
 				answer_inline_query "$iQUERY_ID" "photo" "http://blog.techhysahil.com/wp-content/uploads/2016/01/Bash_Scripting.jpeg" "http://blog.techhysahil.com/wp-content/uploads/2016/01/Bash_Scripting.jpeg"
@@ -33,7 +23,7 @@ else
 			fi
 
 			if [[ $iQUERY_MSG == gif ]]; then
-				answer_inline_query "$iQUERY_ID" "cached_gif" "BQADBAADIwYAAmwsDAABlIia56QGP0YC"
+				answer_inline_query "$iQUERY_ID" "gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif"
 			fi
 			if [[ $iQUERY_MSG == github ]]; then
 				answer_inline_query "$iQUERY_ID" "article" "GitHub" "https://github.com/iicc1/TgBash"
