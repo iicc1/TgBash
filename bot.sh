@@ -1,4 +1,6 @@
 #!/bin/bash
+#*.*encoding=utf-8*.*
+
 # Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
 # More functions by @iicc1 and @jarriz
 
