@@ -173,7 +173,7 @@ ${MEMBERS_COUNT}"
 			echo "[$date --> ${REPLY_FIRST_NAME} ${REPLY_LAST_NAME} @${REPLY_USERNAME} (${REPLY_ID})]" >> settings/gbans
 			send_markdown_message "${CHAT_ID}" "ID: ${REPLY_ID} *globally banned*"
 			;;
-		'/gban'
+		'/ungban'
 			sed -i "/${REPLY_ID}/d" settings/gbans
 			send_markdown_message "${CHAT_ID}" "ID: ${REPLY_ID} *globally unbanned*"
 			;;
