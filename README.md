@@ -73,41 +73,75 @@ git clone https://github.com/iicc1/TgBash.git
 Run ./bot.sh start and paste the token then.
 
 ### Available commands
-```
-/start # Start bot and get principal message
-/info # Show the info of the bot
-/question # Show a interactive keyboard
-/cancel # Cancel the interactive keyboard
-/kickme # If a user write this, then the user will be autokicked (if the bot is admin)
-/leavechat # The bot will leave some group with this command
-/broadcast <text> # The bot will send a broadcast (markdown compatible)
-/echo <text> # The bot will send a echo message (markdown compatible)
-/myinfo # The bot will send the info of some user if write that
+``` bash
+# Users
+  /start Start bot and get this message.
+  /info Get shorter info message about this bot.
+  /getinfo <by reply> Get info user by reply.
+  /question Start interactive chat.
+  /cancel Cancel any currently running interactive chats.
+  /echo <text> The bot will send a echo message (markdown compatible).
+  /myinfo The bot will send your info user.
+  /getmembers The bot will you send the count of members in the chat.
+  /calc <expr> The bot will calculate the expression.
+  /kickme You will be autokicked from the chat.
+  
+# Admins
+  /leavechat The bot will leave the group with this command.
+  /broadcast <text> The bot will send a broadcast (markdown compatible).
+  /kick <by reply> The bot will kick the user by reply (the user can back again).
+  /ban <by reply> The bot will ban the user by reply (the user cant back again).
+  /unban <by reply> The bot will unban the user by reply if is banned.
+  /infobot The bot will reply the information of the bot.
+  /gban <by reply> The user replied will be gbanned.
+  /ungban <by reply> The user replied will be ungbanned.
+  /ip Get the IP of your server.
 ```
 
 ### Receive data
 You can read incoming data using the following variables:
 
-* ```$MESSAGE```: Incoming messages
-* ```$CAPTION```: Captions
+* ```$MESSAGE```: Incoming messages.
+ * ```$MESSAGE[ID]```: Get message ID from the message
+* ```$CAPTION```: Captions.
 *  ```$BOT```: This array contains the name, username and user of the bot.
- * ```${BOT_NAME}```: Bot name
- * ```${BOT_USER}```: Bot user
- * ```${BOT_ID}```: Bot ID
-*  ```$CHAT```: This array contains the chat ID and chat title
- * ```${CHAT_ID}```: Chat ID
- * ```${CHAT_TITLE}```: Chat title
-* ```$USER```: This array contains the First name, last name, username and user id of the sender of the current message.
- * ```${USER_ID}```: User id
- * ```${USER_FIRST_NAME}```: User's first name
- * ```${USER_LAST_NAME}```: User's last name
- * ```${USER_USERNAME}```: Username
+ * ```${BOT[NAME]}```: Bot name
+ * ```${BOT[USER]}```: Bot user
+ * ```${BOT[ID]}```: Bot ID
+*  ```$CHAT```: This array contains the chat ID and chat title.
+ * ```${CHAT[ID]}```: Chat ID
+ * ```${CHAT[TITLE]}```: Chat title
+ * ```${CHAT[TYPE]}```: Chat type
+* ```$USER```: This array contains the first name, lastname, username and user id of the current user.
+ * ```${USER[ID]}```: User id
+ * ```${USER[FIRST_NAME]}```: User's first name
+ * ```${USER[LAST_NAME]}```: User's last name
+ * ```${USER[USERNAME]}```: Username
 *  ```$REPLY```: This array contains information about reply.
  * ```$reply```: Indicate if the message send by the bot will be reply or not
- * ```${REPLY_ID}```: Get ID by reply
- * ```${REPLY_FIRST_NAME}```: Get first name by reply
- * ```${REPLY_LAST_NAME}```: Get last name by reply
- * ```${REPLY_USERNAME}```: Get username by reply
+ * ```${REPLY[ID]}```: Get ID by reply
+ * ```${REPLY[FIRST_NAME]}```: Get first name by reply
+ * ```${REPLY[LAST_NAME]}```: Get last name by reply
+ * ```${REPLY[USERNAME]}```: Get username by reply
+*  ```$MEMBERS```: This array contains information about the members.
+ *  ```${MEMBERS[COUNT]}```: Get the number of members in the chat
+* ```$iUSER```: This array contains the information of the user in inline queries.
+ * ```${iUSER[FIRST_NAME]}```: Get first name
+ * ```${iUSER[LAST_NAME]}```: Get last name
+ * ```${iUSER[USERNAME]}```: Get username
+* ```$iQUERY```: This array contains information of inline queries.
+ * ```${iQUERY[ID]}```: Contains ID
+ * ```${iQUERY[MSG]}```: Contains msg
+* ```$NEW_MEMBER```: This array contains the information of new members joined/added.
+ * ```${NEW_MEMBER[ID]}```: Get ID
+ * ```${NEW_MEMBER[FIRST_NAME]}```: Get first name
+ * ```${NEW_MEMBER[LAST_NAME]}```: Get last name
+ * ```${NEW_MEMBER[USERNAME]}```: Get username
+* ```$OUT_MEMBER```: This array contains the information of members kicked/autokicked
+ * ```${OUT_MEMBER[ID]}```: Get ID
+ * ```${OUT_MEMBER[FIRST_NAME]}```: Get first name
+ * ```${OUT_MEMBER[LAST_NAME]}```: Get last name
+ * ```${OUT_MEMBER[USERNAME]}```: Get username
 * ```$URLS```: This array contains documents, audio files, stickers, voice recordings and stickers stored in the form of URLs.
  * ```${URLS[AUDIO]}```: Audio files
  * ```${URLS[VIDEO]}```: Videos
@@ -127,66 +161,73 @@ You can read incoming data using the following variables:
 ### Usage
 To send messages use the ```send_message``` function:
 ```
-send_message "${CHAT_ID}" "lol"
+send_message "${CHAT[ID]}" "lol"
 ```
 To send markdown put the following strings before the text, depending on the parsing mode you want to enable:
 ```
-send_markdown_message "${CHAT_ID}" "*This is a text in bold in markdown*"
+send_markdown_message "${CHAT[ID]}" "*This is a text in bold in markdown*"
 ```
 ```
-send_markdown_message "${CHAT_ID}" "_This is a text in italic in markdown_"
+send_markdown_message "${CHAT[ID]}" "_This is a text in italic in markdown_"
 ```
 - More information about markdown messages [here](https://core.telegram.org/bots/api#markdown-style)
 
 HTML Format:
 ```
-send_html_message "${CHAT_ID}" "<b>This is a text in bold in html</b>"
+send_html_message "${CHAT[ID]}" "<b>This is a text in bold in html</b>"
 ```
 ```
-send_html_message "${CHAT_ID}" "<i>This is a text in italic in html</i>"
+send_html_message "${CHAT[ID]}" "<i>This is a text in italic in html</i>"
 ```
 - More information about html messages [here](https://core.telegram.org/bots/api#html-style)
 
 Also, you can indicate if the message It's a reply
 ``` bash
 # It's a example, you can use reply with send message or markdown and html
-send_markdown_message "${CHAT_ID}" "*Replying*" "$reply"
+send_markdown_message "${CHAT[ID]}" "*Replying*" "$reply"
 ```
+
+Sending message without notifications or sounds:
+``` bash
+# Compatible with markdown
+send_silently_message "${CHAT[ID]}" "You can't receive this message with notification..."
+```
+
 This function also allows a third parameter that disables additional function parsing (for safety use this when reprinting user input):
 ```
-send_message "${CHAT_ID}" "text" "safe"
+send_message "${CHAT[ID]}" "text" "safe"
 ```
 To send images, videos, voice files, photos ecc use the ```send_photo``` function (remember to change the safety Regex @ line 14 of command.sh to allow sending files only from certain directories):
 ```
-send_file "${CHAT_ID}" "/home/user/doge.jpg" "Lool"
+send_file "${CHAT[ID]}" "./doge.jpg" "Lool"
 ```
 To send custom keyboards use the ```send_keyboard``` function:
 ```
-send_keyboard "${CHAT_ID}" "Text that will appear in chat?" "Yep" "No"
+send_keyboard "${CHAT[ID]}" "Text that will appear in chat?" "Yes" "No"
 ```
 To send locations use the ```send_location``` function:
 ```
-send_location "${CHAT_ID}" "Latitude" "Longitude"
+send_location "${CHAT[ID]}" "Latitude" "Longitude"
 ```
 To send venues use the ```send_venue``` function:
 ```
-send_venue "${CHAT_ID}" "Latitude" "Longitude" "Title" "Address" "optional foursquare id"
+send_venue "${CHAT[ID]}" "Latitude" "Longitude" "Title" "Address" "optional foursquare id"
 ```
 To forward messages use the ```forward``` function:
 ```
-forward "${CHAT_ID}" "from_chat_id" "message_id"
+forward "${CHAT[ID]}" "from_chat_id" "message_id"
 ```
 To send a chat action use the ```send_action``` function.
 Allowed values: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for locations.
 ```
-send_action "${CHAT_ID}" "action"
+send_action "${CHAT[ID]}" "action"
 ```
 
 To create interactive chats, write (or edit the question script) a normal bash (or C or python) script, chmod +x it and then change the argument of the startproc function to match the command you usually use to start the script.
 The text that the script will output will be sent in real time to the user, and all user input will be sent to the script (as long as it's running or until the user kills it with /cancel).
 To open up a keyboard in an interactive script, print out the keyboard layout in the following way:
 ```
-echo "Text that will appear in chat? mykeyboardstartshere \"Yep, sure\" \"No, highly unlikely\""
+echo "Text that will appear in chat? mykeyboardstartshere \"Yes, sure\" \"No, highly unlikely\""
 ```
 Same goes for files:
 ```
@@ -213,61 +254,66 @@ Note that you can't modify the first two parameters of the function `answer_inli
 
 To send messsages or links through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "article" "Title of the result" "Content of the message to be sent"
+answer_inline_query "$iQUERY[ID]" "article" "Title of the result" "Content of the message to be sent"
 ```
 To send photos in jpeg format and less than 5MB, from a website through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "photo" "A valid URL of the photo" "URL of the thumbnail"
+answer_inline_query "$iQUERY[ID]" "photo" "A valid URL of the photo" "URL of the thumbnail"
 ```
 To send standard gifs from a website (less than 1MB) through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "gif" "gif url"
+answer_inline_query "$iQUERY[ID]" "gif" "gif url"
 ```
 To send mpeg4 gifs from a website (less than 1MB) through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "mpeg4_gif" "mpeg4 gif url"
+answer_inline_query "$iQUERY[ID]" "mpeg4_gif" "mpeg4 gif url"
 ```
 To send videos from a website through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "video" "valid video url" "Select one mime type: text/html or video/mp4" "URL of the thumbnail" "Title for the result"
+answer_inline_query "$iQUERY[ID]" "video" "valid video url" "Select one mime type: text/html or video/mp4" "URL of the thumbnail" "Title for the result"
 ```
 To send photos stored in Telegram servers through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "cached_photo" "identifier for the photo"
+answer_inline_query "$iQUERY[ID]" "cached_photo" "identifier for the photo"
 ```
 To send gifs stored in Telegram servers through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "cached_gif" "identifier for the gif"
+answer_inline_query "$iQUERY[ID]" "cached_gif" "identifier for the gif"
 ```
 To send mpeg4 gifs stored in Telegram servers through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "cached_mpeg4_gif" "identifier for the gif"
+answer_inline_query "$iQUERY[ID]" "cached_mpeg4_gif" "identifier for the gif"
 ```
 To send stickers through an *inline query*:
 ```
-answer_inline_query "$iQUERY_ID" "cached_sticker" "identifier for the sticker"
+answer_inline_query "$iQUERY[ID]" "cached_sticker" "identifier for the sticker"
 ```
 
 
-To modify the responses to commands edit the commands.sh file (this should ease upgrades of the bot core).
+##  Uses of bot.sh
+``` bash
+# Starting the bot without tmux
+./bot.sh
 
-Once you're done editing start the bot with ```./bot.sh start```. If you want to do some more changes make them and then rerun the same command.
-To stop the bot run ```./bot.sh kill```.
-If some thing doesn't work as it should, debug with ```bash -x bot.sh```.
+# Starting the bot with tmux (always running)
+./bot.sh tmux
 
-To use the functions provided in this script in other scripts simply source bashbot: ```source bot.sh```
+# Attach tmux session
+./bot.sh attach
 
+# Kill tmux session
+./bot.sh kill
 
-## User count
-To count the total number of users that ever used the bot run the following command:
-```
+# Send available arguments
+./bot.sh args
+
+# Get help
+./bot.sh help
+
+# Users count
 ./bot.sh count
-```
 
-
-## Sending broadcasts to all users
-You can send a broadcast with markdown in your bash console using the next command:
-```
+# Sending broadcasts to all users
 ./bot.sh broadcast "Hey everybody! This is a *broadcast*."
 ```
 
