@@ -41,9 +41,11 @@ else
 		send_markdown_message "${CHAT_ID}" "Bye @${OUT_MEMBER_USERNAME}... I see you later."
 	fi
 	
-#	if [ $GBAN == 1 ]; then
-#		kick_chat_member "${CHAT_ID}" "${GBAN}"	
-#	fi
+	if [ $GBAN == 1 ]; then
+		kick_chat_member "${CHAT_ID}" "${GBAN}"	
+		echo "User is banned"
+		exit 
+	fi
 	
 	# User commands
     	echo $MESSAGE | grep "^/echo"
