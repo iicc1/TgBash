@@ -1,4 +1,6 @@
 #!/bin/bash
+#*.*encoding=utf-8*.*
+
 # Edit your commands in this file.
 if [ "$1" = "source" ];then
 	FILE_REGEX='/'
