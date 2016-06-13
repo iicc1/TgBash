@@ -4,45 +4,47 @@ if [ "$1" = "source" ];then
 	FILE_REGEX='/'
 else
 	if ! tmux ls | grep -v send | grep -q $copname; then
-		[ ! -z ${URLS_[*]} ] && {
-		curl -s ${URLS_[*]} -o $NAME
-			send_file "${CHAT_ID}" "$NAME" "$CAPTION"
+		[ ! -z ${URLS[*]} ] && {
+		curl -s ${URLS[*]} -o $NAME
+			send_file "${CHAT[ID]}" "$NAME" "$CAPTION"
 			rm "$NAME"
 		}
-		[ ! -z ${LOCATION_[*]} ] && send_location "${CHAT_ID}" "${LOCATION_LATITUDE}" "${LOCATION_LONGITUDE}"
+		[ ! -z ${LOCATION[*]} ] && send_location "${CHAT[ID]}" "${LOCATION[LATITUDE]}" "${LOCATION[LONGITUDE]}"
 
 		# Inline
 		if [ $INLINE == 1 ]; then
 			# Inline examples
-			if [[ $iQUERY_MSG == photo ]]; then
-				answer_inline_query "$iQUERY_ID" "photo" "http://blog.techhysahil.com/wp-content/uploads/2016/01/Bash_Scripting.jpeg" "http://blog.techhysahil.com/wp-content/uploads/2016/01/Bash_Scripting.jpeg"
+			if [[ ${iQUERY[MSG]} == photo ]]; then
+				answer_inline_query "${iQUERY[ID]}" "photo" "http://blog.techhysahil.com/wp-content/uploads/2016/01/Bash_Scripting.jpeg" "http://blog.techhysahil.com/wp-content/uploads/2016/01/Bash_Scripting.jpeg"
 			fi
 
-			if [[ $iQUERY_MSG == sticker ]]; then
-				answer_inline_query "$iQUERY_ID" "cached_sticker" "BQADBAAD_QEAAiSFLwABWSYyiuj-g4AC"
+			if [[ ${iQUERY[MSG]} == sticker ]]; then
+				answer_inline_query "${iQUERY[ID]}" "cached_sticker" "BQADBAAD_QEAAiSFLwABWSYyiuj-g4AC"
 			fi
 
-			if [[ $iQUERY_MSG == gif ]]; then
-				answer_inline_query "$iQUERY_ID" "gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif"
+			if [[ ${iQUERY[MSG]} == gif ]]; then
+				answer_inline_query "${iQUERY[ID]}" "gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif"
 			fi
-			if [[ $iQUERY_MSG == github ]]; then
-				answer_inline_query "$iQUERY_ID" "article" "GitHub" "This is a bot bash. Get code [here](https://github.com/iicc1/TgBash)"
+			if [[ ${iQUERY[MSG]} == github ]]; then
+				answer_inline_query "${iQUERY[ID]}" "article" "GitHub" "This is a bot bash. Get code [here](https://github.com/iicc1/TgBash)"
 			fi
 		fi
 	fi
 	
   	# Services
   	  # If is new member then
-	if [ ${NEW_MEMBER} ]; then
-		send_markdown_message "${CHAT_ID}" "Welcome @${NEW_MEMBER_USERNAME} to *${CHAT_TITLE}*"
+	if [ $NEW_MEMBER ]; then
+		send_markdown_message "${CHAT[ID]}" "Welcome @${NEW_MEMBER[USERNAME]} to *${CHAT[TITLE]}*"
 	fi
 	  # If is kicked then
-	if [ ${OUT_MEMBER} ]; then
-		send_markdown_message "${CHAT_ID}" "Bye @${OUT_MEMBER_USERNAME}... I see you later."
+	if [ $OUT_MEMBER ]; then
+		send_markdown_message "${CHAT[ID]}" "Bye @${OUT_MEMBER[USERNAME]}, I see you later..."
 	fi
-	
+	  # If is gbanned then
 	if [ $GBAN == 1 ]; then
-		kick_chat_member "${CHAT_ID}" "${GBAN}"	
+		kick_chat_member "${CHAT[ID]}" "${GBAN}"
+		send_markdown_message "${CHAT[ID]}" "User in list of *users globally banned*.
+TAKE *CARE*."
 		echo "User is banned"
 		exit 
 	fi
@@ -51,20 +53,21 @@ else
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-		send_markdown_message "${CHAT_ID}" "$MESSAGE"
+		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
 	fi
 	
 	echo $MESSAGE | grep "^/calc"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 	 EXPR=$(expr $MESSAGE | bc)
-		send_markdown_message "${CHAT_ID}" "*${EXPR}*" "$reply"
+		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
     	fi
 
 	case $MESSAGE in
 		'/start')
-			send_action "${CHAT_ID}" "typing"
-			start_inline_keyboard "${CHAT_ID}" "Hi everybody! 
+		if [ ${CHAT[TYPE]} == private ]; then
+			send_action "${CHAT[ID]}" "typing"
+			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
 This is a *bot* written in code *shell*
 More functions made by @iicc1 and @Jarriz.
 
@@ -88,8 +91,16 @@ More functions made by @iicc1 and @Jarriz.
   /ban <by reply> _The bot will ban the user by reply (the user cant back again)_.
   /unban <by reply> _The bot will unban the user by reply if is banned_.
   /infobot _The bot will reply the information of the bot_.
+  /gban <by reply> _The user replied will be banned_.
+  /ungban <by reply> _The user replied will be unbanned_.
   
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
+		
+		fi
+	# If command /start isn't in private then
+		if [ ${CHAT[TYPE]} != private ]; then
+	send_markdown_message "${CHAT[ID]}" "This command *only works* in *private*."
+		fi
 			;;
 			
 		'/question')
@@ -97,38 +108,38 @@ More functions made by @iicc1 and @Jarriz.
 			;;
 		
 		'/getinfo')
-			send_markdown_message "${CHAT_ID}" "*User* @${REPLY_USERNAME}
-*ID* ${REPLY_ID}" "$reply"
+			send_markdown_message "${CHAT[ID]}" "*User* @${REPLY[USERNAME]}
+*ID* ${REPLY[ID]}" "$reply"
 			;;
 			
 		'/info')
-			send_markdown_message "${CHAT_ID}" "This is a bashbot of *Telegram* written entirely in *bash*.
+			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
      			
      		'/kickme')
-     			kick_chat_member "${CHAT_ID}" "${USER_ID}"
-     			unban_chat_member "${CHAT_ID}" "${USER_ID}"
+     			kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
+     			unban_chat_member "${CHAT[ID]}" "${USER[ID]}"
      			;;
      			
      		'/myinfo')
-			send_markdown_message "${CHAT_ID}" "*ID* ${USER_ID}
-*User* @${USER_USERNAME}
-*Name* ${USER_FIRST_NAME}
-*Last name* ${USER_LAST_NAME}"
+			send_markdown_message "${CHAT[ID]}" "*ID* ${USER[ID]}
+*User* @${USER[USERNAME]}
+*Name* ${USER[FIRST_NAME]}
+*Last name* ${USER[LAST_NAME]}"
 			;;
 			
 		'/getmembers')
-			send_markdown_message "${CHAT_ID}" "*Members in ${CHAT_TITLE}*
-${MEMBERS_COUNT}"
+			send_markdown_message "${CHAT[ID]}" "*Members here*:
+${MEMBERS[COUNT]}"
 			;;
 
 		'/cancel')
-			if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT_ID}" "*Command canceled*.";else send_markdown_message "${CHAT_ID}" "*No command is currently running*.";fi
+			if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT[ID]}" "*Command canceled*.";else send_markdown_message "${CHAT[ID]}" "*No command is currently running*.";fi
 			;;
 			
 		*)
-			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT_ID}" "" "safe";fi
+			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
 			;;
 	esac
 	
@@ -139,59 +150,60 @@ ${MEMBERS_COUNT}"
 	  echo $MESSAGE | grep "^/broadcast"
         	if [ $? == 0 ]; then
 	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-			send_markdown_message "${CHAT_ID}" "*Broadcast delivered*" "$reply"
+			send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
   	 	shift
 			for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
     		fi
     	
 	case $MESSAGE in
 	 	'/leavechat')
-			send_markdown_message "${CHAT_ID}" "*CHAT LEAVED*"
-   			leave_chat "${CHAT_ID}"
+			send_markdown_message "${CHAT[ID]}" "*CHAT LEAVED*"
+   			leave_chat "${CHAT[ID]}"
      			;;
 
 	 	'/newadmin')
-   			echo "${REPLY_ID}," >> settings/admins
-   			send_markdown_message "${CHAT_ID}" "ID ${REPLY_ID} promoted to *admin*" "$reply"
+   			echo "${REPLY[ID]}," >> settings/admins
+   			send_markdown_message "${CHAT[ID]}" "ID ${REPLY[ID]} promoted to *admin*" "$reply"
      			;;
 
      		'/kick')
-			kick_chat_member "${CHAT_ID}" "${REPLY_ID}"
-			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
+			kick_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
+			unban_chat_member "${CHAT[ID}" "${REPLY[ID]}"
 			;;
 			
 		'/ban')
-			kick_chat_member "${CHAT_ID}" "${REPLY_ID}"
+			kick_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
 			
 		'/unban')
-			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
+			unban_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
 			
 		'/gban'
 			date=$(date)
-			echo "[$date --> ${REPLY_FIRST_NAME} ${REPLY_LAST_NAME} @${REPLY_USERNAME} (${REPLY_ID})]" >> settings/gbans
-			send_markdown_message "${CHAT_ID}" "ID: ${REPLY_ID} *globally banned*"
+			echo "[$date --> ${REPLY[FIRST_NAME]} ${REPLY[LAST_NAME]} @${REPLY[USERNAME]} (${REPLY[ID]})]" >> settings/gbans
+			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *globally banned.*"
 			;;
+
 		'/ungban'
-			sed -i "/${REPLY_ID}/d" settings/gbans
-			send_markdown_message "${CHAT_ID}" "ID: ${REPLY_ID} *globally unbanned*"
+			sed -i "/${REPLY[ID]}/d" settings/gbans
+			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *globally unbanned*."
 			;;
 			
 		'/infobot')
-			send_markdown_message "${CHAT_ID}" "*Name* ${BOT_NAME}
-*Username* @${BOT_USERNAME}
-*ID* ${BOT_ID}" "$reply"
+			send_markdown_message "${CHAT[ID]}" "*Name* ${BOT[NAME]}
+*Username* @${BOT[USERNAME]}
+*ID* ${BOT[ID]}" "$reply"
 			;;
 		
 		'/sudos')
-			send_markdown_message "${CHAT_ID}" "*Sudo users*
+			send_markdown_message "${CHAT[ID]}" "*Sudo users*
 ${ADMINS}"
 			;;
 		
 		'/ip')	
 			IP=$(curl -s http://api.ipify.org)
-			send_markdown_message "${CHAT_ID}" "La IP del servidor del bot es: *$IP*"
+			send_markdown_message "${CHAT[ID]}" "IP Server: *$IP*"
 		;;
 	esac
     fi
