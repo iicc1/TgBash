@@ -168,10 +168,15 @@ ${MEMBERS_COUNT}"
 			unban_chat_member "${CHAT_ID}" "${REPLY_ID}"
 			;;
 			
-#		'/gban'
-#			echo "${REPLY_ID}," >> settings/gbans
-#			send_markdown_message "${CHAT_ID}" "ID ${REPLY_ID} *globally banned*"
-#			;;
+		'/gban'
+			date=$(date)
+			echo "[$date --> ${REPLY_FIRST_NAME} ${REPLY_LAST_NAME} @${REPLY_USERNAME} (${REPLY_ID})]" >> settings/gbans
+			send_markdown_message "${CHAT_ID}" "ID: ${REPLY_ID} *globally banned*"
+			;;
+		'/gban'
+			sed -i "/${REPLY_ID}/d" settings/gbans
+			send_markdown_message "${CHAT_ID}" "ID: ${REPLY_ID} *globally unbanned*"
+			;;
 			
 		'/infobot')
 			send_markdown_message "${CHAT_ID}" "*Name* ${BOT_NAME}
