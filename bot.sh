@@ -7,7 +7,7 @@
 # Get token and admin list
 TOKEN=$(cat settings/token)
 ADMINS=$(cat settings/admins)
-#GBAN=$(cat settings/gbans)
+GBANS=$(cat settings/gbans)
 INLINE=1
 
 # Removing .folder file
@@ -418,12 +418,18 @@ process_client() {
 	fi
 	
 	# Read list of gbans
-#	echo $GBAN | grep ${USER_ID} | grep ${NEW_MEMBER_ID}
-#	if [ $? == 0 ]; then
-#		GBAN=1
-#	else
-#		GBAN=0
-#	fi
+	echo $GBANS | grep ${USER_ID} 
+	if [ $? == 0 ]; then
+		GBAN=1
+	else
+		if [ ! -z "${NEW_MEMBER_ID}" ]; then
+			echo $GBANS | grep ${NEW_MEMBER_ID}
+			if [ $? == 0 ]; then
+				GBAN=1
+			fi
+		fi
+		GBAN=0
+	fi
 	
 	source commands.sh
 
