@@ -183,11 +183,13 @@ ${MEMBERS[COUNT]}"
 			date=$(date)
 			echo "[$date --> ${REPLY[FIRST_NAME]} ${REPLY[LAST_NAME]} @${REPLY[USERNAME]} (${REPLY[ID]})]" >> settings/gbans
 			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *globally banned.*"
+			kick_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
 
 		'/ungban')
 			sed -i "/${REPLY[ID]}/d" settings/gbans
 			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *globally unbanned*."
+			unban_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
 			
 		'/infobot')
