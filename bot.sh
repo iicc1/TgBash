@@ -488,7 +488,7 @@ case "$1" in
 		for f in $(cat count);do send_markdown_message ${f//COUNT} "$*"; $sleep;done
 		;;
 
-	"start")
+	"tmux")
 		clear
 		tmux kill-session -t $ME&>/dev/null
 		tmux new-session -d -s $ME "bash $SCRIPT startbot" && echo -e '\e[0;32mBot started successfully.\e[0m'
@@ -518,6 +518,6 @@ case "$1" in
 		;;
 
 	*)
-		bash bot.sh startbot
+		source bot.sh
 		;;
 esac
