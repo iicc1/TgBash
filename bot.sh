@@ -4,7 +4,7 @@
 # Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
 # More functions by @iicc1 and @jarriz
 
-# Set INLINE to 1 in order to receive inline queries.
+# Set INLINE to 0 to disable inline
 # To enable this option in your bot, send the /setinline command to @BotFather.
 # Get token and admin list
 TOKEN=$(cat settings/token)
@@ -75,7 +75,7 @@ FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
 UPD_URL=$URL'/getUpdates?offset='
 GET_URL=$URL'/getFile'
 OFFSET=0
-declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser
+declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT
 
 send_message() {
 	[ "$2" = "" ] && return 1
@@ -338,6 +338,19 @@ process_client() {
 	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
 	MESSAGE=$(printf "$MESSAGE")
 	MESSAGE[ID]=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
+	
+	# Forward from user
+	FORWARD=$(echo "$res" | egrep '\["result",0,"message","forward_from"\]' | cut -f 2)
+	FORWARD[ID]=$(echo "$res" | egrep '\["result",0,"message","forward_from","id"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	
+	# Forward from chat (channel)
+	FORWARD_CHAT=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat"\]' | cut -f 2)
+	FORWARD_CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","id"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD_CHAT[TITLE]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD_CHAT[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Generate reply
 	reply=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
