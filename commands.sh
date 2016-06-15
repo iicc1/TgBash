@@ -66,7 +66,7 @@ TAKE *CARE*."
     	fi
 
 	case $MESSAGE in
-		'/start')
+		'/start' | '/help')
 		if [ ${CHAT[TYPE]} == private ]; then
 			send_action "${CHAT[ID]}" "typing"
 			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
@@ -75,7 +75,7 @@ More functions made by @iicc1 and @Jarriz.
 
 *Commands*
  *Users*:
-  /start _Start bot and get this message_.
+  /start or /help _Start bot and get this message_.
   /info _Get shorter info message about this bot_.
   /getinfo <by reply> _Get info user by reply_.
   /question _Start interactive chat_.
