@@ -38,10 +38,22 @@ else
 	if [ $NEW_MEMBER ]; then
 		send_markdown_message "${CHAT[ID]}" "Welcome @${NEW_MEMBER[USERNAME]} to *${CHAT[TITLE]}*"
 	fi
+	
 	  # If is kicked then
 	if [ $OUT_MEMBER ]; then
 		send_markdown_message "${CHAT[ID]}" "Bye @${OUT_MEMBER[USERNAME]}, I see you later..."
 	fi
+	
+	  # If is a forward then
+	if [ $FORWARD ]; then
+	  if [ ${CHAT[TYPE]} == private ]; then
+		send_markdown_message "${CHAT[ID]}" "*ID* ${FORWARD[ID]}" "$reply"
+	  fi
+	  if [ ${CHAT[TYPE]} != private ]; then
+		exit
+	  fi
+	fi
+	
 	  # If is gbanned then
 	if [ $GBAN == 1 ]; then
 		kick_chat_member "${CHAT[ID]}" "${GBAN}"
