@@ -105,8 +105,10 @@ More functions made by @iicc1 and @Jarriz.
   /ban <by reply> _The bot will ban the user by reply (the user cant back again)_.
   /unban <by reply> _The bot will unban the user by reply if is banned_.
   /infobot _The bot will reply the information of the bot_.
-  /gban <by reply> _The user replied will be banned_.
-  /ungban <by reply> _The user replied will be unbanned_.
+  /su <command> _Run a command in the console sending the reply_.
+  /ip _The bot will send the IP Server_.
+  /gban <by reply> _The user replied will be gbanned_.
+  /ungban <by reply> _The user replied will be ungbanned_.
   
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
 		
@@ -160,13 +162,19 @@ ${MEMBERS[COUNT]}"
 	
 	# Admin commands
 	if [ $ADMIN == 1 ]; then
-	
 	  echo $MESSAGE | grep "^/broadcast"
         	if [ $? == 0 ]; then
 	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 			send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
   	 	shift
 			for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
+    		fi
+    	
+    	  echo $MESSAGE | grep "^/su"
+        	if [ $? == 0 ]; then
+	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	 		COMMAND=$($MESSAGE)
+			send_markdown_message "${CHAT[ID]}" "*${COMMAND}*"
     		fi
     	
 	case $MESSAGE in
