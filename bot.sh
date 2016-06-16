@@ -44,7 +44,7 @@ if [ ! -f "/usr/bin/uni2ascii" ]; then
 fi
 
 source commands.sh source
-URL='https://api.telegram.org/bot'$TOKEN
+URL='https://api.pwrtelegram.xyz/bot'$TOKEN
 
 
 SCRIPT="$0"
@@ -154,6 +154,10 @@ unban_chat_member() {
 
 leave_chat() {
  res=$(curl -s "$LEAVE_URL" -F "chat_id=$1")
+}
+
+getchat() {
+	res=$(curl -s "$GETCHAT_URL" -d "chat_id=$1")
 }
 
 # Start inline keyboard
