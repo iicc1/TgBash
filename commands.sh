@@ -76,6 +76,15 @@ TAKE *CARE*."
 	 EXPR=$(expr $MESSAGE | bc)
 		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
     	fi
+    	
+    	echo $MESSAGE | grep "^/res @"
+	if [ $? == 0 ]; then
+		USR=$(echo $MESSAGE | cut -d "@" -f2)
+		getchat "@$USR"
+		res=$(echo $res | cut -d '"' -f7 | tr -d ":" | tr -d ",")
+		send_markdown_message "${CHAT[ID]}" "$res"
+		exit
+	fi
 
 	case $MESSAGE in
 		'/start' | '/help')
