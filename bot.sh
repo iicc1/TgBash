@@ -165,8 +165,10 @@ start_inline_keyboard() {
 res=$(curl "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_markup=$inline_keyboard" -d "reply_to_message_id=$3")
 }
 
-
-inline_keyboard='{"inline_keyboard":[[{"text":"🔜 GitHub","url":"'https://github.com/iicc1/TgBash'"}]]}'
+inline_keyboard='{"inline_keyboard":[
+[{"text":"🔜GitHub","url":"'https://github.com/iicc1/TgBash'"}],
+[{"text":"📢 Channel","url":"'https://telegram.me/TgBash'"}]
+]}'
 
 answer_inline_query() {
 	case $2 in
