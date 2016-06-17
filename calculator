@@ -1,0 +1,13 @@
+echo 'OK. I will do a expression...'
+echo 'Please, send me the first number.'
+read A
+echo 'OK. Now send me the second number.'
+read B
+echo 'What do you do? mykeyboardstartshere "Addition" "Subtraction" "Multiplication" "Division"'
+read opt
+ case $opt in
+ 'Addition') expr $A + $B ;;
+ 'Subtraction') expr $A - $B ;;
+ 'Multiplication') expr $A \* $B ;;
+ 'Division') expr $A / $B ;;
+esac
