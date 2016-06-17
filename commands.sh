@@ -99,7 +99,7 @@ More functions made by @iicc1 and @Jarriz.
   /start or /help _Start bot and get this message_.
   /info _Get shorter info message about this bot_.
   /getinfo <by reply> _Get info user by reply_.
-  /question _Start interactive chat_.
+  /calculator _Start a interactive calculator_.
   /cancel _Cancel any currently running interactive chats_.
   /echo <text> _The bot will send a echo message (markdown compatible)_.
   /myinfo _The bot will send your info user_.
@@ -128,8 +128,8 @@ More functions made by @iicc1 and @Jarriz.
 		fi
 			;;
 			
-		'/question')
-			startproc "./question"
+		'/calculator')
+			startproc "./calculator"
 			;;
 		
 		'/getinfo')
