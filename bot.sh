@@ -351,7 +351,7 @@ process_client() {
 	FORWARD[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Forward from chat (channel)
-	FORWARD_CHAT=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat"\]' | cut -f 2)
+	FORWARD_CHAT=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat"\]' | cut -f 2 | cut -d '"' -f 2)
 	FORWARD_CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","id"\]' | cut -f 2 | cut -d '"' -f 2)
 	FORWARD_CHAT[TITLE]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
 	FORWARD_CHAT[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","username"\]' | cut -f 2 | cut -d '"' -f 2)
