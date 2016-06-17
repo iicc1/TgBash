@@ -44,10 +44,20 @@ else
 		send_markdown_message "${CHAT[ID]}" "Bye @${OUT_MEMBER[USERNAME]}, I see you later..."
 	fi
 	
-	  # If is a forward then
+	  # If is a forward from private (user) then
 	if [ $FORWARD ]; then
 	  if [ ${CHAT[TYPE]} == private ]; then
 		send_markdown_message "${CHAT[ID]}" "*ID* ${FORWARD[ID]}" "$reply"
+	  fi
+	  if [ ${CHAT[TYPE]} != private ]; then
+		exit
+	  fi
+	fi
+	
+	 # If is a forward from chat (channel) then
+	if [ $FORWARD_CHAT ]; then
+	  if [ ${CHAT[TYPE]} == private ]; then
+		send_markdown_message "${CHAT[ID]}" "*Channel ID* ${FORWARD_CHAT[ID]}" "$reply"
 	  fi
 	  if [ ${CHAT[TYPE]} != private ]; then
 		exit
