@@ -28,7 +28,7 @@ else
 				answer_inline_query "${iQUERY[ID]}" "gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif" "http://www.compciv.org/files/images/cli/cli-bash-script-hello-world.gif"
 			fi
 			if [[ ${iQUERY[MSG]} == github ]]; then
-				answer_inline_query "${iQUERY[ID]}" "article" "GitHub" "This is a bot bash. Get code [here](https://github.com/iicc1/TgBash)"
+				answer_inline_query "${iQUERY[ID]}" "article" "GitHub" "This is a bot bash. Get code [here](https://github.com/iicc1/TgBash)" "By @iicc1 and @Jarriz" "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png"
 			fi
 		fi
 	fi
