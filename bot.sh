@@ -524,6 +524,34 @@ case "$1" in
 		send_silently_message "${ADMINS}" "*Bot stopped*"
 		echo -e '\e[0;32mOK. Bot stopped successfully.\e[0m'
 		;;
+		
+	
+	"api")
+		clear
+		echo -e '\e[0;36m-----------------------------------------\e[0m'
+		echo -e '\e[0;36m---------------Change API----------------\e[0m'
+		echo -e '\e[0;36m-----------------------------------------\e[0m'
+		echo -e '\e[1;33m           select your option     \e[0m'
+		echo ' '
+		echo ' '
+		echo '1- Change pwrtelegram api to telegram api'
+		echo '2- Change telegram api to pwrtelegram api'
+
+		read api
+
+		if [ $api == 1 ]; then
+		  clear
+		  sed -i 's/api\.pwrtelegram\.xyz/api\.telegram\.org/g' bot.sh
+		  echo -e '\e[0;32mOK. Change sucessfully. (pwrtelegram to telegram)\e[0m'
+		fi
+
+		if [ $api == 2 ]; then
+		  clear
+		  sed -i 's/api\.telegram\.org/api\.pwrtelegram\.xyz/g' bot.sh
+		  echo -e '\e[0;32mOK. Change sucessfully. (telegram to pwrtelegram)\e[0m'
+		fi
+	;;
+
 
 	"help")
 		clear
