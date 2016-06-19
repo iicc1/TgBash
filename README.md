@@ -307,6 +307,9 @@ answer_inline_query "$iQUERY[ID]" "cached_sticker" "identifier for the sticker"
 # Send available arguments
 ./bot.sh args
 
+# Change from pwrtelegram api to telegram api or vice versa.
+./bot.sh api
+
 # Get help
 ./bot.sh help
 
