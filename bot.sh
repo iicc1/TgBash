@@ -426,6 +426,9 @@ process_client() {
 	CONTACT[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","contact","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	CONTACT[USER_ID]=$(echo "$res" | egrep '\["result",0,"message","contact","user_id"\]' | cut -f 2 | cut -d '"' -f 2)
 
+	# Other services
+	DELETE_CHAT_PHOTO=$(echo "$res" | egrep '\["result",0,"message","delete_chat_photo"\]' | cut -f 2 | cut -d '"' -f 2)
+
 	# Caption
 	CAPTION=$(echo "$res" | egrep '\["result",0,"message","caption"\]' | cut -f 2 | cut -d '"' -f 2)
 
