@@ -80,6 +80,18 @@ TAKE *CARE*."
 		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
 	fi
 	
+	echo $MESSAGE | grep "^/ct"
+        if [ $? == 0 ]; then
+         if [ ${CHAT[TYPE]} == private ]; then
+	  MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	  forward "${ADMINS}" "${CHAT[ID]}" "${MESSAGE[ID]}"
+	  send_markdown_message "${CHAT[ID]}" "*Message delivered*."
+	 fi
+	 if [ ${CHAT[TYPE]} != private ]; then
+	  exit
+	 fi
+    	fi
+	
 	echo $MESSAGE | grep "^/calc"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
@@ -116,6 +128,7 @@ More functions made by @iicc1 and @Jarriz.
   /getmembers _The bot will you send the count of members in the chat_.
   /calc <expr> _The bot will calculate the expression_.
   /kickme _You will be autokicked from the chat_.
+  /ct <message> _Send a message to the bot admins_.
   
  *Admin*:
   /leavechat _The bot will leave the group with this command_.
