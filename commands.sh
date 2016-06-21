@@ -188,6 +188,7 @@ ${MEMBERS[COUNT]}"
 			
 		*)
 			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
+			send_register
 			;;
 	esac
 	
