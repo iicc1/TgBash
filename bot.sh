@@ -137,7 +137,7 @@ send_register() {
 	   echo -en '\n'
 	   echo -e '\e[1;37m'$MESSAGE'\e[0m'
 	   echo -en '\n'
-	   echo -e '\e[1;34mPRIVATE\e[0m || \e[1;37mID\e[0m \e[0;36m'${USER[ID]}'\e[0m | \e[1;37mFirstname\e[0m \e[0;36m'${USER[FIRST_NAME]} '\e[0m | \e[1;37mLastname\e[0m \e[0;36m'${USER[LAST_NAME]}'\e[0m'
+	   echo -e '\e[1;34mPRIVATE\e[0m || \e[1;37mID\e[0m \e[0;36m'${USER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[0;36m@'${USER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[0;36m'${USER[FIRST_NAME]} '\e[0m | \e[1;37mLastname\e[0m \e[0;36m'${USER[LAST_NAME]}'\e[0m'
 	   echo ${DATE[ALL]}
  	fi
  	
@@ -146,7 +146,7 @@ send_register() {
 	   echo -e '\e[1;37m'$MESSAGE'\e[0m'
 	   echo -en '\n'
 	   echo -e '\e[1;34mCHAT\e[0m || \e[1;37mID\e[0m \e[0;36m'${CHAT[ID]}'\e[0m | \e[1;37mTitle\e[0m \e[0;36m'${CHAT[TITLE]} '\e[0m'
-	   echo -e '\e[1;34mFROM\e[0m || \e[1;37mID\e[0m \e[0;36m'${USER[ID]}'\e[0m | \e[1;37mUSER\e[0m \e[0;36m@'${USER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[0;36m'${USER[FIRST_NAME]} '\e[0m | \e[1;37mLastname\e[0m \e[0;36m'${USER[LAST_NAME]}'\e[0m'
+	   echo -e '\e[1;34mFROM\e[0m || \e[1;37mID\e[0m \e[0;36m'${USER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[0;36m@'${USER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[0;36m'${USER[FIRST_NAME]} '\e[0m | \e[1;37mLastname\e[0m \e[0;36m'${USER[LAST_NAME]}'\e[0m'
 	   echo ${DATE[ALL]}
 	fi
 	
