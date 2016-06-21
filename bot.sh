@@ -75,7 +75,7 @@ FILE_URL='https://api.pwrtelegram.xyz/file/bot'$TOKEN'/'
 UPD_URL=$URL'/getUpdates?offset='
 GET_URL=$URL'/getFile'
 OFFSET=0
-declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT
+declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE
 
 send_message() {
 	[ "$2" = "" ] && return 1
@@ -428,6 +428,15 @@ process_client() {
 
 	# Other services
 	DELETE_CHAT_PHOTO=$(echo "$res" | egrep '\["result",0,"message","delete_chat_photo"\]' | cut -f 2 | cut -d '"' -f 2)
+
+	# Date
+	DATE[ALL]=$(date)
+	DATE[SECOND]=$(date +%S)
+	DATE[MINUTE]=$(date +%M)
+	DATE[HOUR]=$(date +%T)
+	DATE[DAY]=$(date +%A)
+	DATE[MOUNT]=$(date +%m)
+	DATE[YEAR]=$(date +%Y)
 
 	# Caption
 	CAPTION=$(echo "$res" | egrep '\["result",0,"message","caption"\]' | cut -f 2 | cut -d '"' -f 2)
