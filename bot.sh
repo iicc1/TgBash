@@ -150,6 +150,24 @@ send_register() {
 	fi
 }
 
+save_register() {
+	if [ ${CHAT[TYPE]} == private ]; then
+	   echo -en '\n' >> register
+	   echo "$MESSAGE" >> register
+	   echo -en '\n' >> register
+	   echo 'PRIVATE || ID '${USER[ID]}' | Firstname '${USER[FIRST_NAME]} ' | Lastname '${USER[LAST_NAME]} >> register
+	   echo ${DATE[ALL]} >> register
+ 	fi
+ 	if [ ${CHAT[TYPE]} != private ]; then
+	   echo -en '\n' >> register
+	   echo "$MESSAGE" >> register
+	   echo -en '\n' >> register
+	   echo 'CHAT || ID '${CHAT[ID]}' | Title '${CHAT[TITLE]} >> register
+	   echo 'FROM || ID '${USER[ID]}' | Firstname '${USER[FIRST_NAME]}' Lastname '${USER[LAST_NAME]}  >> register
+	   echo ${DATE[ALL]} >> register
+	fi
+}
+
 send_markdown_message() {
 	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
@@ -468,7 +486,7 @@ process_client() {
 	copname="$ME"_"${CHAT[ID]}"
 	
 	# Read admins bot
-	echo $ADMINS | grep ${USER[ID]}
+	echo $ADMINS | grep ${USER[ID]} &>/dev/null
 	if [ $? == 0 ]; then
 		ADMIN=1
 	else
@@ -476,7 +494,7 @@ process_client() {
 	fi
 	
 	# Read list of gbans
-	echo $GBANS | grep ${USER[ID]} 
+	echo $GBANS | grep ${USER[ID]} &>/dev/null
  	if [ $? == 0 ]; then
  		GBAN=1
  	else
