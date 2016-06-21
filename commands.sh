@@ -33,6 +33,9 @@ else
 		fi
 	fi
 	
+	# Return all chats in the console
+	send_register
+	
   	# Services
   	  # If is new member then
 	if [ $NEW_MEMBER ]; then
@@ -67,9 +70,7 @@ else
 	  # If is gbanned then
 	if [ $GBAN == 1 ]; then
 		kick_chat_member "${CHAT[ID]}" "${GBAN}"
-		send_markdown_message "${CHAT[ID]}" "User in list of *users globally banned*.
-TAKE *CARE*."
-		echo "User is banned"
+		kick_chat_member "${CHAT[ID]}" "${NEW_MEMBER[ID]}"
 		exit 
 	fi
 	
@@ -188,7 +189,6 @@ ${MEMBERS[COUNT]}"
 			
 		*)
 			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
-			send_register
 			;;
 	esac
 	
