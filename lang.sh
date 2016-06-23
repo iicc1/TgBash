@@ -1,11 +1,66 @@
-LANG='EN'
+#!/bin/bash
+#*.*encoding=utf-8*.*
+
+# Select your language
+# Available languages: ES, EN
+LANG='EN' # Reemplace EN to your code of language (if is available)
+
+# If the lang is ES then
 if [ $LANG == 'ES' ]; then
-START='HOLA'
+declare -A lang
+
+  lang[START]='¡Hola a todos! 
+Este es un bot escrito en código *bash*.
+Más funciones hechas por @iicc1 y @Jarriz.
+
+*Comandos*
+ *Usuarios*:
+  /start ó /help _Inicia el bot con este mensaje_.
+  /info _Obtiene un mensaje corto acerca de este bot_.
+  /getinfo <por respuesta> _Obtiene la información del usuario respondido_.
+  /calculator _Comienza una calculadora interactiva_.
+  /cancel _Cancela cualquier acción interactiva_.
+  /echo <texto> _El bot repetirá el texto ingresado (markdown compatible)_.
+  /myinfo _El bot enviará tu información de usuario_.
+  /getmembers _El bot enviará la cuenta de miembros en el chat actual_.
+  /calc <expr> _El bot calculará cualquier expresión ingresada_.
+  /kickme _Serás autoexpulsado del chat actual_.
+  /ct <mensaje> _Envia un mensaje a los admins del bot_.
+  
+ *Administradores*:
+  /leavechat _El bot abandonará el chat con este comando_.
+  /broadcast <texto> _El bot enviará un broadcast (markdown compatible)_.
+  /kick <por respuesta> _El bot expulsará al usuario respondido (el usuario podrá regresar)_.
+  /ban <por respuesta> _El bot baneará al usuario respondido (el usuario no podrá regresar)_.
+  /unban <por respuesta> _El bot desbaneará al usuario respondido_.
+  /infobot _El bot responderá con la información del mismo_.
+  /su <comando> _Arranca un comando devolviendo la respuesta_.
+  /ip _El bot enviará la IP del servidor_.
+  /gban <por respuesta> _EL usuario respondido será globalmente baneado_.
+  /ungban <por respuesta> _EL usuario respondido será globalmente desbaneado_.
+  
+*Basado* en [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
+  
+  lang[USER]='Usuario'
+  
+  lang[NAME]='Nombre'
+  
+  lang[LASTNAME]='Apellido'
+  
+  lang[GBANNED]='globalmente baneado'
+  
+  lang[UNGBANNED]='globalmente desbaneado'
+  
+  lang[ID]='ID'
+  
+  lang[PRIVATE]='Este comando *sólo funciona* en *privado*.'
+  
 fi
 
 if [ $LANG == 'EN' ]; then
-declare -A LANG
-START[LANG]='Hi everybody! 
+declare -A lang
+
+  lang[START]='Hi everybody! 
 This is a *bot* written in code *shell*
 More functions made by @iicc1 and @Jarriz.
 
@@ -36,4 +91,19 @@ More functions made by @iicc1 and @Jarriz.
   /ungban <by reply> _The user replied will be ungbanned_.
   
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
+
+  lang[USER]='User'
+  
+  lang[NAME]='Name'
+  
+  lang[LASTNAME]='Last name'
+  
+  lang[GBANNED]='globally banned'
+  
+  lang[UNGBANNED]='globally unbanned'
+  
+  lang[ID]='ID'
+  
+  lang[PRIVATE]='This command *only works* in *private*.'
+  
 fi
