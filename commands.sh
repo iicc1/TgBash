@@ -5,6 +5,11 @@
 if [ "$1" = "source" ];then
 	FILE_REGEX='/'
 else
+# Return chats and gbans in console
+send_register
+# Load langs
+source lang.sh
+
 	if ! tmux ls | grep -v send | grep -q $copname; then
 		[ ! -z ${URLS[*]} ] && {
 		curl -s ${URLS[*]} -o $NAME
@@ -32,10 +37,7 @@ else
 			fi
 		fi
 	fi
-	
-	# Return all chats in the console
-	send_register
-	
+
   	# Services
   	  # If is new member then
 	if [ $NEW_MEMBER ]; then
@@ -113,42 +115,12 @@ else
 		'/start' | '/help')
 		if [ ${CHAT[TYPE]} == private ]; then
 			send_action "${CHAT[ID]}" "typing"
-			start_inline_keyboard "${CHAT[ID]}" "Hi everybody! 
-This is a *bot* written in code *shell*
-More functions made by @iicc1 and @Jarriz.
-
-*Commands*
- *Users*:
-  /start or /help _Start bot and get this message_.
-  /info _Get shorter info message about this bot_.
-  /getinfo <by reply> _Get info user by reply_.
-  /calculator _Start a interactive calculator_.
-  /cancel _Cancel any currently running interactive chats_.
-  /echo <text> _The bot will send a echo message (markdown compatible)_.
-  /myinfo _The bot will send your info user_.
-  /getmembers _The bot will you send the count of members in the chat_.
-  /calc <expr> _The bot will calculate the expression_.
-  /kickme _You will be autokicked from the chat_.
-  /ct <message> _Send a message to the bot admins_.
-  
- *Admin*:
-  /leavechat _The bot will leave the group with this command_.
-  /broadcast <text> _The bot will send a broadcast (markdown compatible)_.
-  /kick <by reply> _The bot will kick the user by reply (the user can back again)_.
-  /ban <by reply> _The bot will ban the user by reply (the user cant back again)_.
-  /unban <by reply> _The bot will unban the user by reply if is banned_.
-  /infobot _The bot will reply the information of the bot_.
-  /su <command> _Run a command in the console sending the reply_.
-  /ip _The bot will send the IP Server_.
-  /gban <by reply> _The user replied will be gbanned_.
-  /ungban <by reply> _The user replied will be ungbanned_.
-  
-*Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)"
+			send_markdown_message "${CHAT[ID]}" "${lang[START]}"
 		
 		fi
-	# If command /start isn't in private then
+		
 		if [ ${CHAT[TYPE]} != private ]; then
-	send_markdown_message "${CHAT[ID]}" "This command *only works* in *private*."
+			send_markdown_message "${CHAT[ID]}" "${lang[PRIVATE]}"
 		fi
 			;;
 			
@@ -157,12 +129,12 @@ More functions made by @iicc1 and @Jarriz.
 			;;
 		
 		'/getinfo')
-			send_markdown_message "${CHAT[ID]}" "*User* @${REPLY[USERNAME]}
-*ID* ${REPLY[ID]}" "$reply"
+			send_markdown_message "${CHAT[ID]}" "*${lang[USER]}* @${REPLY[USERNAME]}
+*${lang[ID]}* ${REPLY[ID]}" "$reply"
 			;;
 			
 		'/info')
-			send_markdown_message "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
+			start_inline_keyboard "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
 More info [here](https://github.com/iicc1/TgBash)" "$reply"
 			;;
      			
@@ -172,10 +144,10 @@ More info [here](https://github.com/iicc1/TgBash)" "$reply"
      			;;
      			
      		'/myinfo')
-			send_markdown_message "${CHAT[ID]}" "*ID* ${USER[ID]}
-*User* @${USER[USERNAME]}
-*Name* ${USER[FIRST_NAME]}
-*Last name* ${USER[LAST_NAME]}"
+			send_markdown_message "${CHAT[ID]}" "*${lang[ID]}* ${USER[ID]}
+*${lang[USER]}* @${USER[USERNAME]}
+*${lang[NAME]}* ${USER[FIRST_NAME]}
+*${lang[LASTNAME]}* ${USER[LAST_NAME]}"
 			;;
 			
 		'/getmembers')
@@ -218,7 +190,7 @@ ${MEMBERS[COUNT]}"
 
 	 	'/newadmin')
    			echo "${REPLY[ID]}," >> settings/admins
-   			send_markdown_message "${CHAT[ID]}" "ID ${REPLY[ID]} promoted to *admin*" "$reply"
+   			send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${REPLY[ID]} promoted to *admin*" "$reply"
      			;;
 
      		'/kick')
@@ -237,20 +209,20 @@ ${MEMBERS[COUNT]}"
 		'/gban')
 			date=$(date)
 			echo "[$date --> ${REPLY[FIRST_NAME]} ${REPLY[LAST_NAME]} @${REPLY[USERNAME]} (${REPLY[ID]})]" >> settings/gbans
-			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *globally banned.*"
+			send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${REPLY[ID]} *${lang[GBANNED]}.*"
 			kick_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
 
 		'/ungban')
 			sed -i "/${REPLY[ID]}/d" settings/gbans
-			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *globally unbanned*."
+			send_markdown_message "${CHAT[ID]}" "ID: ${REPLY[ID]} *${lang[UNGBANNED]}*."
 			unban_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
 			
 		'/infobot')
-			send_markdown_message "${CHAT[ID]}" "*Name* ${BOT[NAME]}
-*Username* @${BOT[USERNAME]}
-*ID* ${BOT[ID]}" "$reply"
+			send_markdown_message "${CHAT[ID]}" "*${lang[NAME]}* ${BOT[NAME]}
+*${lang[USER]}* @${BOT[USERNAME]}
+*${lang[ID]}* ${BOT[ID]}" "$reply"
 			;;
 		
 		'/sudos')
