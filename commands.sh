@@ -97,7 +97,7 @@ source lang.sh
 	
 	echo $MESSAGE | grep "^/calc"
         if [ $? == 0 ]; then
-	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2 | sed 's/\+/%2B/g' | sed 's/(/%28/g' | sed 's/)/%29/g')
 	 EXPR=$(curl -s http://api.mathjs.org/v1/?expr=$MESSAGE)
 		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
     	fi
