@@ -133,7 +133,7 @@ send_text() {
 }
 
 send_register() {
-	if [ ${CHAT[TYPE]} == private ] | [[ $MESSAGE ]]; then
+	if [ ${CHAT[TYPE]} == private ]; then
 	   echo -en '\n'
 	   echo -e '\e[1;37m'$MESSAGE'\e[0m'
 	   echo -en '\n'
