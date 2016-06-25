@@ -79,7 +79,7 @@ source lang.sh
 	# User commands
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
-	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2 | sed 's/\/echo//g')
 		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
 	fi
 	
