@@ -11,7 +11,7 @@ Use:
 git clone https://github.com/iicc1/TgBash.git
 ```
 
-## [Wiki of TgBash](https://github.com/iicc1/TgBash/wiki)
+### [How to install and add more commands (wiki)](https://github.com/iicc1/TgBash/wiki)
 
 
 
