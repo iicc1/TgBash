@@ -2,17 +2,17 @@
 #*.*encoding=utf-8*.*
 
 # Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
-# More functions by @iicc1 and @jarriz
+# More functions by @iicc1 and @jarriz.
 
-# Set INLINE to 0 to disable inline
+# Set INLINE to 0 to disable inline queries.
 # To enable this option in your bot, send the /setinline command to @BotFather.
-# Get token and admin list
+# Get token and admin list.
 TOKEN=$(cat settings/token)
 ADMINS=$(cat settings/admins)
 GBANS=$(cat settings/gbans)
 INLINE=1
 
-# Removing .folder file
+# Removing .folder file.
 sudo rm settings/.folder &>/dev/null
 
 if [ ! -f "JSON.sh/JSON.sh" ]; then
@@ -133,7 +133,7 @@ send_text() {
 }
 
 send_register() {
-	if [ ${CHAT[TYPE]} == private ]; then
+	if [ "${CHAT[TYPE]}" == "private" ]; then
 	   echo -en '\n'
 	   echo -e '\e[1;37m'$MESSAGE'\e[0m'
 	   echo -en '\n'
@@ -141,7 +141,7 @@ send_register() {
 	   echo ${DATE[ALL]}
  	fi
  	
- 	if [ ${CHAT[TYPE]} != private ] | [[ $MESSAGE ]]; then
+ 	if [ "${CHAT[TYPE]}" != "private" ] | [[ "$MESSAGE" ]]; then
 	   echo -en '\n'
 	   echo -e '\e[1;37m'$MESSAGE'\e[0m'
 	   echo -en '\n'
@@ -150,7 +150,7 @@ send_register() {
 	   echo ${DATE[ALL]}
 	fi
 	
-	if [ $NEW_MEMBER ]; then
+	if [ "$NEW_MEMBER" ]; then
 	   echo -en '\n'
 	   echo -e '\e[1;33mNew member\e[0m | \e[1;37mID\e[0m \e[1;33m'${NEW_MEMBER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[1;33m@'${NEW_MEMBER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[1;33m'${NEW_MEMBER[FIRST_NAME]}'\e[0m'
 	   echo -en '\n'
@@ -159,7 +159,7 @@ send_register() {
 	   echo ${DATE[ALL]}
 	fi
 	
-	if [ $OUT_MEMBER ]; then
+	if [ "$OUT_MEMBER" ]; then
 	   echo -en '\n'
 	   echo -e '\e[1;33mMember out\e[0m | \e[1;37mID\e[0m \e[1;33m'${OUT_MEMBER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[1;33m@'${OUT_MEMBER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[1;33m'${OUT_MEMBER[FIRST_NAME]}'\e[0m'
 	   echo -en '\n'
@@ -168,7 +168,7 @@ send_register() {
 	   echo ${DATE[ALL]}
 	fi
 
-	if [ $GBAN == 1 ]; then
+	if [ "$GBAN" == "1" ]; then
 	   echo -en '\n'
 	   echo -e '\e[0;31mID '${USER[ID]}' is gbanned.\e[0m'
 	fi
