@@ -11,7 +11,7 @@ Use:
 git clone https://github.com/iicc1/TgBash.git
 ```
 
-More information in the [Wiki of TgBash](https://github.com/iicc1/TgBash/wiki)
+## [Wiki of TgBash](https://github.com/iicc1/TgBash/wiki)
 
 
 
