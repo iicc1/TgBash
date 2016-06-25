@@ -10,7 +10,7 @@ send_register
 # Load langs
 source lang.sh
 # Load inline keyboards
-source settings/inline_keyboards
+source settings/inline_keyboards.sh
 
 	if ! tmux ls | grep -v send | grep -q $copname; then
 		[ ! -z ${URLS[*]} ] && {
