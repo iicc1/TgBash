@@ -207,7 +207,7 @@ getchat() {
 }
 
 send_inline_keyboard() {
-res=$(curl "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "reply_markup=$3" -d "reply_to_message_id=$4" -d "disable_web_page_preview=true")
+res=$(curl "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "reply_markup=$3" -d "reply_to_message_id=$4" -d "disable_web_page_preview=true" -d "parse_mode=markdown")
 }
 
 answer_inline_query() {
