@@ -9,6 +9,8 @@ else
 send_register
 # Load langs
 source lang.sh
+# Load inline keyboards
+source settings/inline_keyboards
 
 	if ! tmux ls | grep -v send | grep -q $copname; then
 		[ ! -z ${URLS[*]} ] && {
@@ -134,8 +136,8 @@ source lang.sh
 			;;
 			
 		'/info')
-			start_inline_keyboard "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
-More info [here](https://github.com/iicc1/TgBash)" "$reply"
+			send_inline_keyboard "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
+More info [here](https://github.com/iicc1/TgBash)" "${inline_keyboard[help]}" "$reply"
 			;;
      			
      		'/kickme')
