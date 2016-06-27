@@ -55,6 +55,8 @@ Más funciones hechas por @iicc1 y @Jarriz.
   
   lang[PRIVATE]='Este comando *sólo funciona* en *privado*.'
   
+  lang[LANG]='Lenguaje cambiado a'
+  
 fi
 
 if [ $LANG == 'EN' ]; then
@@ -105,5 +107,7 @@ More functions made by @iicc1 and @Jarriz.
   lang[ID]='ID'
   
   lang[PRIVATE]='This command *only works* in *private*.'
+  
+  lang[LANG]='Language changed to'
   
 fi
