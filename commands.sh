@@ -219,8 +219,7 @@ ${MEMBERS[COUNT]}"
 			;;
 			
 		'/gban')
-			date=$(date)
-			echo "[$date --> ${REPLY[FIRST_NAME]} ${REPLY[LAST_NAME]} @${REPLY[USERNAME]} (${REPLY[ID]})]" >> settings/gbans
+			echo "[${DATE[YMD]} --> ${REPLY[FIRST_NAME]} ${REPLY[LAST_NAME]} @${REPLY[USERNAME]} (${REPLY[ID]})]" >> settings/gbans
 			send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${REPLY[ID]} *${lang[GBANNED]}.*"
 			kick_chat_member "${CHAT[ID]}" "${REPLY[ID]}"
 			;;
