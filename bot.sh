@@ -471,6 +471,7 @@ process_client() {
 
 	# Date
 	DATE[ALL]=$(date)
+	DATE[YMD]=$(date +%F)
 	DATE[SECOND]=$(date +%S)
 	DATE[MINUTE]=$(date +%M)
 	DATE[HOUR]=$(date +%T)
