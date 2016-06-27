@@ -184,6 +184,16 @@ ${MEMBERS[COUNT]}"
 			send_markdown_message "${CHAT[ID]}" "*${COMMAND}*"
     		fi
     	
+    	echo $MESSAGE | grep "^/lang"
+	        MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
+	 	if [ $MESSAGE == EN ] || [ $MESSAGE == ES ]; then
+		  if [ $? == 0 ]; then
+			sed -i '6 s/'$LANG'/'$MESSAGE'/g' lang.sh
+			send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *$MESSAGE*" "$reply"
+		  fi
+    		fi
+
+    	
 	case $MESSAGE in
 	 	'/leavechat')
 			send_markdown_message "${CHAT[ID]}" "*CHAT LEAVED*"
