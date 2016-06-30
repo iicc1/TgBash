@@ -357,6 +357,10 @@ send_venue() {
 	res=$(curl -s "$VENUE_URL" -F "chat_id=$1" -F "latitude=$2" -F "longitude=$3" -F "title=$4" -F "address=$5" $add)
 }
 
+getmembers () {
+	members=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$1" | cut -d ":" -f3 | cut -d "}" -f1)
+	send_markdown_message "$1" "$2 $members"
+}
 
 forward() {
 	[ "$3" = "" ] && return
@@ -424,7 +428,7 @@ process_client() {
 	USER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
 	
 	# Get members info
-	MEMBERS[COUNT]=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=${CHAT[ID]}" | cut -d ":" -f3 | cut -d "}" -f1)
+	#MEMBERS[COUNT]=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=${CHAT[ID]}" | cut -d ":" -f3 | cut -d "}" -f1)
 
 	# Inline data
 	iUSER[FIRST_NAME]=$(echo "$res" | sed 's/^.*\(first_name.*\)/\1/g' | cut -d '"' -f3 | tail -1)
