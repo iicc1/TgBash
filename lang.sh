@@ -41,7 +41,7 @@ Más funciones hechas por @iicc1 y @Jarriz.
   
 *Basado* en [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
   
-  lang[INFO]='*Este es un bot de *Telegram* escrito completamente en bash.
+  lang[INFO]='Este es un bot de *Telegram* escrito completamente en bash.
 Obtén el código aquí [here](https://github.com/iicc1/TgBash)'
 
   lang[USER]='Usuario'
