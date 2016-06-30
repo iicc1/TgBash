@@ -54,7 +54,7 @@ source settings/inline_keyboards.sh
 	  # If is a forward from private (user) then
 	if [ $FORWARD ]; then
 	  if [ ${CHAT[TYPE]} == private ]; then
-		send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${FORWARD[ID]}" "$reply"
+		send_markdown_message "${CHAT[ID]}" "*${lang[ID]}* ${FORWARD[ID]}" "$reply"
 	  fi
 	  if [ ${CHAT[TYPE]} != private ]; then
 		exit
