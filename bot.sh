@@ -359,7 +359,7 @@ send_venue() {
 
 getmembers () {
 	members=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$1" | cut -d ":" -f3 | cut -d "}" -f1)
-	send_markdown_message "$1" "$2 $members"
+	send_markdown_message "$1" "$2$members"
 }
 
 forward() {
