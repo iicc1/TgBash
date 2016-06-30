@@ -54,7 +54,7 @@ Obtén el código aquí [here](https://github.com/iicc1/TgBash)'
   
   lang[UNGBANNED]='globalmente desbaneado'
   
-  lang[ID]='*ID*'
+  lang[ID]='ID'
   
   lang[CHANNEL_ID]='*ID del canal*'
   
