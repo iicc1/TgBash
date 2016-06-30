@@ -41,6 +41,9 @@ Más funciones hechas por @iicc1 y @Jarriz.
   
 *Basado* en [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
   
+  lang[INFO]='*Este es un bot de *Telegram* escrito completamente en bash.
+Obtén el código aquí [here](https://github.com/iicc1/TgBash)'
+
   lang[USER]='Usuario'
   
   lang[NAME]='Nombre'
@@ -51,11 +54,27 @@ Más funciones hechas por @iicc1 y @Jarriz.
   
   lang[UNGBANNED]='globalmente desbaneado'
   
-  lang[ID]='ID'
+  lang[ID]='*ID*'
+  
+  lang[CHANNEL_ID]='*ID del canal*'
+  
+  lang[IP]='La IP del servidor es:'
   
   lang[PRIVATE]='Este comando *sólo funciona* en *privado*.'
   
   lang[LANG]='Lenguaje cambiado a'
+  
+  lang[BC]='*Broadcast entregado*.'
+  
+  lang[LEAVECHAT]='*Chat abandonado*.'
+  
+  lang[GETMEMBERS]='*Miembros aquí*:'
+  
+  lang[SUDOS]='*Usuarios sudo*'
+  
+  lang[MD]='*Mensaje entregado*.'
+  
+  lang[NEWADMIN]='promovido a *administrador*.'
   
 fi
 
@@ -94,6 +113,9 @@ More functions made by @iicc1 and @Jarriz.
   
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
 
+  lang[INFO]='This is a bashbot of *Telegram* written entirely in *bash*.
+Get the code [here](https://github.com/iicc1/TgBash)'
+
   lang[USER]='User'
   
   lang[NAME]='Name'
@@ -106,8 +128,24 @@ More functions made by @iicc1 and @Jarriz.
   
   lang[ID]='ID'
   
+  lang[CHANNEL_ID]='*Channel ID*'
+  
+  lang[IP]='The IP of the server is:'
+  
   lang[PRIVATE]='This command *only works* in *private*.'
   
   lang[LANG]='Language changed to'
   
+  lang[BC]='*Broadcast delivered*.'
+  
+  lang[LEAVECHAT]='*Chat leaved*.'
+  
+  lang[GETMEMBERS]='*Members here*:'
+  
+  lang[SUDOS]='*Sudo users*'
+  
+  lang[MD]='*Message delivered*.'
+  
+  lang[NEWADMIN]='promoted to *admin*.'
+
 fi
