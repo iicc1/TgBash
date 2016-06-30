@@ -54,7 +54,7 @@ source settings/inline_keyboards.sh
 	  # If is a forward from private (user) then
 	if [ $FORWARD ]; then
 	  if [ ${CHAT[TYPE]} == private ]; then
-		send_markdown_message "${CHAT[ID]}" "*ID* ${FORWARD[ID]}" "$reply"
+		send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${FORWARD[ID]}" "$reply"
 	  fi
 	  if [ ${CHAT[TYPE]} != private ]; then
 		exit
@@ -64,7 +64,7 @@ source settings/inline_keyboards.sh
 	 # If is a forward from chat (channel) then
 	if [ $FORWARD_CHAT ]; then
 	  if [ ${CHAT[TYPE]} == private ]; then
-		send_markdown_message "${CHAT[ID]}" "*Channel ID* ${FORWARD_CHAT[ID]}" "$reply"
+		send_markdown_message "${CHAT[ID]}" "${lang[CHANNEL_ID]} ${FORWARD_CHAT[ID]}" "$reply"
 	  fi
 	  if [ ${CHAT[TYPE]} != private ]; then
 		exit
@@ -90,7 +90,7 @@ source settings/inline_keyboards.sh
          if [ ${CHAT[TYPE]} == private ]; then
 	  MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 	  forward "${ADMINS}" "${CHAT[ID]}" "${MESSAGE[ID]}"
-	  send_markdown_message "${CHAT[ID]}" "*Message delivered*."
+	  send_markdown_message "${CHAT[ID]}" "${lang[MD]}"
 	 fi
 	 if [ ${CHAT[TYPE]} != private ]; then
 	  exit
@@ -136,8 +136,7 @@ source settings/inline_keyboards.sh
 			;;
 			
 		'/info')
-			send_inline_keyboard "${CHAT[ID]}" "This is a bashbot of *Telegram* written entirely in *bash*.
-More info [here](https://github.com/iicc1/TgBash)" "${inline_keyboard[help]}" "$reply"
+			send_inline_keyboard "${CHAT[ID]}" "${lang[INFO]}" "${inline_keyboard[help]}" "$reply"
 			;;
      			
      		'/kickme')
@@ -153,8 +152,8 @@ More info [here](https://github.com/iicc1/TgBash)" "${inline_keyboard[help]}" "$
 			;;
 			
 		'/getmembers')
-			send_markdown_message "${CHAT[ID]}" "*Members here*:
-${MEMBERS[COUNT]}"
+			getmembers "${CHAT[ID]}" "${lang[GETMEMBERS]}
+"
 			;;
 
 		'/cancel')
@@ -172,7 +171,7 @@ ${MEMBERS[COUNT]}"
 	  echo $MESSAGE | grep "^/broadcast"
         	if [ $? == 0 ]; then
 	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-			send_markdown_message "${CHAT[ID]}" "*Broadcast delivered*" "$reply"
+			send_markdown_message "${USER[ID]}" "${lang[BC]}" "$reply"
   	 	shift
 			for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
     		fi
@@ -185,24 +184,24 @@ ${MEMBERS[COUNT]}"
     		fi
     	
     	echo $MESSAGE | grep "^/lang"
-	        MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-	 	if [ $MESSAGE == EN ] || [ $MESSAGE == ES ]; then
+	        NEWLANG=$(echo $MESSAGE | cut -d " " -f2-)
+	 	if [ $NEWLANG == EN ] || [ $NEWLANG == ES ]; then
 		  if [ $? == 0 ]; then
-			sed -i '6 s/'$LANG'/'$MESSAGE'/g' lang.sh
-			send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *$MESSAGE*" "$reply"
+			sed -i '6 s/'$LANG'/'$NEWLANG'/g' lang.sh
+			send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *$NEWLANG*" "$reply"
 		  fi
     		fi
 
     	
 	case $MESSAGE in
 	 	'/leavechat')
-			send_markdown_message "${CHAT[ID]}" "*CHAT LEAVED*"
+			send_markdown_message "${USER[ID]}" "${lang[LEAVECHAT]}"
    			leave_chat "${CHAT[ID]}"
      			;;
 
 	 	'/newadmin')
    			echo "${REPLY[ID]}," >> settings/admins
-   			send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${REPLY[ID]} promoted to *admin*" "$reply"
+   			send_markdown_message "${CHAT[ID]}" "${lang[ID]} ${REPLY[ID]} ${lang[NEWADMIN]}" "$reply"
      			;;
 
      		'/kick')
@@ -237,13 +236,13 @@ ${MEMBERS[COUNT]}"
 			;;
 		
 		'/sudos')
-			send_markdown_message "${CHAT[ID]}" "*Sudo users*
+			send_markdown_message "${CHAT[ID]}" "${lang[SUDOS]}
 ${ADMINS}"
 			;;
 		
 		'/ip')	
 			IP=$(curl -s http://api.ipify.org)
-			send_markdown_message "${CHAT[ID]}" "IP Server: *$IP*"
+			send_markdown_message "${CHAT[ID]}" "${lang[IP]} *$IP*"
 		;;
 	esac
     fi
