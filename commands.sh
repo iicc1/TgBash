@@ -81,8 +81,7 @@ source settings/inline_keyboards.sh
 	# User commands
     	echo $MESSAGE | grep "^/echo"
         if [ $? == 0 ]; then
-	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2- | sed 's/\/echo//g')
-		send_markdown_message "${CHAT[ID]}" "$MESSAGE"
+		send_markdown_message "${CHAT[ID]}" "${ENTRY[ALL]}"
 	fi
 	
 	echo $MESSAGE | grep "^/ct"
@@ -170,10 +169,10 @@ source settings/inline_keyboards.sh
 	if [ $ADMIN == 1 ]; then
 	  echo $MESSAGE | grep "^/broadcast"
         	if [ $? == 0 ]; then
-	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-			send_markdown_message "${USER[ID]}" "${lang[BC]}" "$reply"
+			send_markdown_message "${USER[ID]}" "${lang[BC]}
+_${ENTRY[ALL]}_" "$reply"
   	 	shift
-			for f in $(cat count);do send_markdown_message ${f//COUNT} "$MESSAGE"; $sleep;done
+			for f in $(cat count);do send_markdown_message ${f//COUNT} "${ENTRY[ALL]}"; $sleep;done
     		fi
     	
     	  echo $MESSAGE | grep "^/su"
