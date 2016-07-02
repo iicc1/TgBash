@@ -75,7 +75,7 @@ FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
 UPD_URL=$URL'/getUpdates?offset='
 GET_URL=$URL'/getFile'
 OFFSET=0
-declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE
+declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE ENTRY
 
 send_message() {
 	[ "$2" = "" ] && return 1
@@ -472,6 +472,14 @@ process_client() {
 
 	# Other services
 	DELETE_CHAT_PHOTO=$(echo "$res" | egrep '\["result",0,"message","delete_chat_photo"\]' | cut -f 2 | cut -d '"' -f 2)
+
+	# Get entries
+	ENTRY[ALL]=$(echo $MESSAGE | cut -d " " -f2- )
+	ENTRY[1]=$(echo $MESSAGE | cut -d " " -f2 )
+	ENTRY[2]=$(echo $MESSAGE | cut -d " " -f3 )
+	ENTRY[3]=$(echo $MESSAGE | cut -d " " -f4 )
+	ENTRY[4]=$(echo $MESSAGE | cut -d " " -f5 )
+	ENTRY[5]=$(echo $MESSAGE | cut -d " " -f6 )
 
 	# Date
 	DATE[ALL]=$(date)
