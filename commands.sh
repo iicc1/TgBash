@@ -183,9 +183,9 @@ source settings/inline_keyboards.sh
 			send_markdown_message "${CHAT[ID]}" "*${COMMAND}*"
     		fi
     	
-    	echo $MESSAGE | grep "^/lang"
+    	echo $MESSAGE | grep "^/setlang"
 	        NEWLANG=$(echo $MESSAGE | cut -d " " -f2-)
-	 	if [ $NEWLANG == EN ] || [ $NEWLANG == ES ]; then
+	 	if [ "$NEWLANG" == "EN" ] || [ "$NEWLANG" == "ES" ]; then
 		  if [ $? == 0 ]; then
 			sed -i '6 s/'$LANG'/'$NEWLANG'/g' lang.sh
 			send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *$NEWLANG*" "$reply"
