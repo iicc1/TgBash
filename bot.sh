@@ -12,7 +12,7 @@ ADMINS=$(cat settings/admins)
 GBANS=$(cat settings/gbans)
 INLINE=1
 
-# Removing .folder file.
+# Removing .folder file from folder patch
 sudo rm settings/.folder &>/dev/null
 
 if [ ! -f "JSON.sh/JSON.sh" ]; then
