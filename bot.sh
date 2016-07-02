@@ -72,8 +72,8 @@ ME=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | 
 
 
 FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
-GET_URL=$URL'/getFile'
 UPD_URL=$URL'/getUpdates?offset='
+GET_URL=$URL'/getFile'
 OFFSET=0
 
 declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE
