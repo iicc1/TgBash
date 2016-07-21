@@ -68,7 +68,8 @@ ACTION_URL=$URL'/sendChatAction'
 FORWARD_URL=$URL'/forwardMessage'
 INLINE_QUERY=$URL'/answerInlineQuery'
 ME_URL=$URL'/getMe'
-ME=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
+ME_RES=$(curl -s $ME_URL)
+ME=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
 
 
 FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
@@ -406,9 +407,9 @@ process_client() {
 	reply=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
 	
 	# Bot
-	BOT[USERNAME]=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
-	BOT[NAME]=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	BOT[ID]=$(curl -s $ME_URL | ./JSON.sh/JSON.sh -s | egrep '\["result","id"\]' | cut -f 2 | cut -d '"' -f 2)
+	BOT[USERNAME]=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	BOT[NAME]=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
+	BOT[ID]=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","id"\]' | cut -f 2 | cut -d '"' -f 2)
 
 	# Get user data by reply
 	REPLY[ID]=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","id"\]' | cut -f 2)
