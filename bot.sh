@@ -74,8 +74,10 @@ ME=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut
 
 FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
 UPD_URL=$URL'/getUpdates?offset='
+LIMIT_URL='&limit='
 GET_URL=$URL'/getFile'
 OFFSET=0
+LIMIT=10
 declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE ENTRY
 
 send_message() {
@@ -535,7 +537,7 @@ process_client() {
 # source the script with source as param to use functions in other scripts
 while [ "$1" == "startbot" ]; do {
 
-	res=$(curl -s $UPD_URL$OFFSET | ./JSON.sh/JSON.sh -s)
+	res=$(curl -s $UPD_URL$OFFSET$LIMIT_URL$LIMIT | ./JSON.sh/JSON.sh -s)
 
 	# Offset
 	OFFSET=$(echo "$res" | egrep '\["result",0,"update_id"\]' | cut -f 2)
