@@ -392,6 +392,17 @@ inproc() {
 "
 }
 
+set_lang() {
+ source lang.sh
+ var=false
+  for langs in ${!language[@]}; do
+	if [ "${ENTRY[1]}" = "${language[$langs]}" ]; then
+		var=true
+	fi
+  done
+echo $var
+}
+
 process_client() {
 	# Message
 	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
