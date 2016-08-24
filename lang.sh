@@ -3,7 +3,7 @@
 
 declare -A language
 # Select your language
-LANG='EN' # Reemplace EN to your code of language (if is available)
+LANG='ES' # Reemplace  to your code of language (if is available)
 
 language[1]="ES"
 language[2]="EN"
@@ -58,6 +58,8 @@ Obtén el código [aquí](https://github.com/iicc1/TgBash)'
   lang[UNGBANNED]='globalmente desbaneado'
   
   lang[ID]='ID'
+
+  lang[LANG_NO_AVAILABLE]="El lenguaje \"*${ENTRY[1]}*\" no está disponible"
   
   lang[CHANNEL_ID]='*ID del canal*'
   
@@ -130,6 +132,8 @@ Get the code [here](https://github.com/iicc1/TgBash)'
   lang[UNGBANNED]='globally unbanned'
   
   lang[ID]='ID'
+
+  lang[LANG_NO_AVAILABLE]="The lang \"*${ENTRY[1]}*\" isn't available"
   
   lang[CHANNEL_ID]='*Channel ID*'
   
