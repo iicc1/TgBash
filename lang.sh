@@ -1,9 +1,12 @@
 #!/bin/bash
 #*.*encoding=utf-8*.*
 
+declare -A language
 # Select your language
-# Available languages: ES, EN
 LANG='EN' # Reemplace EN to your code of language (if is available)
+
+language[1]="ES"
+language[2]="EN"
 
 # If the lang is ES then
 if [ $LANG == 'ES' ]; then
