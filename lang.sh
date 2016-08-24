@@ -3,7 +3,7 @@
 
 declare -A language
 # Select your language
-LANG='ES' # Reemplace  to your code of language (if is available)
+LANG='EN' # Reemplace  to your code of language (if is available)
 
 # Availables langs
 language[1]="ES"
