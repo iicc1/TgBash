@@ -78,10 +78,6 @@ GET_URL=$URL'/getFile'
 OFFSET=0
 declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE ENTRY
 
-urlencode() {
-	echo "$*" | sed 's:%:%25:g;s: :%20:g;s:<:%3C:g;s:>:%3E:g;s:#:%23:g;s:{:%7B:g;s:}:%7D:g;s:|:%7C:g;s:\\:%5C:g;s:\^:%5E:g;s:~:%7E:g;s:\[:%5B:g;s:\]:%5D:g;s:`:%60:g;s:;:%3B:g;s:/:%2F:g;s:?:%3F:g;s^:^%3A^g;s:@:%40:g;s:=:%3D:g;s:&:%26:g;s:\$:%24:g;s:\!:%21:g;s:\*:%2A:g'
-}
-
 send_message() {
 	[ "$2" = "" ] && return 1
 	local chat="$1"
@@ -132,7 +128,7 @@ send_text() {
 			send_markdown_message "$1" "${2//markdown_parse_mode}"
 			;;
 		*)
-			res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")")
+			res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2")
 			;;
 	esac
 }
@@ -184,15 +180,15 @@ send_register() {
 }
 
 send_markdown_message() {
-	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
 send_silently_message() {
-	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "disable_notification=true" -d "reply_to_message_id=$3")
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "disable_notification=true" -d "reply_to_message_id=$3")
 }
 
 send_html_message() {
-	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")" -d "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
+	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
 kick_chat_member() {
@@ -308,28 +304,25 @@ send_file() {
 	echo "$file" | grep -qE $FILE_REGEX || return
 	local ext="${file##*.}"
 	case $ext in
-        	mp3|flac)
+        	"mp3")
 			CUR_URL=$AUDIO_URL
 			WHAT=audio
 			STATUS=upload_audio
-			local CAPTION="$3"
 			;;
 		png|jpg|jpeg|gif)
 			CUR_URL=$PHO_URL
 			WHAT=photo
 			STATUS=upload_photo
-			local CAPTION="$3"
 			;;
 		webp)
 			CUR_URL=$STICKER_URL
 			WHAT=sticker
 			STATUS=
 			;;
-		mp4|3GP)
+		mp4)
 			CUR_URL=$VIDEO_URL
 			WHAT=video
 			STATUS=upload_video
-			local CAPTION="$3"
 			;;
 
 		ogg)
@@ -341,11 +334,10 @@ send_file() {
 			CUR_URL=$DOCUMENT_URL
 			WHAT=document
 			STATUS=upload_document
-			local CAPTION="$3"
 			;;
 	esac
 	send_action $chat_id $STATUS
-	res=$(curl -s "$CUR_URL" -F "chat_id=$chat_id" -F "$WHAT=@$file" -F "caption=$CAPTION")
+	res=$(curl -s "$CUR_URL" -F "chat_id=$chat_id" -F "$WHAT=@$file" -F "caption=$3")
 }
 
 # typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location
@@ -399,7 +391,7 @@ process_client() {
 	MESSAGE[ID]=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
 	
 	# Forward from user
-	FORWARD=$(echo "$res" | egrep '\["result",0,"message","forward_from"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD=$(echo "$res" | egrep '\["result",0,"message","forward_from"\]' | cut -f 2)
 	FORWARD[ID]=$(echo "$res" | egrep '\["result",0,"message","forward_from","id"\]' | cut -f 2 | cut -d '"' -f 2)
 	FORWARD[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
 	FORWARD[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
@@ -484,25 +476,14 @@ process_client() {
 
 	# Get entries
 	ENTRY[ALL]=$(echo $MESSAGE | cut -d " " -f2- )
-
 	ENTRY[1]=$(echo $MESSAGE | cut -d " " -f2 )
-	ENTRY[1-]=$(echo $MESSAGE | cut -d " " -f2- )
-
 	ENTRY[2]=$(echo $MESSAGE | cut -d " " -f3 )
-	ENTRY[2-]=$(echo $MESSAGE | cut -d " " -f3- )
-
 	ENTRY[3]=$(echo $MESSAGE | cut -d " " -f4 )
-	ENTRY[3-]=$(echo $MESSAGE | cut -d " " -f4- )
-
 	ENTRY[4]=$(echo $MESSAGE | cut -d " " -f5 )
-	ENTRY[4-]=$(echo $MESSAGE | cut -d " " -f5- )
-
 	ENTRY[5]=$(echo $MESSAGE | cut -d " " -f6 )
-	ENTRY[5-]=$(echo $MESSAGE | cut -d " " -f6- )
 
 	# Date
 	DATE[ALL]=$(date)
-	DATE[IN_FORMAT]=$(date +%H:%M:%S\ %d/%m/%Y)
 	DATE[YMD]=$(date +%F)
 	DATE[SECOND]=$(date +%S)
 	DATE[MINUTE]=$(date +%M)
@@ -597,10 +578,7 @@ case "$1" in
 		tmux kill-session -t $ME&>/dev/null
 		tmux new-session -d -s $ME "bash $SCRIPT startbot" && echo -e '\e[0;32mBot started successfully.\e[0m'
 		echo "Tmux session name $ME" || echo -e '\e[0;31mAn error occurred while starting the bot. \e[0m'
-		date=$(date +%H:%M:%S\ %d/%m/%Y)
-send_silently_message "${ADMINS}" "*Bot started*
-*Session* \`*TMUX* - ${ME}\`
-*Date* \`$date\`"
+		send_silently_message "${ADMINS}" "*Bot started*"
 		;;
 
 	"kill")
@@ -653,11 +631,6 @@ send_silently_message "${ADMINS}" "*Bot started*
 		;;
 
 	*)
-		tmux kill-session -t $ME &>/dev/null
-		date=$(date +%H:%M:%S\ %d/%m/%Y)
-send_silently_message "${ADMINS}" "*Bot started*
-*Session* \`*Normal session* - ${ME}\`
-*Date* \`$date\`"
 		source bot.sh startbot
 		;;
 esac
