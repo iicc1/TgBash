@@ -1,16 +1,18 @@
 #!/bin/bash
 #*.*encoding=utf-8*.*
 
-declare -A language
+declare -a langs
 # Select your language
-LANG='EN' # Reemplace  to your code of language (if is available)
+LANG='en' # Reemplace to your code of language (if is available)
 
 # Availables langs
-language[1]="ES"
-language[2]="EN"
+langs=(
+	"ES" "es"
+	"EN" "en"
+	)
 
 # If the lang is ES then
-if [ $LANG == 'ES' ]; then
+if [ $LANG == 'ES' ] || [ $LANG == 'es' ]; then
 declare -A lang
 
   lang[START]='¡Hola a todos! 
@@ -84,7 +86,7 @@ Obtén el código [aquí](https://github.com/iicc1/TgBash)'
   
 fi
 
-if [ $LANG == 'EN' ]; then
+if [ $LANG == 'EN' ] || [ $LANG == 'en' ]; then
 declare -A lang
 
   lang[START]='Hi everybody! 

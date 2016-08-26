@@ -395,8 +395,8 @@ inproc() {
 set_lang() {
  source lang.sh
  var=false
-  for langs in ${!language[@]}; do
-	if [ "${ENTRY[1]}" = "${language[$langs]}" ]; then
+  for all in ${!langs[@]}; do
+	if [ "${ENTRY[1]}" = "${langs[$all]}" ]; then
 		var=true
 	fi
   done
