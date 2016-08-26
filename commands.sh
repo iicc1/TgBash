@@ -103,7 +103,7 @@ source settings/inline_keyboards.sh
 		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
     	fi
     	
-    	echo $MESSAGE | grep -w "/res @"
+    	echo $MESSAGE | grep "^/res @"
 	if [ $? == 0 ]; then
 		USR=$(echo $MESSAGE | cut -d "@" -f2)
 		getchat "@$USR"
