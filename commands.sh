@@ -79,12 +79,12 @@ source settings/inline_keyboards.sh
 	fi
 	
 	# User commands
-    	echo $MESSAGE | grep "^/echo"
+    	echo $MESSAGE | grep -w "/echo"
         if [ $? == 0 ]; then
 		send_markdown_message "${CHAT[ID]}" "${ENTRY[ALL]}"
 	fi
 	
-	echo $MESSAGE | grep "^/ct"
+	echo $MESSAGE | grep -w "/ct"
         if [ $? == 0 ]; then
          if [ ${CHAT[TYPE]} == private ]; then
 	  MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
@@ -96,14 +96,14 @@ source settings/inline_keyboards.sh
 	 fi
     	fi
 	
-	echo $MESSAGE | grep "^/calc"
+	echo $MESSAGE | grep -w "/calc"
         if [ $? == 0 ]; then
 	 MESSAGE=$(echo $MESSAGE | cut -d " " -f2 | sed 's/\+/%2B/g' | sed 's/(/%28/g' | sed 's/)/%29/g')
 	 EXPR=$(curl -s http://api.mathjs.org/v1/?expr=$MESSAGE)
 		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
     	fi
     	
-    	echo $MESSAGE | grep "^/res @"
+    	echo $MESSAGE | grep -w "/res @"
 	if [ $? == 0 ]; then
 		USR=$(echo $MESSAGE | cut -d "@" -f2)
 		getchat "@$USR"
@@ -167,7 +167,7 @@ source settings/inline_keyboards.sh
 	
 	# Admin commands
 	if [ $ADMIN == 1 ]; then
-	  echo $MESSAGE | grep "^/broadcast"
+	  echo $MESSAGE | grep -w "/broadcast"
         	if [ $? == 0 ]; then
 			send_markdown_message "${USER[ID]}" "${lang[BC]}
 _${ENTRY[ALL]}_" "$reply"
@@ -175,14 +175,14 @@ _${ENTRY[ALL]}_" "$reply"
 			for f in $(cat count);do send_markdown_message ${f//COUNT} "${ENTRY[ALL]}"; $sleep;done
     		fi
     	
-    	  echo $MESSAGE | grep "^/su"
+    	  echo $MESSAGE | grep -w "/su"
         	if [ $? == 0 ]; then
 	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
 	 		COMMAND=$($MESSAGE)
 			send_markdown_message "${CHAT[ID]}" "*${COMMAND}*"
     		fi
     	
-    	echo $MESSAGE | grep "^/setlang"
+    	echo $MESSAGE | grep -w "/setlang"
 		if [ $? == 0 ]; then
 			setlang=$(set_lang)
 			if [ "$setlang" == true ]; then

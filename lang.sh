@@ -21,29 +21,29 @@ Más funciones hechas por @iicc1 y @Jarriz.
 
 *Comandos*
  *Usuarios*:
-  /start ó /help _Inicia el bot con este mensaje_.
-  /info _Obtiene un mensaje corto acerca de este bot_.
-  /getinfo <por respuesta> _Obtiene la información del usuario respondido_.
-  /calculator _Comienza una calculadora interactiva_.
-  /cancel _Cancela cualquier acción interactiva_.
-  /echo <texto> _El bot repetirá el texto ingresado (markdown compatible)_.
-  /myinfo _El bot enviará tu información de usuario_.
-  /getmembers _El bot enviará la cuenta de miembros en el chat actual_.
-  /calc <expr> _El bot calculará cualquier expresión ingresada_.
-  /kickme _Serás autoexpulsado del chat actual_.
-  /ct <mensaje> _Envia un mensaje a los admins del bot_.
+  /start ó /help `Inicia el bot con este mensaje`.
+  /info `Obtiene un mensaje corto acerca de este bot`.
+  /getinfo <_por respuesta_> `Obtiene la información del usuario respondido`.
+  /calculator `Comienza una calculadora interactiva`.
+  /cancel `Cancela cualquier acción interactiva`.
+  /echo <_texto_> `El bot repetirá el texto ingresado (markdown compatible)`.
+  /myinfo `El bot enviará tu información de usuario`.
+  /getmembers `El bot enviará la cuenta de miembros en el chat actual`.
+  /calc <_expr_> `El bot calculará cualquier expresión ingresada`.
+  /kickme `Serás autoexpulsado del chat actual`.
+  /ct <_mensaje_> `Envia un mensaje a los admins del bot`.
   
  *Administradores*:
-  /leavechat _El bot abandonará el chat con este comando_.
-  /broadcast <texto> _El bot enviará un broadcast (markdown compatible)_.
-  /kick <por respuesta> _El bot expulsará al usuario respondido (el usuario podrá regresar)_.
-  /ban <por respuesta> _El bot baneará al usuario respondido (el usuario no podrá regresar)_.
-  /unban <por respuesta> _El bot desbaneará al usuario respondido_.
-  /infobot _El bot responderá con la información del mismo_.
-  /su <comando> _Arranca un comando devolviendo la respuesta_.
-  /ip _El bot enviará la IP del servidor_.
-  /gban <por respuesta> _EL usuario respondido será globalmente baneado_.
-  /ungban <por respuesta> _EL usuario respondido será globalmente desbaneado_.
+  /leavechat `El bot abandonará el chat con este comando`.
+  /broadcast <_texto_> `El bot enviará un broadcast (markdown compatible)`.
+  /kick <_por respuesta_> `El bot expulsará al usuario respondido (el usuario podrá regresar)`.
+  /ban <_por respuesta_> `El bot baneará al usuario respondido (el usuario no podrá regresar)`.
+  /unban <_por respuesta_> `El bot desbaneará al usuario respondido`.
+  /infobot `El bot responderá con la información del mismo`.
+  /su <_comando_> `Arranca un comando devolviendo la respuesta`.
+  /ip `El bot enviará la IP del servidor`.
+  /gban <_por respuesta_> `EL usuario respondido será globalmente baneado`.
+  /ungban <_por respuesta_> `EL usuario respondido será globalmente desbaneado`.
   
 *Basado* en [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
   
@@ -95,29 +95,29 @@ More functions made by @iicc1 and @Jarriz.
 
 *Commands*
  *Users*:
-  /start or /help _Start bot and get this message_.
-  /info _Get shorter info message about this bot_.
-  /getinfo <by reply> _Get info user by reply_.
-  /calculator _Start a interactive calculator_.
-  /cancel _Cancel any currently running interactive chats_.
-  /echo <text> _The bot will send a echo message (markdown compatible)_.
-  /myinfo _The bot will send your info user_.
-  /getmembers _The bot will you send the count of members in the chat_.
-  /calc <expr> _The bot will calculate the expression_.
-  /kickme _You will be autokicked from the chat_.
-  /ct <message> _Send a message to the bot admins_.
+  /start or /help `Start bot and get this message`.
+  /info `Get shorter info message about this bot`.
+  /getinfo <_by reply_> `Get info user by reply`.
+  /calculator `Start a interactive calculator`.
+  /cancel `Cancel any currently running interactive chats`.
+  /echo <_text_> `The bot will send a echo message (markdown compatible)`.
+  /myinfo `The bot will send your info user`.
+  /getmembers `The bot will you send the count of members in the chat`.
+  /calc <_expr_> `The bot will calculate the expression`.
+  /kickme `You will be autokicked from the chat`.
+  /ct <_message_> `Send a message to the bot admins`.
   
  *Admin*:
-  /leavechat _The bot will leave the group with this command_.
-  /broadcast <text> _The bot will send a broadcast (markdown compatible)_.
-  /kick <by reply> _The bot will kick the user by reply (the user can back again)_.
-  /ban <by reply> _The bot will ban the user by reply (the user cant back again)_.
-  /unban <by reply> _The bot will unban the user by reply if is banned_.
-  /infobot _The bot will reply the information of the bot_.
-  /su <command> _Run a command in the console sending the reply_.
-  /ip _The bot will send the IP Server_.
-  /gban <by reply> _The user replied will be gbanned_.
-  /ungban <by reply> _The user replied will be ungbanned_.
+  /leavechat `The bot will leave the group with this command`.
+  /broadcast <_text_> `The bot will send a broadcast (markdown compatible)`.
+  /kick <_by reply_> `The bot will kick the user by reply (the user can back again)`.
+  /ban <_by reply_> `The bot will ban the user by reply (the user cant back again)`.
+  /unban <_by reply_> `The bot will unban the user by reply if is banned`.
+  /infobot `The bot will reply the information of the bot`.
+  /su <_command_> `Run a command in the console sending the reply`.
+  /ip `The bot will send the IP Server`.
+  /gban <_by reply_> `The user replied will be gbanned`.
+  /ungban <_by reply_> `The user replied will be ungbanned`.
   
 *Based* in [telegram-bot-bash](http://github.com/topkecleon/telegram-bot-bash)'
 

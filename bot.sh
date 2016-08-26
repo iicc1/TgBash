@@ -366,7 +366,7 @@ send_venue() {
 	res=$(curl -s "$VENUE_URL" -F "chat_id=$1" -F "latitude=$2" -F "longitude=$3" -F "title=$4" -F "address=$5" $add)
 }
 
-getmembers () {
+getmembers() {
 	members=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$1" | cut -d ":" -f3 | cut -d "}" -f1)
 	send_markdown_message "$1" "$2$members"
 }
