@@ -119,15 +119,41 @@ perl -p -e "s[$keymoji${bye_hand[5]}][👋🏾]g"|
 perl -p -e "s[$keymoji${bye_hand[4]}][👋🏽]g"|
 perl -p -e "s[$keymoji${bye_hand[3]}][👋🏼]g"|
 perl -p -e "s[$keymoji${bye_hand[2]}][👋🏻]g"|
-perl -p -e "s[$keymoji${bye_hand[1]}][👋]g"
+perl -p -e "s[$keymoji${bye_hand[1]}][👋]g"|
+
+ascii2uni -a U -q
 
 }
 
+u_install() {
+if [ ! -f "/usr/bin/uni2ascii" ]; then
+	echo "Uni2ascii not found, installing..."
+	sudo apt-get install uni2ascii -y
+	echo -e '\e[0;32mDone!\e[0m' && exit
+fi
+}
+
 if [ "$1" = "-d" ]; then
-decode
+	decode
+fi
+
+if [ "$1" = "-i" ]; then
+	u_install
 fi
 
 if [ "$1" = "-r" ]; then
-read=$(read dec | decode)
-echo $read
+while true
+do
+	read text
+	wget $text | decode
+done
+fi
+
+if [ "$1" = "-c" ]; then
+	if [ $2 ]; then
+	 curl -s $2 | decode
+	fi
+	if [ ! $2 ]; then
+		echo -e '\e[0;31mERROR field empty\e[0m'
+	fi
 fi
