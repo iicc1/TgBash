@@ -52,21 +52,21 @@ source settings/inline_keyboards.sh
 	fi
 	
 	  # If is a forward from private (user) then
-	if [ $FORWARD ]; then
-	  if [ ${CHAT[TYPE]} == private ]; then
+	if [ "$FORWARD" ]; then
+	  if [ "${CHAT[TYPE]}" == private ]; then
 		send_markdown_message "${CHAT[ID]}" "*${lang[ID]}* ${FORWARD[ID]}" "$reply"
 	  fi
-	  if [ ${CHAT[TYPE]} != private ]; then
+	  if [ "${CHAT[TYPE]}" != private ]; then
 		exit
 	  fi
 	fi
 	
 	 # If is a forward from chat (channel) then
-	if [ $FORWARD_CHAT ]; then
-	  if [ ${CHAT[TYPE]} == private ]; then
+	if [ "$FORWARD_CHAT" ]; then
+	  if [ "${CHAT[TYPE]}" == private ]; then
 		send_markdown_message "${CHAT[ID]}" "${lang[CHANNEL_ID]} ${FORWARD_CHAT[ID]}" "$reply"
 	  fi
-	  if [ ${CHAT[TYPE]} != private ]; then
+	  if [ "${CHAT[TYPE]}" != private ]; then
 		exit
 	  fi
 	fi
@@ -249,7 +249,6 @@ ${ADMINS}"
 			;;
 		
 		'/ip')	
-			echo="OK"
 			IP=$(curl -s http://api.ipify.org)
 			send_markdown_message "${CHAT[ID]}" "${lang[IP]} *$IP*"
 		;;
