@@ -9,7 +9,7 @@ You can test the bot in bash just cloning the repository.
 Use:
 ``` bash
 git clone https://github.com/iicc1/TgBash.git
-sudo ./bot.sh tmux # If you want a tmux session, else if not a tmux sesion start without "tmux"
+sudo ./bot.sh tmux # If you want a tmux session, else if not, start without "tmux"
 ```
 
 ### [How to install and add more commands (wiki)](https://github.com/iicc1/TgBash/wiki)
