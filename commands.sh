@@ -42,12 +42,12 @@ source settings/inline_keyboards.sh
 
   	# Services
   	  # If is new member then
-	if [ $NEW_MEMBER ]; then
-		send_markdown_message "${CHAT[ID]}" "Welcome @${NEW_MEMBER[USERNAME]} to *${CHAT[TITLE]}*"
+	if [ "$NEW_MEMBER" ]; then
+		send_markdown_message "${CHAT[ID]}" "Welcome ${NEW_MEMBER[FIRST_NAME]} @${NEW_MEMBER[USERNAME]} to *${CHAT[TITLE]}*"
 	fi
 	
 	  # If is kicked then
-	if [ $OUT_MEMBER ]; then
+	if [ "$OUT_MEMBER" ]; then
 		send_markdown_message "${CHAT[ID]}" "Bye @${OUT_MEMBER[USERNAME]}, I see you later..."
 	fi
 	
@@ -64,7 +64,9 @@ source settings/inline_keyboards.sh
 	 # If is a forward from chat (channel) then
 	if [ "$FORWARD_CHAT" ]; then
 	  if [ "${CHAT[TYPE]}" == private ]; then
-		send_markdown_message "${CHAT[ID]}" "${lang[CHANNEL_ID]} ${FORWARD_CHAT[ID]}" "$reply"
+		send_markdown_message "${CHAT[ID]}" "${lang[CHANNEL_ID]} ${FORWARD_CHAT[ID]}
+*${lang[TITLE]}* ${FORWARD_CHAT[TITLE]}
+*${lang[USER]}* \`@${FORWARD_CHAT[USERNAME]}\`" "$reply"
 	  fi
 	  if [ "${CHAT[TYPE]}" != private ]; then
 		exit
