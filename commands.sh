@@ -84,6 +84,12 @@ source settings/inline_keyboards.sh
 		send_markdown_message "${CHAT[ID]}" "${ENTRY[ALL]}"
 	fi
 	
+    	echo $MESSAGE | grep -w "/rev"
+        if [ $? == 0 ]; then
+		change=$(echo ${ENTRY[ALL]} | rev)
+		send_markdown_message "${CHAT[ID]}" "$change"
+	fi
+	
 	echo $MESSAGE | grep -w "/ct"
         if [ $? == 0 ]; then
          if [ ${CHAT[TYPE]} == private ]; then
