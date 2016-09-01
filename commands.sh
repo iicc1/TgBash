@@ -109,12 +109,21 @@ source settings/inline_keyboards.sh
 		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
     	fi
     	
-    	echo $MESSAGE | grep "^/res @"
+    	echo $MESSAGE | grep "^/res"
 	if [ $? == 0 ]; then
-		USR=$(echo $MESSAGE | cut -d "@" -f2)
-		getchat "@$USR"
-		res=$(echo $res | cut -d '"' -f7 | tr -d ":" | tr -d ",")
-		send_markdown_message "${CHAT[ID]}" "$res"
+		USR=$(echo $MESSAGE | cut -d " " -f2)
+		getchat "$USR"
+		id=$(echo $res | jq -r '.result .id')
+		type=$(echo $res | jq -r '.result .type')
+		title=$(echo $res | jq -r '.result .title')
+		username=$(echo $res | jq -r '.result .username')
+		first_name=$(echo $res | jq -r '.result .first_name')
+		last_name=$(echo $res | jq -r '.result .last_name')
+		send_markdown_message "${CHAT[ID]}" "@$username ($id)
+*Firstname* _ $first_name _
+*Lastname* _ $last_name _
+*Title* _ $title _
+*Type* _ $type _"
 		exit
 	fi
 
