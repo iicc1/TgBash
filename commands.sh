@@ -193,6 +193,7 @@ _${ENTRY[ALL]}_" "$reply"
 			fi
 		fi
 
+
     	
 	case $MESSAGE in
 	 	'/leavechat')
@@ -242,6 +243,7 @@ ${ADMINS}"
 			;;
 		
 		'/ip')	
+			echo="OK"
 			IP=$(curl -s http://api.ipify.org)
 			send_markdown_message "${CHAT[ID]}" "${lang[IP]} *$IP*"
 		;;

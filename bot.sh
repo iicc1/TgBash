@@ -15,10 +15,10 @@ INLINE=1
 # Removing .folder file.
 sudo rm settings/.folder &>/dev/null
 
-if [ ! -f "JSON.sh/JSON.sh" ]; then
-	echo "You did not clone recursively! Downloading JSON.sh..."
-	git clone http://github.com/dominictarr/JSON.sh
-	echo "JSON.sh has been downloaded. Proceeding."
+if [ ! -f "/usr/bin/jq" ]; then
+	echo "JQ not found... Installing..."
+	sudo apt-get install jq -y
+	echo "JQ has been downloaded. Proceeding..."
 fi
 
 if [ ! -f "settings/token" ]; then
@@ -37,10 +37,6 @@ fi
 
 if [ ! -f "settings/gbans" ]; then
 	touch settings/gbans
-fi
-
-if [ ! -f "/usr/bin/uni2ascii" ]; then
-	bash decode.sh -i
 fi
 
 source commands.sh source
@@ -69,7 +65,7 @@ FORWARD_URL=$URL'/forwardMessage'
 INLINE_QUERY=$URL'/answerInlineQuery'
 ME_URL=$URL'/getMe'
 ME_RES=$(curl -s $ME_URL)
-ME=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
+ME=$(echo $ME_RES | jq -r '.result .username // empty')
 
 
 FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
@@ -298,7 +294,7 @@ send_keyboard() {
 }
 
 get_file() {
-	[ "$1" != "" ] && echo $FILE_URL$(curl -s "$GET_URL" -F "file_id=$1" | ./JSON.sh/JSON.sh -s | egrep '\["result","file_path"\]' | cut -f 2 | cut -d '"' -f 2)
+	[ "$1" != "" ] && echo $FILE_URL$(curl -s "$GET_URL" -F "file_id=$1" | jq -r '.result .file_path // empty')
 }
 
 send_file() {
@@ -405,93 +401,90 @@ echo $var
 
 process_client() {
 	# Message
-	MESSAGE=$(echo "$res" | egrep '\["result",0,"message","text"\]' | cut -f 2 | cut -d '"' -f 2 | ./decode.sh -d )
-	MESSAGE=$(printf "$MESSAGE")
-	MESSAGE[ID]=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
+	MESSAGE=$(echo "$res" | jq -r '.result[0] .message .text // empty')
+	MESSAGE[ID]=$(echo "$res" | jq -r '.result[0] .message .message_id // empty')
 	
 	# Forward from user
-	FORWARD=$(echo "$res" | egrep '\["result",0,"message","forward_from"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD[ID]=$(echo "$res" | egrep '\["result",0,"message","forward_from","id"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD=$(echo "$res" | jq -r '.result[0] .message .forward_from // empty')
+	FORWARD[ID]=$(echo "$res" | jq -r '.result[0] .message .forward_from .id // empty')
+	FORWARD[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from .first_name // empty')
+	FORWARD[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from .last_name // empty')
+	FORWARD[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from .username // empty')
 	
 	# Forward from chat (channel)
-	FORWARD_CHAT=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD_CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","id"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD_CHAT[TITLE]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","title"\]' | cut -f 2 | cut -d '"' -f 2)
-	FORWARD_CHAT[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","forward_from_chat","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	FORWARD_CHAT=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat // empty')
+	FORWARD_CHAT[ID]=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat .id // empty')
+	FORWARD_CHAT[TITLE]=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat .title // empty')
+	FORWARD_CHAT[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat .username // empty')
 	
 	# Generate reply
-	reply=$(echo "$res" | egrep '\["result",0,"message","message_id"\]' | cut -f 2)
+	reply=$(echo "$res" | jq -r '.result[0] .message .message_id // empty')
 	
 	# Bot
-	BOT[USERNAME]=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","username"\]' | cut -f 2 | cut -d '"' -f 2)
-	BOT[NAME]=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	BOT[ID]=$(echo $ME_RES | ./JSON.sh/JSON.sh -s | egrep '\["result","id"\]' | cut -f 2 | cut -d '"' -f 2)
+	BOT[USERNAME]=$(echo $ME_RES | jq -r '.result .username // empty')
+	BOT[NAME]=$(echo $ME_RES | jq -r '.result .first_name // empty')
+	BOT[ID]=$(echo $ME_RES | jq -r '.result .id // empty')
 
 	# Get user data by reply
-	REPLY[ID]=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","id"\]' | cut -f 2)
-	REPLY[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	REPLY[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	REPLY[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","reply_to_message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	REPLY[ID]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .id // empty')
+	REPLY[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .first_name // empty')
+	REPLY[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .last_name // empty')
+	REPLY[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .username // empty')
 	
 	# Chat
-	CHAT[ID]=$(echo "$res" | egrep '\["result",0,"message","chat","id"\]' | cut -f 2)
-	CHAT[TITLE]=$(echo "$res" | egrep '\["result",0,"message","chat","title"\]' | cut -f 2 | cut -d '"' -f 2 | ascii2uni -a U -q)
-	CHAT[TYPE]=$(echo "$res" | egrep '\["result",0,"message","chat","type"\]' | cut -f 2 | cut -d '"' -f 2)
+	CHAT[ID]=$(echo "$res" | jq -r '.result[0] .message.chat .id // empty')
+	CHAT[TITLE]=$(echo "$res" | jq -r '.result[0] .message .chat .title // empty')
+	CHAT[TYPE]=$(echo "$res" | jq -r '.result[0] .message .chat .type // empty')
 	
 	# User
-	USER[ID]=$(echo "$res" | egrep '\["result",0,"message","from","id"\]' | cut -f 2)
-	USER[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	USER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","from","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	USER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","from","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	USER[ID]=$(echo "$res" | jq -r '.result[0] .message .from .id // empty')
+	USER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .from .first_name // empty')
+	USER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .from .last_name // empty')
+	USER[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .from .username // empty')
 	
-	# Get members info
-	#MEMBERS[COUNT]=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=${CHAT[ID]}" | cut -d ":" -f3 | cut -d "}" -f1)
-
 	# Inline data
-	iUSER[FIRST_NAME]=$(echo "$res" | sed 's/^.*\(first_name.*\)/\1/g' | cut -d '"' -f3 | tail -1)
-	iUSER[LAST_NAME]=$(echo "$res" | sed 's/^.*\(last_name.*\)/\1/g' | cut -d '"' -f3)
-	iUSER[USERNAME]=$(echo "$res" | sed 's/^.*\(username.*\)/\1/g' | cut -d '"' -f3 | tail -1)
-	iQUERY[ID]=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -1)
-	iQUERY[MSG]=$(echo "$res" | sed 's/^.*\(inline_query.*\)/\1/g' | cut -d '"' -f5 | tail -6 | head -1)
+	iUSER[ID]=$(echo "$res" | jq -r '.result[0] .inline_query .from .id // empty')
+	iUSER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .inline_query .from .first_name // empty')
+	iUSER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .inline_query .from .last_name // empty')
+	iUSER[USERNAME]=$(echo "$res" | jq -r '.result[0] .inline_query .from .username // empty')
+	iQUERY[ID]=$(echo "$res" | jq -r '.result[0] .inline_query .id // empty')
+	iQUERY[MSG]=$(echo "$res" | jq -r '.result[0] .inline_query .query // empty')
 	
 	# New members added/joined
-	NEW_MEMBER=$(echo "$res" | egrep '\["result",0,"message","new_chat_member"\]' | cut -f 2)
-	NEW_MEMBER[ID]=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","id"\]' | cut -f 2 | cut -d '"' -f 2)
-	NEW_MEMBER[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	NEW_MEMBER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	NEW_MEMBER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","new_chat_member","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	NEW_MEMBER=$(echo "$res" | jq -r '.result[0] .message .new_chat_member // empty')
+	NEW_MEMBER[ID]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .id // empty')
+	NEW_MEMBER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .first_name // empty')
+	NEW_MEMBER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .last_name // empty')
+	NEW_MEMBER[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .username // empty')
 	
 	# Members kicked/out
-	OUT_MEMBER=$(echo "$res" | egrep '\["result",0,"message","left_chat_member"\]' | cut -f 2)
-	OUT_MEMBER[ID]=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","id"\]' | cut -f 2 | cut -d '"' -f 2)
-	OUT_MEMBER[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	OUT_MEMBER[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	OUT_MEMBER[USERNAME]=$(echo "$res" | egrep '\["result",0,"message","left_chat_member","username"\]' | cut -f 2 | cut -d '"' -f 2)
+	OUT_MEMBER=$(echo "$res" | jq -r '.result[0] .message .left_chat_member // empty')
+	OUT_MEMBER[ID]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .id // empty')
+	OUT_MEMBER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .first_name // empty')
+	OUT_MEMBER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .last_name // empty')
+	OUT_MEMBER[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .username // empty')
 	
 	# Audio
-	URLS[AUDIO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","audio","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
+	URLS[AUDIO]=$(get_file $(echo "$res" | jq -r '.result[0] .message .audio .file_id // empty'))
 	# Document
-	URLS[DOCUMENT]=$(get_file $(echo "$res" | egrep '\["result",0,"message","document","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
+	URLS[DOCUMENT]=$(get_file $(echo "$res" | jq -r '.result[0] .message .document .file_id // empty'))
 	# Photo
-	URLS[PHOTO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","photo",.*,"file_id"\]' | cut -f 2 | cut -d '"' -f 2 | sed -n '$p'))
+	URLS[PHOTO]=$(get_file $(echo "$res" | jq -r '.result[0] .message .photo .file_id // empty'))
 	# Sticker
-	URLS[STICKER]=$(get_file $(echo "$res" | egrep '\["result",0,"message","sticker","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
+	URLS[STICKER]=$(get_file $(echo "$res" | jq -r '.result[0] .message .sticker .file_id // empty'))
 	# Video
-	URLS[VIDEO]=$(get_file $(echo "$res" | egrep '\["result",0,"message","video","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
+	URLS[VIDEO]=$(get_file $(echo "$res" | jq -r '.result[0] .message .video .file_id // empty'))
 	# Voice
-	URLS[VOICE]=$(get_file $(echo "$res" | egrep '\["result",0,"message","voice","file_id"\]' | cut -f 2 | cut -d '"' -f 2))
+	URLS[VOICE]=$(get_file $(echo "$res" | jq -r '.result[0] .message .voice .file_id // empty'))
 
 	# Contact
-	CONTACT[NUMBER]=$(echo "$res" | egrep '\["result",0,"message","contact","phone_number"\]' | cut -f 2 | cut -d '"' -f 2)
-	CONTACT[FIRST_NAME]=$(echo "$res" | egrep '\["result",0,"message","contact","first_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	CONTACT[LAST_NAME]=$(echo "$res" | egrep '\["result",0,"message","contact","last_name"\]' | cut -f 2 | cut -d '"' -f 2)
-	CONTACT[USER_ID]=$(echo "$res" | egrep '\["result",0,"message","contact","user_id"\]' | cut -f 2 | cut -d '"' -f 2)
+	CONTACT[NUMBER]=$(echo "$res" | jq -r '.result[0] .message .contact .phone_number // empty')
+	CONTACT[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .contact .first_number // empty')
+	CONTACT[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .contact .last_number // empty')
+	CONTACT[USER_ID]=$(echo "$res" | jq -r '.result[0] .message .contact .user_id // empty')
 
 	# Other services
-	DELETE_CHAT_PHOTO=$(echo "$res" | egrep '\["result",0,"message","delete_chat_photo"\]' | cut -f 2 | cut -d '"' -f 2)
+	DELETE_CHAT_PHOTO=$(echo "$res" | jq -r '.result[0] .message .delete_chat_photo // empty')
 
 	# Get entries
 	ENTRY[ALL]=$(echo $MESSAGE | cut -d " " -f2- )
@@ -523,11 +516,11 @@ process_client() {
 	DATE[YEAR]=$(date +%Y)
 
 	# Caption
-	CAPTION=$(echo "$res" | egrep '\["result",0,"message","caption"\]' | cut -f 2 | cut -d '"' -f 2)
+	CAPTION=$(echo "$res" | jq -r '.result[0] .message .caption // empty')
 
 	# Location
-	LOCATION[LONGITUDE]=$(echo "$res" | egrep '\["result",0,"message","location","longitude"\]' | cut -f 2 | cut -d '"' -f 2)
-	LOCATION[LATITUDE]=$(echo "$res" | egrep '\["result",0,"message","location","latitude"\]' | cut -f 2 | cut -d '"' -f 2)
+	LOCATION[LONGITUDE]=$(echo "$res" | jq -r '.result[0] .message .location .longitude // empty')
+	LOCATION[LATITUDE]=$(echo "$res" | jq -r '.result[0] .message .location .latitude // empty')
 	NAME="$(echo ${URLS[*]} | sed 's/.*\///g')"
 
 	# Tmux
@@ -565,10 +558,10 @@ process_client() {
 # source the script with source as param to use functions in other scripts
 while [ "$1" == "startbot" ]; do {
 
-	res=$(curl -s $UPD_URL$OFFSET | ./JSON.sh/JSON.sh -s)
+	res=$(curl -s $UPD_URL$OFFSET )
 
 	# Offset
-	OFFSET=$(echo "$res" | egrep '\["result",0,"update_id"\]' | cut -f 2)
+	OFFSET=$(echo "$res" | jq -r '.result[0].update_id')
 	OFFSET=$((OFFSET+1))
 
 	if [ $OFFSET != 1 ]; then
