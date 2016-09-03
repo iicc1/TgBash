@@ -43,7 +43,12 @@ source settings/inline_keyboards.sh
   	# Services
   	  # If is new member then
 	if [ "$NEW_MEMBER" ]; then
+	 welcome=$(db_exist welcome)
+	 if [ "$welcome" ]; then
+		send_markdown_message "${CHAT[ID]}" "$welcome"
+	 else
 		send_markdown_message "${CHAT[ID]}" "Welcome ${NEW_MEMBER[FIRST_NAME]} @${NEW_MEMBER[USERNAME]} to *${CHAT[TITLE]}*"
+	 fi
 	fi
 	
 	  # If is kicked then
@@ -169,6 +174,7 @@ source settings/inline_keyboards.sh
 			if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT[ID]}" "*Command canceled*.";else send_markdown_message "${CHAT[ID]}" "*No command is currently running*.";fi
 			;;
 			
+			
 		*)
 			if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
 			;;
@@ -187,10 +193,24 @@ _${ENTRY[ALL]}_" "$reply"
     	
     	  echo $MESSAGE | grep -w "/su"
         	if [ $? == 0 ]; then
-	 		MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
-	 		COMMAND=$($MESSAGE)
+	 		COMMAND=$(${ENTRY[ALL]})
 			send_markdown_message "${CHAT[ID]}" "*${COMMAND}*"
     		fi
+
+    	  echo $MESSAGE | grep -w "/setwelcome"
+        	if [ $? == 0 ]; then
+			db_set welcome "${ENTRY[ALL]}"
+			send_markdown_message "${CHAT[ID]}" "*New welcome*
+${ENTRY[ALL]}"
+    		fi
+
+    	  echo $MESSAGE | grep -w "/delwelcome"
+        	if [ $? == 0 ]; then
+			db_del welcome
+			send_markdown_message "${CHAT[ID]}" "Welcome deleted"
+    		fi
+
+
     	
     	echo $MESSAGE | grep -w "/setlang"
 		if [ $? == 0 ]; then

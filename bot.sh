@@ -15,10 +15,7 @@ INLINE=1
 # Removing .folder file.
 sudo rm settings/.folder &>/dev/null
 
-if [ ! -f "/usr/bin/jq" ]; then
-	echo "JQ not found... Installing..."
-	sudo apt-get install jq -y
-	echo "JQ has been downloaded. Proceeding..."
+if [ ! -f "/usr/bin/jq" ]; then echo "JQ not found... Installing..."; sudo apt-get install jq -y; echo "JQ has been downloaded. Proceeding...";
 fi
 
 if [ ! -f "settings/token" ]; then
@@ -372,6 +369,27 @@ forward() {
 	res=$(curl -s "$FORWARD_URL" -F "chat_id=$1" -F "from_chat_id=$2" -F "message_id=$3")
 }
 
+db_get() {
+	redis-bash-cli -h localhost GET $1
+}
+
+db_set() {
+	redis-bash-cli -h localhost SET "$1" "$2"
+}
+
+db_del() {
+	redis-bash-cli -h localhost SET "$1" 0
+}
+
+db_exist() {
+	check_db=$(db_get $1)
+	if [ "$check_db" == 0 ]; then
+		exit
+	else
+		echo $check_db
+	fi
+}
+
 startproc() {
 	killproc
 	mkfifo /tmp/$copname
@@ -643,8 +661,9 @@ send_silently_message "${ADMINS}" "*Bot started*
 
 
 	"help")
+		if [ ! -f "/usr/bin/elinks" ]; then sudo apt-get install elinks -y; fi
 		clear
-		less README.md
+		elinks https://github.com/iicc1/TgBash/wiki
 		;;
 
 	"attach")
@@ -661,7 +680,7 @@ send_silently_message "${ADMINS}" "*Bot started*
 		date=$(date +%H:%M:%S\ %d/%m/%Y)
 send_silently_message "${ADMINS}" "*Bot started*
 *Session* \`*Normal session*\`
-*Date* \`$date\`"
+*Date* \`$date\`" && echo "BOT STARTED IN NORMAL SESSION @$ME"
 		source bot.sh startbot
 		;;
 esac
