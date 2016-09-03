@@ -130,7 +130,7 @@ send_text() {
 	esac
 }
 
-send_register() {
+function send_register() {
 	if [ "${CHAT[TYPE]}" == "private" ]; then
 	 if [ "$MESSAGE" ]; then
 	   echo -en '\n'
@@ -173,6 +173,10 @@ send_register() {
 	if [ "$GBAN" == "1" ]; then
 	   echo -en '\n'
 	   echo -e '\e[0;31mID '${USER[ID]}' is gbanned.\e[0m'
+	fi
+
+	if [ "${iQUERY[MSG]}" ]; then
+	   echo 'iQuery msg ('${iQUERY[MSG]}')'
 	fi
 }
 
@@ -410,7 +414,8 @@ set_lang() {
  source lang.sh
  var=false
   for all in ${!Langs[@]}; do
-	if [ "${ENTRY[1]}" = "${Langs[$all]}" ]; then
+	setlng=$(echo ${ENTRY[1]} | tr [:upper:] [:lower:])
+	if [ "${setlng}" = "${Langs[$all]}" ]; then
 		var=true
 	fi
   done

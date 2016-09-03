@@ -3,7 +3,7 @@
 
 declare -a langs
 # Select your language
-Language='en' # Reemplace to your code of language (if is available)
+Language='es' # Reemplace to your code of language (if is available)
 
 # Availables langs
 Langs=(

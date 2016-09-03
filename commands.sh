@@ -212,12 +212,13 @@ ${ENTRY[ALL]}"
 
 
     	
-    	echo $MESSAGE | grep -w "/setlang"
+    	echo $MESSAGE | grep -w "/lang"
 		if [ $? == 0 ]; then
 			setlang=$(set_lang)
 			if [ "$setlang" == true ]; then
-				sed -i '6 s/'$LANG'/'${ENTRY[1]}'/g' lang.sh
-				send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *${ENTRY[1]}*" "$reply"
+				setlng=$(echo ${ENTRY[1]} | tr [:upper:] [:lower:])
+				sed -i '6 s/'$Language'/'${setlng}'/g' lang.sh
+				send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *${setlng}*" "$reply"
 			else
 				send_markdown_message "${CHAT[ID]}" "${lang[LANG_NO_AVAILABLE]}" "$reply"
 			fi
