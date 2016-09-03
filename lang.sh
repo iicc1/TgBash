@@ -3,16 +3,16 @@
 
 declare -a langs
 # Select your language
-LANG='en' # Reemplace to your code of language (if is available)
+Language='en' # Reemplace to your code of language (if is available)
 
 # Availables langs
-langs=(
-	"ES" "es"
-	"EN" "en"
+Langs=(
+	"es"
+	"en"
 	)
 
 # If the lang is ES then
-if [ $LANG == 'ES' ] || [ $LANG == 'es' ]; then
+if [ $Language == 'es' ]; then
 declare -A lang
 
   lang[START]='¡Hola a todos! 
@@ -66,6 +66,8 @@ Obtén el código [aquí](https://github.com/iicc1/TgBash)'
   
   lang[CHANNEL_ID]='*ID del canal*'
   
+  lang[TITLE]='Título'
+  
   lang[IP]='La IP del servidor es:'
   
   lang[PRIVATE]='Este comando *sólo funciona* en *privado*.'
@@ -86,7 +88,7 @@ Obtén el código [aquí](https://github.com/iicc1/TgBash)'
   
 fi
 
-if [ $LANG == 'EN' ] || [ $LANG == 'en' ]; then
+if [ $Language == 'en' ]; then
 declare -A lang
 
   lang[START]='Hi everybody! 
@@ -139,6 +141,8 @@ Get the code [here](https://github.com/iicc1/TgBash)'
   lang[LANG_NO_AVAILABLE]="The lang \"*${ENTRY[1]}*\" isn't available"
   
   lang[CHANNEL_ID]='*Channel ID*'
+  
+  lang[TITLE]='Title'
   
   lang[IP]='The IP of the server is:'
   
