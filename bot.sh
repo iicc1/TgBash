@@ -4,70 +4,56 @@
 # Written by Drew (@topkecleon) and Daniil Gentili (@danogentili).
 # More functions by @iicc1 and @jarriz.
 
-# Set INLINE to 0 to disable inline queries.
-# To enable this option in your bot, send the /setinline command to @BotFather.
-# Get token and admin list.
-TOKEN=$(cat settings/token)
-ADMINS=$(cat settings/admins)
-GBANS=$(cat settings/gbans)
-INLINE=1
+. config.sh
+. data/inline_keyboards.sh
 
-# Removing .folder file.
-sudo rm settings/.folder &>/dev/null
+ADMINS=$(cat data/admins)
 
 if [ ! -f "/usr/bin/jq" ]; then echo "JQ not found... Installing..."; sudo apt-get install jq -y; echo "JQ has been downloaded. Proceeding...";
 fi
 
-if [ ! -f "settings/token" ]; then
-	clear
-	echo -e '\e[0;31mTOKEN MISSING.\e[0m'
-	echo "PLEASE WRITE YOUR TOKEN HERE"
-	read token
-	echo "$token" >> settings/token
+if [ "$TOKEN" == "" ]; then
+	echo "Please, put your token in config.sh" & exit
 fi
 
-if [ ! -f "settings/admins" ]; then
+if [ ! -f "data/admins" ]; then
     echo "PLEASE WRITE YOUR ID HERE"
     read adminID
-    echo "$adminID," >> settings/admins
+    echo "$adminID," >> data/admins
 fi
 
-if [ ! -f "settings/gbans" ]; then
-	touch settings/gbans
-fi
-
-source commands.sh source
-URL='https://api.telegram.org/bot'$TOKEN
+URL='https://api.telegram.org/bot'$TOKEN'/'
 
 
 SCRIPT="$0"
-MSG_URL=$URL'/sendMessage'
-LEAVE_URL=$URL'/leaveChat'
-KICK_URL=$URL'/kickChatMember'
-UNBAN_URL=$URL'/unbanChatMember'
-GETMEMBERS_URL=$URL'/getChatMembersCount'
-GETMEMBER_URL=$URL'/getChatMember'
-GETCHAT_URL=$URL'/getChat'
-GETCHATADMIN=$URL'/getChatAdministrators'
-PHO_URL=$URL'/sendPhoto'
-AUDIO_URL=$URL'/sendAudio'
-DOCUMENT_URL=$URL'/sendDocument'
-STICKER_URL=$URL'/sendSticker'
-VIDEO_URL=$URL'/sendVideo'
-VOICE_URL=$URL'/sendVoice'
-LOCATION_URL=$URL'/sendLocation'
-VENUE_URL=$URL'/sendVenue'
-ACTION_URL=$URL'/sendChatAction'
-FORWARD_URL=$URL'/forwardMessage'
-INLINE_QUERY=$URL'/answerInlineQuery'
-ME_URL=$URL'/getMe'
+MSG_URL=$URL'sendMessage'
+LEAVE_URL=$URL'leaveChat'
+KICK_URL=$URL'kickChatMember'
+UNBAN_URL=$URL'unbanChatMember'
+GETMEMBERS_URL=$URL'getChatMembersCount'
+GETMEMBER_URL=$URL'getChatMember'
+GETCHAT_URL=$URL'getChat'
+EDITMSG_URL=$URL'editMessageText'
+GETCHATADMINS=$URL'getChatAdministrators'
+PHO_URL=$URL'sendPhoto'
+AUDIO_URL=$URL'sendAudio'
+DOCUMENT_URL=$URL'sendDocument'
+STICKER_URL=$URL'sendSticker'
+VIDEO_URL=$URL'sendVideo'
+VOICE_URL=$URL'sendVoice'
+LOCATION_URL=$URL'sendLocation'
+VENUE_URL=$URL'sendVenue'
+ACTION_URL=$URL'sendChatAction'
+FORWARD_URL=$URL'forwardMessage'
+INLINE_QUERY=$URL'answerInlineQuery'
+ME_URL=$URL'getMe'
 ME_RES=$(curl -s $ME_URL)
 ME=$(echo $ME_RES | jq -r '.result .username // empty')
 
 
 FILE_URL='https://api.telegram.org/file/bot'$TOKEN'/'
-UPD_URL=$URL'/getUpdates?offset='
-GET_URL=$URL'/getFile'
+UPD_URL=$URL'getUpdates?offset='
+GET_URL=$URL'getFile'
 OFFSET=0
 declare -A USER CHAT MESSAGE URLS CONTACT LOCATION OUT_MEMBER NEW_MEMBER BOT REPLY MEMBERS iQUERY iUser FORWARD FORWARD_CHAT DATE ENTRY
 
@@ -192,6 +178,10 @@ send_html_message() {
 	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")" -d "parse_mode=html" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
 
+edit_message() {
+	res=$(curl -s "$EDITMSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")" -d "message_id=${REPLY[MESSAGE_ID]}"  -d "parse_mode=markdown" -d "disable_web_page_preview=true")
+}
+
 kick_chat_member() {
 	res=$(curl -s "$KICK_URL" -F "chat_id=$1" -F "user_id=$2")
 }
@@ -204,8 +194,25 @@ leave_chat() {
  res=$(curl -s "$LEAVE_URL" -F "chat_id=$1")
 }
 
-getchat() {
+get_chat() {
 	res=$(curl -s "$GETCHAT_URL" -d "chat_id=$1")
+}
+
+get_chat_admins() {
+	res=$(curl -s "$GETCHATADMIN" -d "chat_id=$1")
+}
+
+get_chat_member() {
+	user=$(curl -s "$GETMEMBER_URL" -d "chat_id=${CHAT[ID]}" -d "user_id=${USER[ID]}" | jq -r '.result .status')
+	echo $user
+}
+
+user_is_admin() {
+	var=false
+	if [ "$(get_chat_member)" == creator ] || [ "$(get_chat_member)" == administrator ]; then
+		var=true
+	fi
+	echo $var
 }
 
 send_inline_keyboard() {
@@ -394,6 +401,15 @@ db_exist() {
 	fi
 }
 
+user_is_gbanned() {
+ source data/gbans.sh
+ for gbu in $GBANS; do
+   if [ "${USER[ID]}" == $gbu ] || [ "${NEW_MEMBER[ID]}" == $gbu ]; then
+	 echo $gbu
+   fi
+ done
+}
+
 startproc() {
 	killproc
 	mkfifo /tmp/$copname
@@ -421,6 +437,12 @@ set_lang() {
   done
 echo $var
 }
+
+run_plugins() {
+	plugins=./plugins/*.sh
+	for p in $plugins; do . $p; done
+}
+
 
 process_client() {
 	# Message
@@ -450,6 +472,7 @@ process_client() {
 
 	# Get user data by reply
 	REPLY[ID]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .id // empty')
+	REPLY[MESSAGE_ID]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .message_id // empty')
 	REPLY[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .first_name // empty')
 	REPLY[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .last_name // empty')
 	REPLY[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .username // empty')
@@ -510,8 +533,6 @@ process_client() {
 	DELETE_CHAT_PHOTO=$(echo "$res" | jq -r '.result[0] .message .delete_chat_photo // empty')
 
 	# Get entries
-	ENTRY[ALL]=$(echo $MESSAGE | cut -d " " -f2- )
-
 	ENTRY[1]=$(echo $MESSAGE | cut -d " " -f2 )
 	ENTRY[1-]=$(echo $MESSAGE | cut -d " " -f2- )
 
@@ -557,21 +578,7 @@ process_client() {
 		ADMIN=0
 	fi
 	
-	# Read list of gbans
-	echo $GBANS | grep ${USER[ID]} &>/dev/null
- 	if [ $? == 0 ]; then
- 		GBAN=1
- 	else
- 		if [ ! -z "${NEW_MEMBER[ID]}" ]; then
- 			echo $GBANS | grep ${NEW_MEMBER[ID]}
- 			if [ $? == 0 ]; then
- 				GBAN=1
- 			fi
- 		   fi
- 		GBAN=0
- 	fi
-	
-	source commands.sh
+	run_plugins
 
 	tmpcount="COUNT${CHAT[ID]}"
 	cat count | grep -q "$tmpcount" || echo "$tmpcount">>count
@@ -680,7 +687,12 @@ send_silently_message "${ADMINS}" "*Bot started*
 		echo "Available arguments: outproc, count, broadcast, start, kill, help, attach"
 		;;
 
-	*)
+	"source")
+		clear
+		source=source
+		;;
+
+	"")
 		tmux kill-session -t $ME &>/dev/null
 		date=$(date +%H:%M:%S\ %d/%m/%Y)
 send_silently_message "${ADMINS}" "*Bot started*
