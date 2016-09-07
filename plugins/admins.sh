@@ -1,4 +1,4 @@
-if [ "$(user_is_admin)" == true ] || [ $ADMIN == 1 ]; then
+if [ "$(user_is_admin)" == true ] || [ "$(user_is_owner)" ]; then
 
 case $MESSAGE in
 	'/kick')

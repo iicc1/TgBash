@@ -1,5 +1,5 @@
-if [ $ADMIN == 1 ]; then
-source lang.sh
+if [ "$(user_is_owner)" ]; then
+source langs.sh
 
 echo $MESSAGE | grep -w "/broadcast"
 	if [ $? == 0 ]; then
@@ -42,7 +42,7 @@ echo $MESSAGE | grep -w "/lang"
 		setlang=$(set_lang)
 		if [ "$setlang" == true ]; then
 			setlng=$(echo ${ENTRY[1]} | tr [:upper:] [:lower:])
-			sed -i '6 s/'$Language'/'${setlng}'/g' lang.sh
+			sed -i '4 s/'$Language'/'${setlng}'/g' config.sh
 			send_markdown_message "${CHAT[ID]}" "${lang[LANG]} *${setlng}*" "$reply"
 		else
 			send_markdown_message "${CHAT[ID]}" "${lang[LANG_NO_AVAILABLE]}" "$reply"

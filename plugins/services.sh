@@ -1,5 +1,4 @@
 send_register # load chat register
-source lang.sh # load langs
 
 if ! tmux ls | grep -v send | grep -q $copname; then
 	[ ! -z ${URLS[*]} ] && {

@@ -7,19 +7,11 @@
 . config.sh
 . data/inline_keyboards.sh
 
-ADMINS=$(cat data/admins)
-
 if [ ! -f "/usr/bin/jq" ]; then echo "JQ not found... Installing..."; sudo apt-get install jq -y; echo "JQ has been downloaded. Proceeding...";
 fi
 
 if [ "$TOKEN" == "" ]; then
 	echo "Please, put your token in config.sh" & exit
-fi
-
-if [ ! -f "data/admins" ]; then
-    echo "PLEASE WRITE YOUR ID HERE"
-    read adminID
-    echo "$adminID," >> data/admins
 fi
 
 URL='https://api.telegram.org/bot'$TOKEN'/'
@@ -47,7 +39,7 @@ ACTION_URL=$URL'sendChatAction'
 FORWARD_URL=$URL'forwardMessage'
 INLINE_QUERY=$URL'answerInlineQuery'
 ME_URL=$URL'getMe'
-ME_RES=$(curl -s $ME_URL)
+ME_RES=$(http $ME_URL)
 ME=$(echo $ME_RES | jq -r '.result .username // empty')
 
 
@@ -111,7 +103,7 @@ send_text() {
 			send_markdown_message "$1" "${2//markdown_parse_mode}"
 			;;
 		*)
-			res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")")
+			res=$(http -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")")
 			;;
 	esac
 }
@@ -207,6 +199,11 @@ get_chat_member() {
 	echo $user
 }
 
+getmembers() {
+	members=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$1" | cut -d ":" -f3 | cut -d "}" -f1)
+	send_markdown_message "$1" "$2$members"
+}
+
 user_is_admin() {
 	var=false
 	if [ "$(get_chat_member)" == creator ] || [ "$(get_chat_member)" == administrator ]; then
@@ -215,8 +212,34 @@ user_is_admin() {
 	echo $var
 }
 
+user_is_owner() {
+ source config.sh
+ for owner in $Owners; do
+   if [ "${USER[ID]}" == $owner ]; then
+	 echo $owner
+   fi
+ done
+}
+
+user_is_gbanned() {
+ source data/gbans.sh
+ for gbu in $GBANS; do
+   if [ "${USER[ID]}" == $gbu ] || [ "${NEW_MEMBER[ID]}" == $gbu ]; then
+	 echo $gbu
+   fi
+ done
+}
+
+send_to_owners() {
+ source config.sh
+ for owner in $Owners; do
+	 echo $owner
+ done
+}
+
+
 send_inline_keyboard() {
-res=$(curl "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "reply_markup=$3" -d "reply_to_message_id=$4" -d "disable_web_page_preview=true" -d "parse_mode=markdown")
+res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$2" -d "reply_markup=$3" -d "reply_to_message_id=$4" -d "disable_web_page_preview=true" -d "parse_mode=markdown")
 }
 
 answer_inline_query() {
@@ -370,11 +393,6 @@ send_venue() {
 	res=$(curl -s "$VENUE_URL" -F "chat_id=$1" -F "latitude=$2" -F "longitude=$3" -F "title=$4" -F "address=$5" $add)
 }
 
-getmembers() {
-	members=$(curl -s "${GETMEMBERS_URL}" -d "chat_id=$1" | cut -d ":" -f3 | cut -d "}" -f1)
-	send_markdown_message "$1" "$2$members"
-}
-
 forward() {
 	[ "$3" = "" ] && return
 	res=$(curl -s "$FORWARD_URL" -F "chat_id=$1" -F "from_chat_id=$2" -F "message_id=$3")
@@ -401,15 +419,6 @@ db_exist() {
 	fi
 }
 
-user_is_gbanned() {
- source data/gbans.sh
- for gbu in $GBANS; do
-   if [ "${USER[ID]}" == $gbu ] || [ "${NEW_MEMBER[ID]}" == $gbu ]; then
-	 echo $gbu
-   fi
- done
-}
-
 startproc() {
 	killproc
 	mkfifo /tmp/$copname
@@ -427,20 +436,25 @@ inproc() {
 }
 
 set_lang() {
- source lang.sh
+ source config.sh
  var=false
-  for all in ${!Langs[@]}; do
+ for all in ${!Langs[@]}; do
 	setlng=$(echo ${ENTRY[1]} | tr [:upper:] [:lower:])
-	if [ "${setlng}" = "${Langs[$all]}" ]; then
+	if [ "$setlng" == "${Langs[$all]}" ]; then
 		var=true
 	fi
   done
 echo $var
 }
 
+
+
 run_plugins() {
-	plugins=./plugins/*.sh
-	for p in $plugins; do . $p; done
+
+	. config.sh
+	for i in "${Plugins[@]}"; do
+	for p in ./plugins/${i}; do . $p; done ; done
+
 }
 
 
@@ -567,22 +581,19 @@ process_client() {
 	LOCATION[LATITUDE]=$(echo "$res" | jq -r '.result[0] .message .location .latitude // empty')
 	NAME="$(echo ${URLS[*]} | sed 's/.*\///g')"
 
+
 	# Tmux
 	copname="$ME"_"${CHAT[ID]}"
-	
-	# Read admins bot
-	echo $ADMINS | grep ${USER[ID]} &>/dev/null
-	if [ $? == 0 ]; then
-		ADMIN=1
-	else
-		ADMIN=0
-	fi
-	
-	run_plugins
+
 
 	tmpcount="COUNT${CHAT[ID]}"
 	cat count | grep -q "$tmpcount" || echo "$tmpcount">>count
-	# To get user count execute bash bashbot.sh count
+	# To get user count execute bash bot.sh count
+#echo_plugins
+	run_plugins
+	
+
+
 }
 
 # source the script with source as param to use functions in other scripts
@@ -632,7 +643,7 @@ case "$1" in
 		tmux new-session -d -s $ME "bash $SCRIPT startbot" && echo -e '\e[0;32mBot started successfully.\e[0m'
 		echo "Tmux session name $ME" || echo -e '\e[0;31mAn error occurred while starting the bot. \e[0m'
 		date=$(date +%H:%M:%S\ %d/%m/%Y)
-send_silently_message "${ADMINS}" "*Bot started*
+send_silently_message "$(send_to_owners)" "*Bot started*
 *Session* \`*TMUX* - ${ME}\`
 *Date* \`$date\`"
 		;;
@@ -640,19 +651,17 @@ send_silently_message "${ADMINS}" "*Bot started*
 	"kill")
 		clear
 		tmux kill-session -t $ME &>/dev/null
-		send_silently_message "${ADMINS}" "*Bot stopped*"
+		send_silently_message "$(send_to_owners)" "*Bot stopped*"
 		echo -e '\e[0;32mOK. Bot stopped successfully.\e[0m'
 		;;
 		
 	
 	"api")
 		clear
-		echo -e '\e[0;36m-----------------------------------------\e[0m'
-		echo -e '\e[0;36m---------------Change API----------------\e[0m'
-		echo -e '\e[0;36m-----------------------------------------\e[0m'
-		echo -e '\e[1;33m           select your option     \e[0m'
-		echo ' '
-		echo ' '
+		echo -e '\e[0;36m-----------------------------------------'
+		echo -e '---------------Change API----------------'
+		echo -e '-----------------------------------------'
+		echo -e '\n\e[1;33m\tselect your option\t\e[0m\n'
 		echo '1- Change pwrtelegram api to telegram api'
 		echo '2- Change telegram api to pwrtelegram api'
 
@@ -695,7 +704,7 @@ send_silently_message "${ADMINS}" "*Bot started*
 	"")
 		tmux kill-session -t $ME &>/dev/null
 		date=$(date +%H:%M:%S\ %d/%m/%Y)
-send_silently_message "${ADMINS}" "*Bot started*
+send_silently_message "$(send_to_owners)" "*Bot started*
 *Session* \`*Normal session*\`
 *Date* \`$date\`" && echo "BOT STARTED IN NORMAL SESSION @$ME"
 		source bot.sh startbot

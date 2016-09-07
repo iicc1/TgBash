@@ -2,17 +2,10 @@
 #*.*encoding=utf-8*.*
 
 declare -a langs
-# Select your language
-Language='es' # Reemplace to your code of language (if is available)
-
-# Availables langs
-Langs=(
-	"es"
-	"en"
-	)
+source config.sh
 
 # If the lang is ES then
-if [ $Language == 'es' ]; then
+if [ "$Language" == 'es' ]; then
 declare -A lang
 
   lang[START]='¡Hola a todos! 
@@ -88,7 +81,7 @@ Obtén el código [aquí](https://github.com/iicc1/TgBash)'
   
 fi
 
-if [ $Language == 'en' ]; then
+if [ "$Language" == 'en' ]; then
 declare -A lang
 
   lang[START]='Hi everybody! 

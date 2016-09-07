@@ -3,6 +3,8 @@ This commands will be available to all users.
 You can add a command with 'echo $MESSAGE | grep -w "/echo"' to do the entries compatibles.
 /
 
+source langs.sh
+
 echo $MESSAGE | grep -w "/echo"
 	if [ $? == 0 ]; then
 		send_markdown_message "${CHAT[ID]}" "${ENTRY[1-]}"
@@ -36,7 +38,7 @@ echo $MESSAGE | grep -w "/calc"
 echo $MESSAGE | grep -w "/res"
 	if [ $? == 0 ]; then
 		USR=$(echo $MESSAGE | cut -d " " -f2)
-		getchat "$USR"
+		get_chat "$USR"
 		id=$(echo $res | jq -r '.result .id')
 		type=$(echo $res | jq -r '.result .type')
 		title=$(echo $res | jq -r '.result .title')
