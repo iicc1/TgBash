@@ -39,7 +39,7 @@ ACTION_URL=$URL'sendChatAction'
 FORWARD_URL=$URL'forwardMessage'
 INLINE_QUERY=$URL'answerInlineQuery'
 ME_URL=$URL'getMe'
-ME_RES=$(http $ME_URL)
+ME_RES=$(curl -s $ME_URL)
 ME=$(echo $ME_RES | jq -r '.result .username // empty')
 
 
@@ -103,7 +103,7 @@ send_text() {
 			send_markdown_message "$1" "${2//markdown_parse_mode}"
 			;;
 		*)
-			res=$(http -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")")
+			res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")")
 			;;
 	esac
 }
@@ -589,11 +589,8 @@ process_client() {
 	tmpcount="COUNT${CHAT[ID]}"
 	cat count | grep -q "$tmpcount" || echo "$tmpcount">>count
 	# To get user count execute bash bot.sh count
-#echo_plugins
+
 	run_plugins
-	
-
-
 }
 
 # source the script with source as param to use functions in other scripts
