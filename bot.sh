@@ -16,6 +16,7 @@ fi
 
 URL='https://api.telegram.org/bot'$TOKEN'/'
 
+if [ "$test" == true ]; then test=test; URL=$URL$test'/'; fi
 
 SCRIPT="$0"
 MSG_URL=$URL'sendMessage'
@@ -399,15 +400,15 @@ forward() {
 }
 
 db_get() {
-	redis-bash-cli -h localhost GET $1
+	redis-bash-cli -n $redis_db -h $redis_server -p $redis_port GET $1
 }
 
 db_set() {
-	redis-bash-cli -h localhost SET "$1" "$2"
+	redis-bash-cli -n $redis_db -h $redis_server -p $redis_port SET $1 $2
 }
 
 db_del() {
-	redis-bash-cli -h localhost SET "$1" 0
+	redis-bash-cli -n $redis_db -h $redis_server -p $redis_port SET $1 0
 }
 
 db_exist() {

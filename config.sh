@@ -16,7 +16,7 @@ Plugins=(
 	"services.sh"
 	"admins.sh"
 	"owners.sh"
-	"users.sh"			
+	"users.sh"	
 )
 
 
@@ -27,3 +27,11 @@ GET_FORWARDS="on"
 GET_WELCOME="on"
 GET_LEFT="on"
 KICK_GBANS="on"
+
+# Redis settins
+redis_server='localhost'
+redis_db='telegram'
+redis_port=6379
+
+# Telegram settings
+test=false
