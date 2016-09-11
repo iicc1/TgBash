@@ -157,8 +157,6 @@ Get the code [here](https://github.com/iicc1/TgBash)'
 
 fi
 
-
-
 if [ "$Language" == 'ru' ]; then
 declare -A lang
 
