@@ -10,6 +10,7 @@ Owners=(
 Langs=(
 	"en"
 	"es"
+	"ru"
 	)
 
 Plugins=(
