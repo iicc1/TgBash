@@ -548,20 +548,20 @@ process_client() {
 	DELETE_CHAT_PHOTO=$(echo "$res" | jq -r '.result[0] .message .delete_chat_photo // empty')
 
 	# Get entries
-	ENTRY[1]=$(echo $MESSAGE | cut -d " " -f2 )
-	ENTRY[1-]=$(echo $MESSAGE | cut -d " " -f2- )
+	ENTRY[1]=$(echo $MESSAGE' ' | cut -d " " -f2 )
+	ENTRY[1-]=$(echo $MESSAGE' ' | cut -d " " -f2- )
 
-	ENTRY[2]=$(echo $MESSAGE | cut -d " " -f3 )
-	ENTRY[2-]=$(echo $MESSAGE | cut -d " " -f3- )
+	ENTRY[2]=$(echo $MESSAGE' ' | cut -d " " -f3 )
+	ENTRY[2-]=$(echo $MESSAGE' ' | cut -d " " -f3- )
 
-	ENTRY[3]=$(echo $MESSAGE | cut -d " " -f4 )
-	ENTRY[3-]=$(echo $MESSAGE | cut -d " " -f4- )
+	ENTRY[3]=$(echo $MESSAGE' ' | cut -d " " -f4 )
+	ENTRY[3-]=$(echo $MESSAGE' ' | cut -d " " -f4- )
 
-	ENTRY[4]=$(echo $MESSAGE | cut -d " " -f5 )
-	ENTRY[4-]=$(echo $MESSAGE | cut -d " " -f5- )
+	ENTRY[4]=$(echo $MESSAGE' ' | cut -d " " -f5 )
+	ENTRY[4-]=$(echo $MESSAGE' ' | cut -d " " -f5- )
 
-	ENTRY[5]=$(echo $MESSAGE | cut -d " " -f6 )
-	ENTRY[5-]=$(echo $MESSAGE | cut -d " " -f6- )
+	ENTRY[5]=$(echo $MESSAGE' ' | cut -d " " -f6 )
+	ENTRY[5-]=$(echo $MESSAGE' ' | cut -d " " -f6- )
 
 	# Date
 	DATE[ALL]=$(date)
