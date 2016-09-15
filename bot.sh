@@ -600,8 +600,7 @@ while [ "$1" == "startbot" ]; do {
 	res=$(curl -s $UPD_URL$OFFSET )
 
 	# Offset
-	OFFSET=$(echo "$res" | jq -r '.result[0].update_id')
-	OFFSET=$((OFFSET+1))
+	OFFSET=$(echo "$res" | jq -r '.result[0].update_id +1')
 
 	if [ $OFFSET != 1 ]; then
 		if [ "$2" == "test" ]; then
