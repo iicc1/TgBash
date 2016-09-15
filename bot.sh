@@ -159,6 +159,25 @@ function send_register() {
 	fi
 }
 
+function clean_updates() {
+	while true; do {
+
+	res=$(curl -s $UPD_URL'0')
+
+	# Offset
+	OFFSET=$(echo "$res" | jq -r '.result[0].update_id +1')
+
+	if [ "$OFFSET" != 1 ]; then
+		echo -e '\e[1;33m[ offset request ] [ update_id = '$(expr $OFFSET - 1 )' ]\e[0m'
+ 		curl -s $UPD_URL$OFFSET&>/dev/null
+	else
+		clear && echo -e '\e[0;32mDone!\e[0m'
+		break
+	fi
+
+	}; done
+}
+
 send_markdown_message() {
 	res=$(curl -s "$MSG_URL" -d "chat_id=$1" -d "text=$(urlencode "$2")" -d "parse_mode=markdown" -d "disable_web_page_preview=true" -d "reply_to_message_id=$3")
 }
@@ -696,6 +715,10 @@ send_silently_message "$(send_to_owners)" "*Bot started*
 	"source")
 		clear
 		source=source
+		;;
+		
+	"clean")
+		clean_updates
 		;;
 
 	"")
