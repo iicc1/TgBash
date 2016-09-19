@@ -567,6 +567,8 @@ process_client() {
 	DELETE_CHAT_PHOTO=$(echo "$res" | jq -r '.result[0] .message .delete_chat_photo // empty')
 
 	# Get entries
+	# http://unix.stackexchange.com/questions/144514/add-arguments-to-bash-c
+	
 	ENTRY[1]=$(echo $MESSAGE' ' | cut -d " " -f2 )
 	ENTRY[1-]=$(echo $MESSAGE' ' | cut -d " " -f2- )
 
