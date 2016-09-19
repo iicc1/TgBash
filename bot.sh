@@ -569,20 +569,20 @@ process_client() {
 	# Get entries
 	# http://unix.stackexchange.com/questions/144514/add-arguments-to-bash-c
 	
-	ENTRY[1]=$(echo $MESSAGE' ' | cut -d " " -f2 )
-	ENTRY[1-]=$(echo $MESSAGE' ' | cut -d " " -f2- )
+	ENTRY[1]=$(/bin/bash -c 'echo "$1"' $MESSAGE)
+	ENTRY[1-]=$(echo $MESSAGE' ' | cut -d " " -f2-)
 
-	ENTRY[2]=$(echo $MESSAGE' ' | cut -d " " -f3 )
-	ENTRY[2-]=$(echo $MESSAGE' ' | cut -d " " -f3- )
+	ENTRY[2]=$(/bin/bash -c 'echo "$2"' $MESSAGE)
+	ENTRY[2-]=$(echo $MESSAGE' ' | cut -d " " -f3-)
 
-	ENTRY[3]=$(echo $MESSAGE' ' | cut -d " " -f4 )
-	ENTRY[3-]=$(echo $MESSAGE' ' | cut -d " " -f4- )
+	ENTRY[3]=$(/bin/bash -c 'echo "$3"' $MESSAGE)
+	ENTRY[3-]=$(echo $MESSAGE' ' | cut -d " " -f4-)
 
-	ENTRY[4]=$(echo $MESSAGE' ' | cut -d " " -f5 )
-	ENTRY[4-]=$(echo $MESSAGE' ' | cut -d " " -f5- )
+	ENTRY[4]=$(/bin/bash -c 'echo "$4"' $MESSAGE)
+	ENTRY[4-]=$(echo $MESSAGE' ' | cut -d " " -f5-)
 
-	ENTRY[5]=$(echo $MESSAGE' ' | cut -d " " -f6 )
-	ENTRY[5-]=$(echo $MESSAGE' ' | cut -d " " -f6- )
+	ENTRY[5]=$(/bin/bash -c 'echo "$5"' $MESSAGE)
+	ENTRY[5-]=$(echo $MESSAGE' ' | cut -d " " -f6-)
 
 	# Date
 	DATE[ALL]=$(date)
