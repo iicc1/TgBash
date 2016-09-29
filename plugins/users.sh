@@ -1,23 +1,23 @@
-<<-/
+<<read
 This commands will be available to all users.
-You can add a command with 'echo $MESSAGE | grep -w "/echo"' to do the entries compatibles.
-/
+You can add a command with 'echo $MESSAGE | grep -w "^/command"' to do the entries compatibles.
+read
 
 source langs.sh
 
-echo $MESSAGE | grep -w "/echo"
+echo $MESSAGE | grep -w "^/echo"
 	if [ $? == 0 ]; then
 		send_markdown_message "${CHAT[ID]}" "${ENTRY[1-]}"
 	fi
 	
-echo $MESSAGE | grep -w "/rev"
+echo $MESSAGE | grep -w "^/rev"
         if [ $? == 0 ]; then
 		change=$(echo ${ENTRY[1-]} | rev)
 		send_markdown_message "${CHAT[ID]}" "$change"
 	fi
 	
 
-echo $MESSAGE | grep -w "/ct"
+echo $MESSAGE | grep -w "^/ct"
 	if [ $? == 0 ]; then
 		if [ ${CHAT[TYPE]} == private ]; then
 			MESSAGE=$(echo $MESSAGE | cut -d " " -f2-)
@@ -28,14 +28,14 @@ echo $MESSAGE | grep -w "/ct"
 		fi
     	fi
 	
-echo $MESSAGE | grep -w "/calc"
+echo $MESSAGE | grep -w "^/calc"
 	if [ $? == 0 ]; then
 		MESSAGE=$(echo ${ENTRY[1-]} | sed 's/\+/%2B/g' | sed 's/(/%28/g' | sed 's/)/%29/g')
 	 	EXPR=$(curl -s http://api.mathjs.org/v1/?expr=$MESSAGE)
 		send_markdown_message "${CHAT[ID]}" "*${EXPR}*" "$reply"
 	fi
 
-echo $MESSAGE | grep -w "/res"
+echo $MESSAGE | grep -w "^/res"
 	if [ $? == 0 ]; then
 		USR=$(echo $MESSAGE | cut -d " " -f2)
 		get_chat "$USR"
