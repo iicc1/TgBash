@@ -232,26 +232,29 @@ user_is_admin() {
 	echo $var
 }
 
+
 user_is_owner() {
- source config.sh
- for owner in $Owners; do
-   if [ "${USER[ID]}" == $owner ]; then
-	 echo $owner
-   fi
- done
+ var=false
+ for i in "${!Owners[@]}"
+ do
+ 	if [ "${USER[ID]}" == "${Owners[$i]}" ]; then
+ 		var=true
+	fi	
+  done
+echo $var
 }
 
+
 user_is_gbanned() {
- source data/gbans.sh
- for gbu in $GBANS; do
-   if [ "${USER[ID]}" == $gbu ] || [ "${NEW_MEMBER[ID]}" == $gbu ]; then
-	 echo $gbu
-   fi
- done
+source data/gbans.sh
+ for i in "${!GBANS[@]}"; do
+ 	if [ "${USER[ID]}" == "${GBANS[$i]}" ] || [ "${NEW_MEMBER[ID]}"  == "${GBANS[$i]}" ]; then
+ 		echo ${GBANS[$i]}
+	fi	
+  done
 }
 
 send_to_owners() {
- source config.sh
  for owner in $Owners; do
 	 echo $owner
  done
@@ -510,6 +513,12 @@ process_client() {
 	REPLY[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .first_name // empty')
 	REPLY[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .last_name // empty')
 	REPLY[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .username // empty')
+	
+	# Reply to forward from user
+	REPLY[FW_ID]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .id // empty')
+	REPLY[FW_FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .first_name // empty')
+	REPLY[FW_LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .last_name // empty')
+	REPLY[FW_USERNAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .username // empty')
 	
 	# Chat
 	CHAT[ID]=$(echo "$res" | jq -r '.result[0] .message.chat .id // empty')
