@@ -1,4 +1,4 @@
-if [ "$(user_is_owner)" ]; then
+if [ "$(user_is_owner)" == true ]; then
 source langs.sh
 
 echo $MESSAGE | grep -w "^/broadcast"
