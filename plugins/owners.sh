@@ -1,7 +1,7 @@
 if [ "$(user_is_owner)" ]; then
 source langs.sh
 
-echo $MESSAGE | grep -w "/broadcast"
+echo $MESSAGE | grep -w "^/broadcast"
 	if [ $? == 0 ]; then
 		send_markdown_message "${USER[ID]}" "${lang[BC]}
 _${ENTRY[1-]}_" "$reply"
@@ -10,18 +10,24 @@ _${ENTRY[1-]}_" "$reply"
 	fi
 
     	
-echo $MESSAGE | grep -w "/su"
+echo $MESSAGE | grep -w "^/su"
 	if [ $? == 0 ]; then
 		COMMAND=$(${ENTRY[1-]})
 		send_markdown_message "${CHAT[ID]}" "*${COMMAND}*"
 	fi
+	
+echo $MESSAGE | grep -w "^/reply"
+	if [ $? == 0 ]; then
+		send_message "${REPLY[FW_ID]}" "${ENTRY[1-]}"
+		echo "OK"
+	fi
 
-echo $MESSAGE | grep -w "!edit"
+echo $MESSAGE | grep -w "^!edit"
 	if [ $? == 0 ]; then
 		edit_message "${CHAT[ID]}" "${ENTRY[1-]}"
 	fi
 
-echo $MESSAGE | grep -w "/setwelcome"
+echo $MESSAGE | grep -w "^/setwelcome"
 	if [ $? == 0 ]; then
 		db_set welcome "${ENTRY[1-]}"
 		send_markdown_message "${CHAT[ID]}" "*New welcome*
@@ -29,7 +35,7 @@ ${ENTRY[1-]}"
 	fi
 
 
-echo $MESSAGE | grep -w "/delwelcome"
+echo $MESSAGE | grep -w "^/delwelcome"
 	if [ $? == 0 ]; then
 		db_del welcome
 		send_markdown_message "${CHAT[ID]}" "Welcome deleted"
@@ -37,7 +43,7 @@ echo $MESSAGE | grep -w "/delwelcome"
 
 
     	
-echo $MESSAGE | grep -w "/lang"
+echo $MESSAGE | grep -w "^/lang"
 	if [ $? == 0 ]; then
 		setlang=$(set_lang)
 		if [ "$setlang" == true ]; then
