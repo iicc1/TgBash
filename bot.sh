@@ -122,7 +122,7 @@ function send_register() {
 	   echo ${DATE[ALL]}
 	 fi
  	fi
- 	
+
  	if [ "${CHAT[TYPE]}" != "private" ]; then
  	 if [ "$MESSAGE" ]; then
 	   echo -en '\n'
@@ -133,7 +133,7 @@ function send_register() {
 	   echo ${DATE[ALL]}
 	 fi
 	fi
-	
+
 	if [ "$NEW_MEMBER" ]; then
 	   echo -en '\n'
 	   echo -e '\e[1;33mNew member\e[0m | \e[1;37mID\e[0m \e[1;33m'${NEW_MEMBER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[1;33m@'${NEW_MEMBER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[1;33m'${NEW_MEMBER[FIRST_NAME]}'\e[0m'
@@ -142,7 +142,7 @@ function send_register() {
 	   echo -e '\e[1;34mFROM\e[0m || \e[1;37mID\e[0m \e[0;36m'${USER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[0;36m@'${USER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[0;36m'${USER[FIRST_NAME]} '\e[0m | \e[1;37mLastname\e[0m \e[0;36m'${USER[LAST_NAME]}'\e[0m'
 	   echo ${DATE[ALL]}
 	fi
-	
+
 	if [ "$OUT_MEMBER" ]; then
 	   echo -en '\n'
 	   echo -e '\e[1;33mMember out\e[0m | \e[1;37mID\e[0m \e[1;33m'${OUT_MEMBER[ID]}'\e[0m | \e[1;37mUser\e[0m \e[1;33m@'${OUT_MEMBER[USERNAME]}'\e[0m | \e[1;37mFirstname\e[0m \e[1;33m'${OUT_MEMBER[FIRST_NAME]}'\e[0m'
@@ -228,9 +228,8 @@ getmembers() {
 }
 
 user_is_admin() {
-	var=false
 	if [ "$(get_chat_member)" == creator ] || [ "$(get_chat_member)" == administrator ]; then
-		var=true
+		var=$(get_chat_member)
 	fi
 	echo $var
 }
@@ -242,7 +241,7 @@ user_is_owner() {
  do
  	if [ "${USER[ID]}" == "${Owners[$i]}" ]; then
  		var=true
-	fi	
+	fi
   done
 echo $var
 }
@@ -253,7 +252,7 @@ source data/gbans.sh
  for i in "${!GBANS[@]}"; do
  	if [ "${USER[ID]}" == "${GBANS[$i]}" ] || [ "${NEW_MEMBER[ID]}"  == "${GBANS[$i]}" ]; then
  		echo ${GBANS[$i]}
-	fi	
+	fi
   done
 }
 
@@ -445,7 +444,7 @@ db_keys() {
 }
 
 db_hkeys() {
-	redis-cli --raw keys "$1"
+	redis-cli --raw hkeys "$1"
 }
 
 db_incr() {
@@ -473,7 +472,7 @@ db_del() {
 }
 
 db_hdel() {
-	redis-cli --raw del "$1"
+	redis-cli --raw hdel "$1" "$2"
 }
 
 startproc() {
@@ -519,23 +518,23 @@ process_client() {
 	# Message
 	MESSAGE=$(echo "$res" | jq -r '.result[0] .message .text // empty')
 	MESSAGE[ID]=$(echo "$res" | jq -r '.result[0] .message .message_id // empty')
-	
+
 	# Forward from user
 	FORWARD=$(echo "$res" | jq -r '.result[0] .message .forward_from // empty')
 	FORWARD[ID]=$(echo "$res" | jq -r '.result[0] .message .forward_from .id // empty')
 	FORWARD[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from .first_name // empty')
 	FORWARD[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from .last_name // empty')
 	FORWARD[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from .username // empty')
-	
+
 	# Forward from chat (channel)
 	FORWARD_CHAT=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat // empty')
 	FORWARD_CHAT[ID]=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat .id // empty')
 	FORWARD_CHAT[TITLE]=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat .title // empty')
 	FORWARD_CHAT[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .forward_from_chat .username // empty')
-	
+
 	# Generate reply
 	reply=$(echo "$res" | jq -r '.result[0] .message .message_id // empty')
-	
+
 	# Bot
 	BOT[USERNAME]=$(echo $ME_RES | jq -r '.result .username // empty')
 	BOT[NAME]=$(echo $ME_RES | jq -r '.result .first_name // empty')
@@ -547,24 +546,24 @@ process_client() {
 	REPLY[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .first_name // empty')
 	REPLY[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .last_name // empty')
 	REPLY[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .from .username // empty')
-	
+
 	# Reply to forward from user
 	REPLY[FW_ID]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .id // empty')
 	REPLY[FW_FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .first_name // empty')
 	REPLY[FW_LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .last_name // empty')
 	REPLY[FW_USERNAME]=$(echo "$res" | jq -r '.result[0] .message .reply_to_message .forward_from .username // empty')
-	
+
 	# Chat
 	CHAT[ID]=$(echo "$res" | jq -r '.result[0] .message.chat .id // empty')
 	CHAT[TITLE]=$(echo "$res" | jq -r '.result[0] .message .chat .title // empty')
 	CHAT[TYPE]=$(echo "$res" | jq -r '.result[0] .message .chat .type // empty')
-	
+
 	# User
 	USER[ID]=$(echo "$res" | jq -r '.result[0] .message .from .id // empty')
 	USER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .from .first_name // empty')
 	USER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .from .last_name // empty')
 	USER[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .from .username // empty')
-	
+
 	# Inline data
 	iUSER[ID]=$(echo "$res" | jq -r '.result[0] .inline_query .from .id // empty')
 	iUSER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .inline_query .from .first_name // empty')
@@ -572,21 +571,21 @@ process_client() {
 	iUSER[USERNAME]=$(echo "$res" | jq -r '.result[0] .inline_query .from .username // empty')
 	iQUERY[ID]=$(echo "$res" | jq -r '.result[0] .inline_query .id // empty')
 	iQUERY[MSG]=$(echo "$res" | jq -r '.result[0] .inline_query .query // empty')
-	
+
 	# New members added/joined
 	NEW_MEMBER=$(echo "$res" | jq -r '.result[0] .message .new_chat_member // empty')
 	NEW_MEMBER[ID]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .id // empty')
 	NEW_MEMBER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .first_name // empty')
 	NEW_MEMBER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .last_name // empty')
 	NEW_MEMBER[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .new_chat_member .username // empty')
-	
+
 	# Members kicked/out
 	OUT_MEMBER=$(echo "$res" | jq -r '.result[0] .message .left_chat_member // empty')
 	OUT_MEMBER[ID]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .id // empty')
 	OUT_MEMBER[FIRST_NAME]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .first_name // empty')
 	OUT_MEMBER[LAST_NAME]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .last_name // empty')
 	OUT_MEMBER[USERNAME]=$(echo "$res" | jq -r '.result[0] .message .left_chat_member .username // empty')
-	
+
 	# Audio
 	URLS[AUDIO]=$(get_file $(echo "$res" | jq -r '.result[0] .message .audio .file_id // empty'))
 	# Document
@@ -611,7 +610,7 @@ process_client() {
 
 	# Get entries
 	# http://unix.stackexchange.com/questions/144514/add-arguments-to-bash-c
-	
+
 	ENTRY[1]=$(/bin/bash -c 'echo "$1"' $MESSAGE)
 	ENTRY[1-]=$(/bin/bash -c 'if [ $# -gt 0 ]; then echo "$@" ; fi' $MESSAGE)
 
@@ -715,8 +714,8 @@ send_silently_message "$(send_to_owners)" "*Bot started*
 		send_silently_message "$(send_to_owners)" "*Bot stopped*"
 		echo -e '\e[0;32mOK. Bot stopped successfully.\e[0m'
 		;;
-		
-	
+
+
 	"api")
 		clear
 		echo -e '\e[0;36m-----------------------------------------'
@@ -751,7 +750,7 @@ send_silently_message "$(send_to_owners)" "*Bot started*
 	"attach")
 		tmux attach -t $ME
 		;;
-	
+
 	"args")
 		clear
 		echo "Available arguments: outproc, count, broadcast, start, kill, help, attach"
@@ -761,7 +760,7 @@ send_silently_message "$(send_to_owners)" "*Bot started*
 		clear
 		source=source
 		;;
-		
+
 	"clean")
 		clean_updates
 		;;

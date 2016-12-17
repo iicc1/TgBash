@@ -9,13 +9,13 @@ echo $MESSAGE | grep -w "^/echo"
 	if [ $? == 0 ]; then
 		send_markdown_message "${CHAT[ID]}" "${ENTRY[1-]}"
 	fi
-	
+
 echo $MESSAGE | grep -w "^/rev"
         if [ $? == 0 ]; then
 		change=$(echo ${ENTRY[1-]} | rev)
 		send_markdown_message "${CHAT[ID]}" "$change"
 	fi
-	
+
 
 echo $MESSAGE | grep -w "^/ct"
 	if [ $? == 0 ]; then
@@ -27,7 +27,7 @@ echo $MESSAGE | grep -w "^/ct"
 			exit
 		fi
     	fi
-	
+
 echo $MESSAGE | grep -w "^/calc"
 	if [ $? == 0 ]; then
 		MESSAGE=$(echo ${ENTRY[1-]} | sed 's/\+/%2B/g' | sed 's/(/%28/g' | sed 's/)/%29/g')
@@ -61,42 +61,52 @@ case $MESSAGE in
 			send_markdown_message "${CHAT[ID]}" "${lang[START]}"
 		fi
 	;;
-			
+
 	'/calculator')
 		startproc "./calculator"
 	;;
-		
+
 	'/getinfo')
 		send_markdown_message "${CHAT[ID]}" "*${lang[USER]}* @${REPLY[USERNAME]}
 *${lang[ID]}* ${REPLY[ID]}" "$reply"
 	;;
-			
+
 	'/info')
 		send_inline_keyboard "${CHAT[ID]}" "${lang[INFO]}" "${inline_keyboard[help]}" "$reply"
 	;;
-     			
-     	'/kickme')
-     		kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
-     		unban_chat_member "${CHAT[ID]}" "${USER[ID]}"
-     	;;
-     			
-     	'/myinfo')
+
+  '/kickme')
+    kick_chat_member "${CHAT[ID]}" "${USER[ID]}"
+    unban_chat_member "${CHAT[ID]}" "${USER[ID]}"
+  ;;
+
+  '/myinfo')
 		send_markdown_message "${CHAT[ID]}" "*${lang[ID]}* ${USER[ID]}
 *${lang[USER]}* @${USER[USERNAME]}
 *${lang[NAME]}* ${USER[FIRST_NAME]}
 *${lang[LASTNAME]}* ${USER[LAST_NAME]}"
 	;;
-			
+
 	'/getmembers')
 		getmembers "${CHAT[ID]}" "${lang[GETMEMBERS]}
 "
 	;;
 
+	'/admins')
+		admin_list=(`db_hkeys ${AHASH}`)
+		header="Admins on _${CHAT[TITLE]}_:\n"
+		for x in ${!admin_list[@]}; do
+			list+="*`expr $x + 1`*: `db_hget ${AHASH} ${admin_list[$x]}` (${admin_list[$x]})\n"
+		done
+		if [[ ${list} ]]; then list=$list; else list="*List of admins empty*"; fi
+		send_markdown_message "${CHAT[ID]}" "`echo -en ${header} ${list}`" "$reply"
+	;;
+
 	'/cancel')
 		if tmux ls | grep -q $copname; then killproc && send_markdown_message "${CHAT[ID]}" "*Command canceled*.";else send_markdown_message "${CHAT[ID]}" "*No command is currently running*.";fi
 	;;
-			
-			
+
+
 	*)
 		if tmux ls | grep -v send | grep -q $copname;then inproc; else send_message "${CHAT[ID]}" "" "safe";fi
 	;;

@@ -1,7 +1,7 @@
 TOKEN="" # Your token here
 FILE_REGEX="/"
 
-Language='en'
+GLOBAL_LANG='en'
 
 Owners=(
 	0
@@ -17,7 +17,7 @@ Plugins=(
 	"services.sh"
 	"admins.sh"
 	"owners.sh"
-	"users.sh"	
+	"users.sh"
 )
 
 
@@ -33,6 +33,11 @@ KICK_GBANS="on"
 redis_server='localhost'
 redis_db='telegram'
 redis_port=6379
+
+# HASHS OF REDIS
+AHASH="GROUP:${CHAT[ID]}:ADMINS"
+WHASH="GROUP:${CHAT[ID]}:WELCOME"
+LHASH="GROUP:${CHAT[ID]}:LANG"
 
 # Telegram settings
 test=false
