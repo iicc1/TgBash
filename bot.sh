@@ -7,11 +7,14 @@
 . config.sh
 . data/inline_keyboards.sh
 
-if [ ! -f "/usr/bin/jq" ]; then echo "JQ not found... Installing..."; sudo apt-get install jq -y; echo "JQ has been downloaded. Proceeding...";
+if [ ! -f "/usr/bin/jq" ] || [ ! -f "/usr/bin/redis-cli" ] || [ ! -f "/usr/bin/curl" ]; then
+	echo "ERROR: you must install the dependences: Open install.sh or install the dependences manually."
+	exit
 fi
 
 if [ "$TOKEN" == "" ]; then
-	echo "Please, put your token in config.sh" & exit
+	echo "Please, put your token in config.sh"
+	exit
 fi
 
 URL='https://api.telegram.org/bot'$TOKEN'/'
