@@ -13,7 +13,7 @@ You can test the bot in bash just cloning the repository.
 
 **Clone**
 ```bash
-git clone https://github.com/iicc1/TgBash
+git clone --recursive https://github.com/iicc1/TgBash
 ```
 
 **Install dependences**

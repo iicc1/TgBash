@@ -10,4 +10,4 @@ packages_all=(
    "jq"
    )
    
-source <(curl -s https://raw.githubusercontent.com/CodeSh/getsys/master/getsys)
+source getsys/getsys
