@@ -3,6 +3,7 @@ Tg Bash
 This is a bot of telegram (public to test) based in [Telegram-Bot-Bash](https://github.com/topkecleon/telegram-bot-bash)
 You can test the bot in bash just cloning the repository.
 
+
 | Require  |
 | ------------- |
 | [redis-server](https://github.com/antirez/redis)  |
@@ -24,9 +25,9 @@ sudo bash install.sh
 **Use**:
 ``` bash
 cd TgBash
+# Open config.sh and set your token
+# Open config.sh and set your ID
 sudo ./bot.sh tmux # If you want a tmux session, else if not, start without "tmux"
-# Paste token
-# Paste your id
 # Done!
 ```
 
