@@ -19,7 +19,7 @@ git clone --recursive https://github.com/iicc1/TgBash
 **Install dependences**
 ```bash
 cd TgBash
-sudo bash install.sh
+bash install.sh
 ```
 
 **Use**:
