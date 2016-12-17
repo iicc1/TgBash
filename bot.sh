@@ -7,7 +7,7 @@
 . config.sh
 . data/inline_keyboards.sh
 
-if [ ! -f "/usr/bin/jq" ] || [ ! -f "/usr/bin/redis-cli" ] || [ ! -f "/usr/bin/curl" ]; then
+if [ ! -f "/usr/bin/jq" ] || [ ! -f "/usr/bin/redis-cli" ] || [ ! -f "/usr/bin/curl" ] || [ ! -f "/usr/bin/tmux" ]; then
 	echo "ERROR: you must install the dependences: Open install.sh or install the dependences manually."
 	exit
 fi
