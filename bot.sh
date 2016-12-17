@@ -422,24 +422,55 @@ forward() {
 }
 
 db_get() {
-	redis-bash-cli -n $redis_db -h $redis_server -p $redis_port GET $1
+	local exist=$(redis-cli --raw get "$1")
+	if [[ ! $exist ]] || [[ `echo "${exist}" | grep -iw "operation against a key holding the wrong kind of value"` ]]; then
+		exit
+	fi
+	echo ${exist}
+}
+
+db_hget() {
+	local exist=$(redis-cli --raw hget "$1" "$2")
+	if [[ ! $exist ]] || [[ `echo "${exist}" | grep -iw "operation against a key holding the wrong kind of value"` ]]; then
+		exit
+	fi
+	echo ${exist}
+}
+
+db_keys() {
+	redis-cli --raw keys "$1"
+}
+
+db_hkeys() {
+	redis-cli --raw keys "$1"
+}
+
+db_incr() {
+	redis-cli --raw incr "$1"
+}
+
+db_incrby() {
+	redis-cli --raw incrby "$1" "$2"
+}
+
+db_hincrby() {
+	redis-cli --raw hincrby "$1" "$2"
 }
 
 db_set() {
-	redis-bash-cli -n $redis_db -h $redis_server -p $redis_port SET $1 $2
+	redis-cli --raw set "$1" "$2"
+}
+
+db_hset() {
+	redis-cli --raw hset "$1" "$2" "$3"
 }
 
 db_del() {
-	redis-bash-cli -n $redis_db -h $redis_server -p $redis_port SET $1 0
+	redis-cli --raw del "$1"
 }
 
-db_exist() {
-	check_db=$(db_get $1)
-	if [ "$check_db" == 0 ]; then
-		exit
-	else
-		echo $check_db
-	fi
+db_hdel() {
+	redis-cli --raw del "$1"
 }
 
 startproc() {
